@@ -7,6 +7,7 @@ import {CollectionScreen, HomeScreen, ScanScreen} from '../screens';
 import {TabIcon} from '../components/icons';
 import {SCREEN_NAME} from '../utils/constants';
 import {getPath} from '../utils/helper';
+import {TextStyle} from '../styles/base';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -91,7 +92,11 @@ function TabBar({state, descriptors, navigation}) {
               }>
               <TabIcon name={label} isFocused={isFocused} />
               {label !== SCREEN_NAME.Scan && (
-                <Text style={{color: isFocused ? '#678F58' : '#222'}}>
+                <Text
+                  style={{
+                    ...TextStyle.baseText,
+                    color: isFocused ? '#678F58' : '#222',
+                  }}>
                   {label}
                 </Text>
               )}
