@@ -58,7 +58,7 @@ export const theme = {
     xxlarge: 22,
     xxxlarge: 24,
     xxxxlarge: 26,
-    xxxxxlarge: 28,
+    xxxxxlarge: 32,
     points: 28,
     lineHeight: 24,
   },

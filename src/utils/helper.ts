@@ -10,7 +10,7 @@ export const getPath = (
     halfWidth + 24
   } 26 ${halfWidth + 16} 34 ${halfWidth} 34 C${halfWidth - 16} 34 ${
     halfWidth - 24
-  } 26 ${halfWidth - 32} 17 C${halfWidth - 32} 17 ${halfWidth - 40} 8 ${
+  } 26 ${halfWidth - 32} 17 C${halfWidth - 32} 17 ${halfWidth - 48} 0 ${
     halfWidth - curvedButtonSize
   } 0 H0Z`;
 };

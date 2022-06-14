@@ -5,3 +5,8 @@ export const SCREEN_NAME = {
   Community: 'Community',
   Around: 'Around',
 };
+
+export const SCAN_BUTTON_SIZE = {
+  width: 64,
+  height: 64,
+};

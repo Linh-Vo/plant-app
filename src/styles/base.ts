@@ -64,4 +64,20 @@ export const TextStyle = StyleSheet.create({
     lineHeight: 20,
     color: theme.color.dark,
   },
+  headerText: {
+    fontFamily: theme.font.family,
+    fontStyle: 'normal',
+    fontWeight: '700',
+    fontSize: theme.font.xxxxxlarge,
+    lineHeight: 40,
+    color: theme.color.white,
+  },
+});
+
+export const Container = StyleSheet.create({
+  base: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

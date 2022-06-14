@@ -17,11 +17,13 @@ const App = () => {
     backgroundColor: '#F9F6F0',
     flex: 1,
   };
+  // const isDarkMode = useColorScheme() === 'dark';
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
+        backgroundColor={'transparent'}
         translucent
-        // barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        barStyle={'light-content'}
       />
       <Navigation />
     </SafeAreaView>
