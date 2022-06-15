@@ -33,44 +33,45 @@ export const center = {
 
 export const TextStyle = StyleSheet.create({
   baseText: {
-    fontFamily: theme.font.family,
+    fontFamily: theme.font.familyBold,
     fontStyle: 'normal',
-    fontWeight: '700',
     fontSize: theme.font.xssmall,
     lineHeight: 15,
     color: theme.color.dark,
   },
   titleText: {
-    fontFamily: theme.font.family,
+    fontFamily: theme.font.familySemiBold,
     fontStyle: 'normal',
-    fontWeight: '600',
     fontSize: theme.font.medium,
     lineHeight: 20,
     color: theme.color.dark,
   },
   h4Text: {
-    fontFamily: theme.font.family,
+    fontFamily: theme.font.familyBold,
     fontStyle: 'normal',
-    fontWeight: '700',
     fontSize: theme.font.xlarge,
     lineHeight: 28,
     color: theme.color.dark,
   },
   bodyText: {
-    fontFamily: theme.font.family,
+    fontFamily: theme.font.familyMedium,
     fontStyle: 'normal',
-    fontWeight: '500',
     fontSize: theme.font.medium,
     lineHeight: 20,
     color: theme.color.dark,
   },
   headerText: {
-    fontFamily: theme.font.family,
+    fontFamily: theme.font.familyExtraBold,
     fontStyle: 'normal',
-    fontWeight: '700',
     fontSize: theme.font.xxxxxlarge,
     lineHeight: 40,
     color: theme.color.white,
+    textShadowColor: 'rgba(0, 0, 0, 0.25)',
+    textShadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    textShadowRadius: 4,
   },
 });
 

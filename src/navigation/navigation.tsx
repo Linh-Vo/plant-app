@@ -57,14 +57,14 @@ function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
     width: SCAN_BUTTON_SIZE.width,
     height: SCAN_BUTTON_SIZE.height,
     position: 'absolute',
-    bottom: 42,
+    bottom: 38,
     left: windowWidth / 2 - SCAN_BUTTON_SIZE.width / 2,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: SCAN_BUTTON_SIZE.height / 2,
     backgroundColor: theme.color.primary,
   };
-  console.log(getPath(windowWidth, 66));
+  console.log(getPath(windowWidth, 80));
   return (
     <View style={styles.transparentTab}>
       <Svg width={windowWidth} height="66" fill="none">
