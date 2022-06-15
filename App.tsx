@@ -14,7 +14,6 @@ import {Navigation} from './src/navigation/navigation';
 
 const App = () => {
   const backgroundStyle = {
-    backgroundColor: '#F9F6F0',
     flex: 1,
   };
   // const isDarkMode = useColorScheme() === 'dark';

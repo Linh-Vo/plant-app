@@ -3,14 +3,17 @@ import {
   View,
   TouchableOpacity,
   Text,
-  Dimensions,
   StyleProp,
   ViewStyle,
   StyleSheet,
   Animated,
 } from 'react-native';
 import Svg, {Path} from 'react-native-svg';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  DefaultTheme,
+  NavigationContainer,
+  Theme,
+} from '@react-navigation/native';
 import {
   BottomTabBarProps,
   createBottomTabNavigator,
@@ -19,10 +22,8 @@ import {CollectionScreen, HomeScreen, ScanScreen} from '../screens';
 import {TabIcon} from '../components/icons';
 import {SCREEN_NAME, SCAN_BUTTON_SIZE} from '../utils/constants';
 import {getPath} from '../utils/helper';
-import {Container, TextStyle} from '../styles/base';
+import {dimensions, TextStyle} from '../styles/base';
 import {theme} from '../theme/theme';
-
-const windowWidth = Dimensions.get('window').width;
 
 // const TabButton = props => {
 //   const {item, onPress, accessibilityState} = props;
@@ -58,17 +59,16 @@ function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
     height: SCAN_BUTTON_SIZE.height,
     position: 'absolute',
     bottom: 38,
-    left: windowWidth / 2 - SCAN_BUTTON_SIZE.width / 2,
+    left: dimensions.fullWidth / 2 - SCAN_BUTTON_SIZE.width / 2,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: SCAN_BUTTON_SIZE.height / 2,
     backgroundColor: theme.color.primary,
   };
-  console.log(getPath(windowWidth, 80));
   return (
     <View style={styles.transparentTab}>
-      <Svg width={windowWidth} height="66" fill="none">
-        <Path d={getPath(windowWidth, 66)} fill="white" />
+      <Svg width={dimensions.fullWidth} height="66" fill="none">
+        <Path d={getPath(dimensions.fullWidth, 66)} fill="white" />
       </Svg>
       <View style={styles.containerRoute}>
         {state.routes.map((route, index) => {
@@ -141,8 +141,15 @@ function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
   );
 }
 const Tab = createBottomTabNavigator();
+const NavigationTheme: Theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: theme.color.background,
+  },
+};
 export const Navigation = () => (
-  <NavigationContainer>
+  <NavigationContainer theme={NavigationTheme}>
     <Tab.Navigator
       tabBar={props => <TabBar {...props} />}
       screenOptions={{
