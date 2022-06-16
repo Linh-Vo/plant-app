@@ -14,3 +14,49 @@ export const getPath = (
     halfWidth - curvedButtonSize
   } 0 H0Z`;
 };
+
+import * as ImagePicker from 'react-native-image-picker';
+export const openCamera = () => {
+  let options = {
+    storageOptions: {
+      skipBackup: true,
+      path: 'images',
+    },
+    mediaType: 'photo',
+  };
+  ImagePicker.launchCamera(options, res => {
+    console.log('Response = ', res);
+    if (res.didCancel) {
+      console.log('User cancelled image picker');
+    } else if (res.error) {
+      console.log('ImagePicker Error: ', res.error);
+    } else if (res.customButton) {
+      console.log('User tapped custom button: ', res.customButton);
+    } else {
+      const source = {uri: res.uri};
+      console.log('response', JSON.stringify(res));
+    }
+  });
+};
+
+export const imageGalleryLaunch = () => {
+  let options = {
+    storageOptions: {
+      skipBackup: true,
+      path: 'images',
+    },
+  };
+  ImagePicker.launchImageLibrary(options, res => {
+    console.log('Response = ', res);
+    if (res.didCancel) {
+      console.log('User cancelled image picker');
+    } else if (res.error) {
+      console.log('ImagePicker Error: ', res.error);
+    } else if (res.customButton) {
+      console.log('User tapped custom button: ', res.customButton);
+    } else {
+      const source = {uri: res.uri};
+      console.log('response', JSON.stringify(res));
+    }
+  });
+};

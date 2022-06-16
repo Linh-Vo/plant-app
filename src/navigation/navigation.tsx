@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -13,6 +13,7 @@ import {
   DefaultTheme,
   NavigationContainer,
   Theme,
+  useIsFocused,
 } from '@react-navigation/native';
 import {
   BottomTabBarProps,
@@ -21,9 +22,12 @@ import {
 import {CollectionScreen, HomeScreen, ScanScreen} from '../screens';
 import {TabIcon} from '../components/icons';
 import {SCREEN_NAME, SCAN_BUTTON_SIZE} from '../utils/constants';
-import {getPath} from '../utils/helper';
+import {getPath, openCamera} from '../utils/helper';
 import {dimensions, TextStyle} from '../styles/base';
 import {theme} from '../theme/theme';
+import {CameraPage} from '../components/camera/CameraPage';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {CameraStackScreen} from './camera';
 
 // const TabButton = props => {
 //   const {item, onPress, accessibilityState} = props;
@@ -65,79 +69,91 @@ function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
     borderRadius: SCAN_BUTTON_SIZE.height / 2,
     backgroundColor: theme.color.primary,
   };
+  const [needHiden, setHiden] = useState(false);
+  console.log(needHiden, navigation.getState().index);
   return (
-    <View style={styles.transparentTab}>
-      <Svg width={dimensions.fullWidth} height="66" fill="none">
-        <Path d={getPath(dimensions.fullWidth, 66)} fill="white" />
-      </Svg>
-      <View style={styles.containerRoute}>
-        {state.routes.map((route, index) => {
-          const {options} = descriptors[route.key];
-          const label =
-            options.tabBarLabel !== undefined
-              ? options.tabBarLabel
-              : options.title !== undefined
-              ? options.title
-              : route.name;
+    navigation.getState().index !== 2 && (
+      <View style={styles.transparentTab}>
+        <Svg width={dimensions.fullWidth} height="66" fill="none">
+          <Path d={getPath(dimensions.fullWidth, 66)} fill="white" />
+        </Svg>
+        <View style={styles.containerRoute}>
+          {state.routes.map((route, index) => {
+            const {options} = descriptors[route.key];
+            const label =
+              options.tabBarLabel !== undefined
+                ? options.tabBarLabel
+                : options.title !== undefined
+                ? options.title
+                : route.name;
+            const isFocused = state.index === index;
 
-          const isFocused = state.index === index;
+            const onPress = () => {
+              // if (label === SCREEN_NAME.Scan) {
+              //   return navigation.reset('Scan-Stacl');
+              // }
+              const event = navigation.emit({
+                type: 'tabPress',
+                target: route.key,
+                canPreventDefault: true,
+              });
+              if (!isFocused && !event.defaultPrevented) {
+                // The `merge: true` option makes sure that the params inside the tab screen are preserved
+                navigation.navigate({name: route.name, merge: true} as any);
+              }
+              if (label === SCREEN_NAME.Scan) {
+                // setHiden(true);
+              }
+            };
 
-          const onPress = () => {
-            const event = navigation.emit({
-              type: 'tabPress',
-              target: route.key,
-              canPreventDefault: true,
-            });
-            if (!isFocused && !event.defaultPrevented) {
-              // The `merge: true` option makes sure that the params inside the tab screen are preserved
-              navigation.navigate({name: route.name, merge: true} as any);
-            }
-          };
-
-          const onLongPress = () => {
-            navigation.emit({
-              type: 'tabLongPress',
-              target: route.key,
-            });
-          };
-          const routeStyle: StyleProp<ViewStyle> = {
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-            // paddingHorizontal: 16,
-            marginRight: label === SCREEN_NAME.Collection ? 16 : 0,
-            marginLeft: label === SCREEN_NAME.Community ? 16 : 0,
-            flex: 1,
-          };
-          return (
-            <TouchableOpacity
-              key={route.name}
-              accessibilityRole="button"
-              accessibilityState={isFocused ? {selected: true} : {}}
-              accessibilityLabel={options.tabBarAccessibilityLabel}
-              testID={options.tabBarTestID}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              style={
-                label !== SCREEN_NAME.Scan
-                  ? {...routeStyle}
-                  : {...scanButtonStyle}
-              }>
-              <TabIcon name={label as string} isFocused={isFocused} />
-              {label !== SCREEN_NAME.Scan && (
-                <Text
-                  // eslint-disable-next-line react-native/no-inline-styles
-                  style={{
-                    ...TextStyle.baseText,
-                    color: isFocused ? '#678F58' : '#222',
-                  }}>
-                  {label}
-                </Text>
-              )}
-            </TouchableOpacity>
-          );
-        })}
+            const onLongPress = () => {
+              // if (label === SCREEN_NAME.Scan) {
+              //   return openCamera();
+              // }
+              navigation.emit({
+                type: 'tabLongPress',
+                target: route.key,
+              });
+            };
+            const routeStyle: StyleProp<ViewStyle> = {
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              // paddingHorizontal: 16,
+              marginRight: label === SCREEN_NAME.Collection ? 16 : 0,
+              marginLeft: label === SCREEN_NAME.Community ? 16 : 0,
+              flex: 1,
+            };
+            return (
+              <TouchableOpacity
+                key={route.name}
+                accessibilityRole="button"
+                accessibilityState={isFocused ? {selected: true} : {}}
+                accessibilityLabel={options.tabBarAccessibilityLabel}
+                testID={options.tabBarTestID}
+                onPress={onPress}
+                onLongPress={onLongPress}
+                style={
+                  label !== SCREEN_NAME.Scan
+                    ? {...routeStyle}
+                    : {...scanButtonStyle}
+                }>
+                <TabIcon name={label as string} isFocused={isFocused} />
+                {label !== SCREEN_NAME.Scan && (
+                  <Text
+                    // eslint-disable-next-line react-native/no-inline-styles
+                    style={{
+                      ...TextStyle.baseText,
+                      color: isFocused ? '#678F58' : '#222',
+                    }}>
+                    {label}
+                  </Text>
+                )}
+              </TouchableOpacity>
+            );
+          })}
+        </View>
       </View>
-    </View>
+    )
   );
 }
 const Tab = createBottomTabNavigator();
@@ -148,9 +164,30 @@ const NavigationTheme: Theme = {
     background: theme.color.background,
   },
 };
+
+export const HomeStackScreen = () => (
+  <Tab.Navigator
+    tabBar={props => <TabBar {...props} />}
+    screenOptions={{
+      headerShown: false,
+      tabBarStyle: {
+        backgroundColor: 'transparent',
+        position: 'absolute',
+        borderTopWidth: 0,
+        elevation: 0,
+      },
+    }}>
+    <Tab.Screen name={SCREEN_NAME.Home} component={HomeScreen} />
+    <Tab.Screen name={SCREEN_NAME.Collection} component={CollectionScreen} />
+    <Tab.Screen name={SCREEN_NAME.Scan} component={CameraStackScreen} />
+    <Tab.Screen name={SCREEN_NAME.Community} component={CollectionScreen} />
+    <Tab.Screen name={SCREEN_NAME.Around} component={CollectionScreen} />
+  </Tab.Navigator>
+);
+const Stack = createNativeStackNavigator();
 export const Navigation = () => (
   <NavigationContainer theme={NavigationTheme}>
-    <Tab.Navigator
+    {/* <Tab.Navigator
       tabBar={props => <TabBar {...props} />}
       screenOptions={{
         headerShown: false,
@@ -160,13 +197,17 @@ export const Navigation = () => (
           borderTopWidth: 0,
           elevation: 0,
         },
-      }}>
+      }}
+      backBehavior={'history'}
+      detachInactiveScreens
+      initialRouteName="Home">
       <Tab.Screen name={SCREEN_NAME.Home} component={HomeScreen} />
       <Tab.Screen name={SCREEN_NAME.Collection} component={CollectionScreen} />
-      <Tab.Screen name={SCREEN_NAME.Scan} component={ScanScreen} />
-      <Tab.Screen name={SCREEN_NAME.Community} component={ScanScreen} />
-      <Tab.Screen name={SCREEN_NAME.Around} component={ScanScreen} />
-    </Tab.Navigator>
+      <Tab.Screen name={SCREEN_NAME.Scan} component={CameraStackScreen} />
+      <Tab.Screen name={SCREEN_NAME.Community} component={CollectionScreen} />
+      <Tab.Screen name={SCREEN_NAME.Around} component={CollectionScreen} />
+    </Tab.Navigator> */}
+    {HomeStackScreen()}
   </NavigationContainer>
 );
 

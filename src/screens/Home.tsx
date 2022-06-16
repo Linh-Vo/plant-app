@@ -11,8 +11,12 @@ import {Translations} from '../i18n';
 import {SCREEN_NAME} from '../utils/constants';
 import {Block} from '../components/Block';
 import {theme} from '../theme/theme';
+import {imageGalleryLaunch, openCamera} from '../utils/helper';
 export const HomeScreen = ({navigation}) => {
   const navigate = (screen: string) => () => {
+    if (screen === SCREEN_NAME.Scan) {
+      return imageGalleryLaunch();
+    }
     navigation.navigate(screen);
   };
   return (
@@ -24,6 +28,9 @@ export const HomeScreen = ({navigation}) => {
         <View style={styles.container}>
           <Text style={[TextStyle.headerText, styles.text]}>
             {Translations.homeTitle}
+          </Text>
+          <Text style={[TextStyle.headerText, styles.text]}>
+            {Translations.homeTile1}
           </Text>
           <View style={styles.blockContainer}>
             {Array.from([

@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import {SafeAreaView, StatusBar} from 'react-native';
+import {Platform, SafeAreaView, StatusBar} from 'react-native';
 import {Navigation} from './src/navigation/navigation';
 
 const App = () => {
@@ -18,14 +18,17 @@ const App = () => {
   };
   // const isDarkMode = useColorScheme() === 'dark';
   return (
-    <SafeAreaView style={backgroundStyle}>
+    // <SafeAreaView style={backgroundStyle}>
+    <>
       <StatusBar
         backgroundColor={'transparent'}
         translucent
+        // hidden={Platform.OS === 'ios'}
         barStyle={'light-content'}
       />
       <Navigation />
-    </SafeAreaView>
+    </>
+    // </SafeAreaView>
   );
 };
 

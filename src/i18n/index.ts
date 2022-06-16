@@ -1,3 +1,4 @@
 export const Translations = {
-  homeTitle: 'Hello, Plant lover! Have a good day',
+  homeTitle: 'Hello, Plant lover!',
+  homeTile1: 'Have a good day',
 };
