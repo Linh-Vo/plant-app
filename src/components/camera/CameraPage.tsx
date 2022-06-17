@@ -217,9 +217,9 @@ export function CameraPage({navigation}): React.ReactElement {
     setIsCameraInitialized(true);
   }, []);
   const onMediaCaptured = useCallback(
-    (media: PhotoFile | VideoFile, type: 'photo' | 'video') => {
+    (media: PhotoFile, type: 'capture' | 'gallery') => {
       console.log(`Media captured! ${JSON.stringify(media)}`);
-      navigation.navigate(SCREEN_NAME.Collection, {
+      navigation.navigate('Camera-Image', {
         path: media.path,
         type: type,
       });
@@ -346,7 +346,16 @@ export function CameraPage({navigation}): React.ReactElement {
         </PinchGestureHandler>
       )}
       <TouchableOpacity
-        onPress={() => navigation.goBack()}
+        onPress={() =>
+          navigation.reset({
+            index: 0,
+            routes: [
+              {
+                name: 'Home-Stack',
+              },
+            ],
+          })
+        }
         style={styles.closeButton}>
         <Svg width="44" height="44" viewBox="0 0 44 44" fill="none">
           <Path
@@ -362,7 +371,7 @@ export function CameraPage({navigation}): React.ReactElement {
       </TouchableOpacity>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={imageGalleryLaunch}
+          onPress={imageGalleryLaunch(onMediaCaptured)}
           style={styles.galleryButton}>
           <Image source={require('../../assets/images/gallery-bg.png')} />
         </TouchableOpacity>
@@ -371,12 +380,12 @@ export function CameraPage({navigation}): React.ReactElement {
           onPress={async () => {
             const photo = await camera.current?.takePhoto({
               photoCodec: 'jpeg',
-              qualityPrioritization: 'speed',
+              // qualityPrioritization: 'speed',
               flash: flash,
-              quality: 90,
+              quality: 60,
               skipMetadata: true,
             });
-            onMediaCaptured(photo, 'photo');
+            onMediaCaptured(photo, 'capture');
           }}
         />
         {/* <CaptureButton

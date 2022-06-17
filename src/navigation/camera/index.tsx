@@ -6,6 +6,10 @@ import {Camera, CameraPermissionStatus} from 'react-native-vision-camera';
 import {Linking} from 'react-native';
 import {SCREEN_NAME} from '../../utils/constants';
 import {HomeStackScreen} from '../../navigation/navigation';
+import {CameraImage} from '../../components/camera/CameraImage';
+import {DetectResult} from '../../components/camera/DetectResult';
+import {DetectError} from '../../components/camera/DetectError';
+import {PlantDetail} from '../../components/camera/PlantDetail';
 
 const CameraStack = createNativeStackNavigator();
 export const CameraStackScreen = ({navigation}) => {
@@ -37,7 +41,10 @@ export const CameraStackScreen = ({navigation}) => {
       // }
       initialRouteName={'Camera'}>
       <CameraStack.Screen name="Camera" component={CameraPage} />
-      <CameraStack.Screen name="Permisson" component={PermissionsPage} />
+      <CameraStack.Screen name="Camera-Image" component={CameraImage} />
+      <CameraStack.Screen name="Camera-Error" component={DetectError} />
+      <CameraStack.Screen name="Camera-Result" component={DetectResult} />
+      <CameraStack.Screen name="Plant-Detail" component={PlantDetail} />
       <CameraStack.Screen name={'Home-Stack'} component={HomeStackScreen} />
     </CameraStack.Navigator>
   );

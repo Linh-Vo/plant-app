@@ -15,6 +15,7 @@ export const getPath = (
   } 0 H0Z`;
 };
 
+import {Platform} from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 export const openCamera = () => {
   let options = {
@@ -39,7 +40,7 @@ export const openCamera = () => {
   });
 };
 
-export const imageGalleryLaunch = () => {
+export const imageGalleryLaunch = handleResponse => () => {
   let options = {
     storageOptions: {
       skipBackup: true,
@@ -47,16 +48,21 @@ export const imageGalleryLaunch = () => {
     },
   };
   ImagePicker.launchImageLibrary(options, res => {
-    console.log('Response = ', res);
-    if (res.didCancel) {
-      console.log('User cancelled image picker');
-    } else if (res.error) {
-      console.log('ImagePicker Error: ', res.error);
-    } else if (res.customButton) {
-      console.log('User tapped custom button: ', res.customButton);
-    } else {
-      const source = {uri: res.uri};
-      console.log('response', JSON.stringify(res));
+    if (res.assets?.length) {
+      const source = {path: res.assets[0]?.uri};
+      const image = (res?.assets && res.assets[0]) || undefined;
+      const datas = new FormData();
+
+      datas.append('images', {
+        name: image?.fileName,
+        type: image?.type,
+        uri:
+          Platform.OS === 'android'
+            ? image?.uri
+            : image?.uri?.replace('file://', ''),
+      });
+      console.log('FORMDATA', JSON.stringify(datas));
+      handleResponse(source, 'gallery');
     }
   });
 };
