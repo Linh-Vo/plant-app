@@ -14,12 +14,13 @@ export const theme = {
     stroke: 'rgba(34, 34, 34, 0.1)',
   },
   border: {
-    primary: '#A9A9A9',
+    primary: 'rgba(34, 34, 34, 0.1)',
     secondary: '#EBEBEB',
   },
   spacing: {
     half: 4,
     base: 8,
+    medium: 12,
     double: 16,
     triple: 24,
     quadruple: 32,
@@ -41,8 +42,9 @@ export const theme = {
   },
   radius: {
     small: 10,
+    xMedium: 12,
     medium: 24,
-    large: 30,
+    large: 32,
   },
   font: {
     family: 'Nunito',

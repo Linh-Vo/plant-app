@@ -1120,7 +1120,7 @@ export const CameraImage = ({route, navigation}) => {
     //   setDeteting(false);
     // }, 5000);
     axios
-      .post('http://192.168.1.4:8000/identify', data, {
+      .post('http://192.168.1.3:8000/identify', data, {
         headers: {
           // Accept: 'application/json',
           'Content-Type': 'multipart/form-data',

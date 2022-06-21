@@ -28,6 +28,9 @@ import {theme} from '../theme/theme';
 import {CameraPage} from '../components/camera/CameraPage';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {CameraStackScreen} from './camera';
+import {CollectionStackScreen} from './collection';
+import {AroundScreen} from '../screens/Around';
+import {CommunityScreen} from '../screens/Community';
 
 // const TabButton = props => {
 //   const {item, onPress, accessibilityState} = props;
@@ -69,8 +72,7 @@ function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
     borderRadius: SCAN_BUTTON_SIZE.height / 2,
     backgroundColor: theme.color.primary,
   };
-  const [needHiden, setHiden] = useState(false);
-  console.log(needHiden, navigation.getState().index);
+  console.log(navigation.getState().routeNames, navigation.getId());
   return (
     navigation.getState().index !== 2 && (
       <View style={styles.transparentTab}>
@@ -178,10 +180,16 @@ export const HomeStackScreen = () => (
       },
     }}>
     <Tab.Screen name={SCREEN_NAME.Home} component={HomeScreen} />
-    <Tab.Screen name={SCREEN_NAME.Collection} component={CollectionScreen} />
+    <Tab.Screen
+      options={{
+        title: SCREEN_NAME.Collection,
+      }}
+      name={SCREEN_NAME.Collection}
+      component={CollectionScreen}
+    />
     <Tab.Screen name={SCREEN_NAME.Scan} component={CameraStackScreen} />
-    <Tab.Screen name={SCREEN_NAME.Community} component={CollectionScreen} />
-    <Tab.Screen name={SCREEN_NAME.Around} component={CollectionScreen} />
+    <Tab.Screen name={SCREEN_NAME.Community} component={CommunityScreen} />
+    <Tab.Screen name={SCREEN_NAME.Around} component={AroundScreen} />
   </Tab.Navigator>
 );
 const Stack = createNativeStackNavigator();
@@ -207,7 +215,13 @@ export const Navigation = () => (
       <Tab.Screen name={SCREEN_NAME.Community} component={CollectionScreen} />
       <Tab.Screen name={SCREEN_NAME.Around} component={CollectionScreen} />
     </Tab.Navigator> */}
-    {HomeStackScreen()}
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <Stack.Screen name="Home-Stack" component={HomeStackScreen} />
+      <Stack.Screen name="Collection-Stack" component={CollectionStackScreen} />
+    </Stack.Navigator>
   </NavigationContainer>
 );
 
