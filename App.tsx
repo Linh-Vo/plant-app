@@ -9,17 +9,14 @@
  */
 
 import React from 'react';
-import {Platform, SafeAreaView, StatusBar} from 'react-native';
+import {StatusBar} from 'react-native';
+import {Provider} from 'react-redux';
 import {Navigation} from './src/navigation/navigation';
+import {store} from './src/store/store';
 
 const App = () => {
-  const backgroundStyle = {
-    flex: 1,
-  };
-  // const isDarkMode = useColorScheme() === 'dark';
   return (
-    // <SafeAreaView style={backgroundStyle}>
-    <>
+    <Provider store={store}>
       <StatusBar
         backgroundColor={'transparent'}
         translucent
@@ -27,8 +24,7 @@ const App = () => {
         barStyle={'light-content'}
       />
       <Navigation />
-    </>
-    // </SafeAreaView>
+    </Provider>
   );
 };
 

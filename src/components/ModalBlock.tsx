@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
 import Modal from 'react-native-modal';
 import Svg, {Path} from 'react-native-svg';
@@ -11,8 +11,10 @@ interface ModalBlockProps {
   onBackdropPress: () => void;
   title: string;
   isDeleteModal?: boolean;
+  extraAction: any;
 }
 export default function ModalBlock(props: ModalBlockProps) {
+  const [collectionName, setName] = useState('');
   return (
     <View style={styles.container}>
       <Modal
@@ -48,20 +50,21 @@ export default function ModalBlock(props: ModalBlockProps) {
               </Text>
               <Button
                 textStyle={{color: theme.color.white}}
-                onPress={() => {}}
+                onPress={props.extraAction}
                 text="Confirm"
               />
             </>
           ) : (
             <>
               <TextInput
+                onChangeText={text => setName(text)}
                 placeholderTextColor={'#22222299'}
                 style={styles.input}
                 placeholder="Name your collection"
               />
               <Button
                 textStyle={{color: theme.color.white}}
-                onPress={() => {}}
+                onPress={props.extraAction(collectionName)}
                 text="Save"
               />
             </>

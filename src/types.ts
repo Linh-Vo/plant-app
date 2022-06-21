@@ -30,8 +30,14 @@ export interface PlantImage {
     m: string;
   };
 }
+
+export interface PlantWikiInfo {
+  introduction?: string;
+  description?: string[];
+}
 export interface PlantResult {
   score: string;
   species: Species;
   images: PlantImage[];
+  wikiInfo?: PlantWikiInfo;
 }

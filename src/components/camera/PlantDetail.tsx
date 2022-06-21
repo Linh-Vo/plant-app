@@ -1,8 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useState} from 'react';
 import {
-  Image,
-  ImageBackground,
   Linking,
   ScrollView,
   StyleSheet,
@@ -18,10 +16,11 @@ import Svg, {Path} from 'react-native-svg';
 import {SAFE_AREA_PADDING} from '../../utils/constants';
 import FastImage from 'react-native-fast-image';
 import {CollectionModal} from './CollectionModal';
+import {PlantImage, PlantWikiInfo} from '../../types';
 
 export const PlantDetail = ({route, navigation}) => {
   const {plant, hideCollection} = route?.params;
-  const [wikiInfo, setInfo] = useState(null);
+  const [wikiInfo, setInfo] = useState<PlantWikiInfo | null>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     axios
@@ -93,7 +92,7 @@ export const PlantDetail = ({route, navigation}) => {
             </View>
           ) : null}
 
-          {wikiInfo?.description || wikiInfo?.intro ? (
+          {wikiInfo?.description || wikiInfo?.introduction ? (
             <View style={{marginTop: theme.spacing.triple}}>
               <Text style={{...TextStyle.bodyText, opacity: 0.6}}>
                 {'Description'}
@@ -105,7 +104,7 @@ export const PlantDetail = ({route, navigation}) => {
                 }}>
                 {(wikiInfo?.description?.length &&
                   wikiInfo?.description?.join()) ||
-                  wikiInfo?.intro}
+                  wikiInfo?.introduction}
               </Text>
               <Text
                 style={{
@@ -130,7 +129,7 @@ export const PlantDetail = ({route, navigation}) => {
               style={styles.imageContainer}
               horizontal
               showsHorizontalScrollIndicator={false}>
-              {plant.images.map((image, idx) => (
+              {plant.images.map((image: PlantImage, idx: number) => (
                 <FastImage
                   style={styles.image}
                   key={idx}

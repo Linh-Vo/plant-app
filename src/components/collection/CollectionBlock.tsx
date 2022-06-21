@@ -23,7 +23,10 @@ export const CollectionBlock = ({collection, onPress}) => {
         </Svg>
         <TouchableOpacity onPress={onPress} style={styles.textView}>
           <Text style={{...TextStyle.titleText}}>{`${collection?.name}`}</Text>
-          <Text style={styles.blurText}>{`${collection?.count} plants`}</Text>
+          <Text
+            style={
+              styles.blurText
+            }>{`${collection?.plants?.length} plants`}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
