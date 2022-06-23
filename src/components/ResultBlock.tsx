@@ -36,8 +36,8 @@ export const ResultBlock = (props: DetectResultProps) => {
             {`${(Number(props.plant.score) * 100).toFixed(2)}% matched`}
           </Text>
         )}
-        <Text style={TextStyle.titleText}>
-          {props.plant.species.scientificName}
+        <Text numberOfLines={1} style={TextStyle.titleText}>
+          {props.plant.species.scientificNameWithoutAuthor}
         </Text>
       </TouchableOpacity>
       <ScrollView

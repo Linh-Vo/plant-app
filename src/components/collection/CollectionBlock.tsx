@@ -22,7 +22,9 @@ export const CollectionBlock = ({collection, onPress}) => {
           />
         </Svg>
         <TouchableOpacity onPress={onPress} style={styles.textView}>
-          <Text style={{...TextStyle.titleText}}>{`${collection?.name}`}</Text>
+          <Text
+            numberOfLines={1}
+            style={{...TextStyle.titleText}}>{`${collection?.name}`}</Text>
           <Text
             style={
               styles.blurText
@@ -40,7 +42,7 @@ export const CollectionBlock = ({collection, onPress}) => {
         </TouchableOpacity>
       </View>
       <MenuModal
-        name={collection?.name}
+        collection={collection}
         isVisible={menuVisible}
         backDropPress={() => setMenuVisible(false)}
       />
@@ -66,5 +68,8 @@ const styles = StyleSheet.create({
     ...TextStyle.bodyText,
     opacity: 0.6,
   },
-  buttonView: {width: theme.spacing.double, alignItems: 'flex-end'},
+  buttonView: {
+    width: theme.spacing.triple,
+    alignItems: 'flex-end',
+  },
 });

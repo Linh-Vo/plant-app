@@ -12,15 +12,22 @@ import {Container, TextStyle} from '../../styles/base';
 import {theme} from '../../theme/theme';
 import {SAFE_AREA_PADDING} from '../../utils/constants';
 import {ResultBlock} from '../../components/ResultBlock';
+import {useAppSelector} from '../../hooks/redux';
+import {selectCollections} from '../../store/slices/collection';
 
 export const Garden = ({route, navigation}) => {
   console.log(route);
-  const {plants} = route?.params;
+  const {collectionId} = route?.params;
+  const collections = useAppSelector(selectCollections);
+  const currentCollection = collections.find(e => e.id === collectionId);
+  const plants = currentCollection?.plants || [];
+  console.log({plants: plants.length});
   return (
     <View style={styles.container}>
       <View style={styles.textView}>
         <View style={styles.titleView}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('My collection')}>
             <Svg width="32" height="32" viewBox="0 0 32 32" fill="none">
               <Path
                 opacity="0.2"
@@ -33,15 +40,17 @@ export const Garden = ({route, navigation}) => {
               />
             </Svg>
           </TouchableOpacity>
-          <Text style={styles.text}>{'My Garden'}</Text>
+          <Text numberOfLines={1} style={styles.text}>
+            {currentCollection?.name || ''}
+          </Text>
         </View>
-        <TouchableOpacity style={styles.buttonContainer}>
+        {/* <TouchableOpacity style={styles.buttonContainer}>
           <Svg width="26" height="6" viewBox="0 0 26 6" fill="none">
             <Circle cx="3" cy="3" r="3" fill="#D9D9D9" />
             <Circle cx="13" cy="3" r="3" fill="#D9D9D9" />
             <Circle cx="23" cy="3" r="3" fill="#D9D9D9" />
           </Svg>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       {plants?.length ? (
         <ScrollView showsVerticalScrollIndicator={false} horizontal={false}>
@@ -59,7 +68,7 @@ export const Garden = ({route, navigation}) => {
         </ScrollView>
       ) : (
         <View style={{...Container.center}}>
-          <Text>{'You have no plant'}</Text>
+          <Text style={TextStyle.h4Text}>{'You have no plant'}</Text>
         </View>
       )}
     </View>
@@ -68,6 +77,7 @@ export const Garden = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     marginTop: SAFE_AREA_PADDING.paddingTop,
     backgroundColor: theme.color.background,
     padding: theme.spacing.double,
@@ -75,6 +85,7 @@ const styles = StyleSheet.create({
   titleView: {
     flex: 1,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   textView: {
     flexDirection: 'row',

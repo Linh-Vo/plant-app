@@ -5,8 +5,7 @@ import {PlantResult} from '../../types';
 export interface CollectionState {
   id: string;
   name: string;
-  count?: number;
-  plants?: PlantResult[];
+  plants: PlantResult[];
 }
 
 const initialState: CollectionState[] = [];
@@ -23,33 +22,42 @@ export const collectionSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.push(action.payload);
+      const existCol = state.find(
+        e => e.id === action.payload.id || e.name === action.payload.name,
+      );
+      if (!existCol) {
+        state.unshift(action.payload);
+      }
     },
     addPlantToCollection: (
       state: CollectionState[],
       action: PayloadAction<{collectionId: string; plant: PlantResult}>,
     ) => {
-      state.map(col =>
+      state = state.map(col =>
         col.id === action.payload.collectionId
-          ? {...col, plants: col.plants.push(action.payload.plant)}
+          ? {...col, plants: [action.payload.plant, ...(col.plants || [])]}
           : col,
       );
+      return state;
     },
     renameCollection: (
       state: CollectionState[],
       action: PayloadAction<{collectionId: string; name: string}>,
     ) => {
-      state.map(col =>
+      state = state.map(col =>
         col.id === action.payload.collectionId
           ? {...col, name: action.payload.name}
           : col,
       );
+      return state;
     },
     deleteCollection: (
       state: CollectionState[],
       action: PayloadAction<{collectionId: string}>,
     ) => {
-      state.filter(col => col.id !== action.payload.collectionId);
+      console.log(action.payload.collectionId);
+      state = state.filter(col => col.id !== action.payload.collectionId);
+      return state;
     },
   },
 });

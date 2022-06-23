@@ -15,27 +15,34 @@ import ModalBlock from '../components/ModalBlock';
 import {useAppDispatch, useAppSelector} from '../hooks/redux';
 import {addCollection, selectCollections} from '../store/slices/collection';
 import {generateUniqSerial} from '../utils/helper';
+import {ErrorModal} from '../components/ErrorModal';
 
 export const CollectionScreen = ({navigation}) => {
   const collections = useAppSelector(selectCollections);
   const navigateToGarden = collection => () => {
     navigation.navigate('Collection-Stack', {
       screen: 'Garden',
-      params: {plants: collection?.plants},
+      params: {collectionId: collection?.id},
     });
   };
   const dispatch = useAppDispatch();
   const createCollection = (collectionName: string) => () => {
-    dispatch(
-      addCollection({
-        id: generateUniqSerial(),
-        name: collectionName,
-        plants: [],
-      }),
-    );
-    setVisible(false);
+    const existedCollection = collections.find(e => e.name === collectionName);
+    if (!existedCollection) {
+      dispatch(
+        addCollection({
+          id: generateUniqSerial(),
+          name: collectionName,
+          plants: [],
+        }),
+      );
+      setVisible(false);
+    } else {
+      setErrorVisible(true);
+    }
   };
   const [addModalVisible, setVisible] = useState(false);
+  const [errorVisible, setErrorVisible] = useState(false);
   return (
     <>
       <View style={styles.container}>
@@ -65,9 +72,17 @@ export const CollectionScreen = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
-        <ScrollView style={styles.collectionView}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={styles.collectionView}>
           {collections.map((collection, idx) => (
-            <View key={idx} style={styles.blockView}>
+            <View
+              key={idx}
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                ...styles.blockView,
+                marginBottom: idx === collections.length - 1 ? 106 : 0,
+              }}>
               <CollectionBlock
                 onPress={navigateToGarden(collection)}
                 key={idx}
@@ -81,8 +96,15 @@ export const CollectionScreen = ({navigation}) => {
         extraAction={createCollection}
         isVisible={addModalVisible}
         onBackdropPress={() => setVisible(false)}
-        title={'Create Collection'}
-      />
+        title={'Create Collection'}>
+        {errorVisible && (
+          <ErrorModal
+            isVisible={errorVisible}
+            backdropPress={() => setErrorVisible(false)}
+            message={'Collection name already existed!'}
+          />
+        )}
+      </ModalBlock>
     </>
   );
 };

@@ -22,20 +22,34 @@ import {
   addPlantToCollection,
 } from '../../store/slices/collection';
 import {generateUniqSerial} from '../../utils/helper';
+import {ErrorModal} from '../../components/ErrorModal';
 
-const ModalBody = ({backDropPress, collections}) => {
+const ModalBody = ({backDropPress, collections, plant}) => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const [isVisible, setVisible] = useState(false);
+  const [errorVisible, setErrorVisible] = useState(false);
   const createCollection = (collectionName: string) => () => {
-    dispatch(
-      addCollection({
-        id: generateUniqSerial(),
-        name: collectionName,
-        plants: [],
-      }),
+    const collectionId = generateUniqSerial();
+    const existedCollection = collections.find(
+      e => e.id === collectionId || e.name === collectionName,
     );
-    backDropPress();
+    if (!existedCollection) {
+      dispatch(
+        addCollection({
+          id: collectionId,
+          name: collectionName,
+          plants: [plant],
+        }),
+      );
+      navigation.navigate('Collection-Stack', {
+        screen: 'Garden',
+        params: {collectionId},
+      });
+      backDropPress();
+    } else {
+      setErrorVisible(true);
+    }
   };
   return (
     <>
@@ -55,9 +69,15 @@ const ModalBody = ({backDropPress, collections}) => {
                 key={idx}
                 onPress={() => {
                   backDropPress();
+                  dispatch(
+                    addPlantToCollection({
+                      collectionId: col?.id,
+                      plant,
+                    }),
+                  );
                   navigation.navigate('Collection-Stack', {
                     screen: 'Garden',
-                    params: {plants: col?.plants},
+                    params: {collectionId: col?.id},
                   });
                 }}
                 style={styles.button}>
@@ -107,35 +127,47 @@ const ModalBody = ({backDropPress, collections}) => {
         title={'Create Collection'}
         extraAction={createCollection}
         onBackdropPress={() => {
-          backDropPress();
+          setVisible(false);
         }}
-        isVisible={isVisible}
-      />
+        isVisible={isVisible}>
+        {errorVisible && (
+          <ErrorModal
+            isVisible={errorVisible}
+            backdropPress={() => setErrorVisible(false)}
+            message={'Collection name already existed!'}
+          />
+        )}
+      </ModalBlock>
     </>
   );
 };
 
-export const CollectionModal = ({isVisible, backDropPress}) => {
+export const CollectionModal = ({isVisible, backDropPress, plant}) => {
   const collections = useAppSelector(selectCollections);
-  console.log(collections);
   return (
-    <View style={styles.container}>
-      <Modal
-        isVisible={isVisible}
-        hasBackdrop={true}
-        style={styles.modal}
-        backdropColor={theme.color.dark}
-        backdropOpacity={0.8}
-        onBackdropPress={backDropPress}
-        animationIn={'fadeInLeft'}
-        animationOut={'fadeOutRight'}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.modalBody}>
-          <ModalBody collections={collections} backDropPress={backDropPress} />
-        </ScrollView>
-      </Modal>
-    </View>
+    <>
+      <View style={styles.container}>
+        <Modal
+          isVisible={isVisible}
+          hasBackdrop={true}
+          style={styles.modal}
+          backdropColor={theme.color.dark}
+          backdropOpacity={0.8}
+          onBackdropPress={backDropPress}
+          animationIn={'fadeInUp'}
+          animationOut={'fadeOutDown'}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={styles.modalBody}>
+            <ModalBody
+              plant={plant}
+              collections={collections}
+              backDropPress={backDropPress}
+            />
+          </ScrollView>
+        </Modal>
+      </View>
+    </>
   );
 };
 

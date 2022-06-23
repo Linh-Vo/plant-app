@@ -13,9 +13,41 @@ import {TextStyle} from '../../styles/base';
 import {theme} from '../../theme/theme';
 import {Button} from '../Button';
 import ModalBlock from '../ModalBlock';
+import {useAppDispatch, useAppSelector} from '../../hooks/redux';
+import {
+  deleteCollection,
+  renameCollection,
+  selectCollections,
+} from '../../store/slices/collection';
+import {ErrorModal} from '../../components/ErrorModal';
 
-const ModalBody = ({backDropPress, collectionName}) => {
+const ModalBody = ({backDropPress, collection}) => {
   const [isVisible, setVisible] = useState({visible: false, title: ''});
+  const [errorVisible, setErrorVisible] = useState(false);
+  const collections = useAppSelector(selectCollections);
+  const dispatch = useAppDispatch();
+  const removeCollection = () => () => {
+    dispatch(
+      deleteCollection({
+        collectionId: collection?.id,
+      }),
+    );
+    backDropPress();
+  };
+  const reNameCollection = (newName: string) => () => {
+    const existedCollection = collections.find(e => e.name === newName);
+    if (!existedCollection) {
+      dispatch(
+        renameCollection({
+          collectionId: collection?.id,
+          name: newName,
+        }),
+      );
+      backDropPress();
+    } else {
+      setErrorVisible(true);
+    }
+  };
   return (
     <>
       <View style={styles.modalBody}>
@@ -58,12 +90,25 @@ const ModalBody = ({backDropPress, collectionName}) => {
         onBackdropPress={() => {
           backDropPress();
         }}
-        isVisible={isVisible.visible}
-      />
+        extraAction={
+          isVisible.title === 'Delete Collection'
+            ? removeCollection
+            : reNameCollection
+        }
+        defaultColName={collection.name}
+        isVisible={isVisible.visible}>
+        {errorVisible && (
+          <ErrorModal
+            isVisible={errorVisible}
+            backdropPress={() => setErrorVisible(false)}
+            message={'Collection name already existed!'}
+          />
+        )}
+      </ModalBlock>
     </>
   );
 };
-export const MenuModal = ({isVisible, backDropPress, name}) => {
+export const MenuModal = ({isVisible, backDropPress, collection}) => {
   return (
     <>
       <View style={styles.container}>
@@ -77,7 +122,7 @@ export const MenuModal = ({isVisible, backDropPress, name}) => {
           animationIn={'fadeInLeft'}
           animationOut={'fadeOutDown'}>
           <View style={styles.modalBody}>
-            <ModalBody collectionName={name} backDropPress={backDropPress} />
+            <ModalBody collection={collection} backDropPress={backDropPress} />
           </View>
         </Modal>
       </View>
