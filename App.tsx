@@ -8,8 +8,8 @@
  * @format
  */
 
-import React, {useEffect} from 'react';
-import {BackHandler, StatusBar} from 'react-native';
+import React from 'react';
+import {StatusBar} from 'react-native';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Navigation} from './src/navigation/navigation';
@@ -17,16 +17,6 @@ import persistor, {store} from './src/store/store';
 import Toast from 'react-native-toast-message';
 
 const App = () => {
-  useEffect(() => {
-    const onBackPress = () => {
-      return false;
-    };
-
-    BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
-    return () =>
-      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-  }, []);
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

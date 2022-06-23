@@ -150,6 +150,7 @@ export const CollectionModal = ({isVisible, backDropPress, plant}) => {
         <Modal
           isVisible={isVisible}
           hasBackdrop={true}
+          statusBarTranslucent={true}
           style={styles.modal}
           backdropColor={theme.color.dark}
           backdropOpacity={0.8}

@@ -115,6 +115,7 @@ export const MenuModal = ({isVisible, backDropPress, collection}) => {
         <Modal
           isVisible={isVisible}
           hasBackdrop={true}
+          statusBarTranslucent
           style={styles.modal}
           backdropColor={theme.color.dark}
           backdropOpacity={0.8}

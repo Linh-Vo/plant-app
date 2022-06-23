@@ -21,6 +21,7 @@ export const ErrorModal = ({isVisible, message, backdropPress}) => {
         isVisible={isVisible}
         hasBackdrop={true}
         coverScreen={true}
+        statusBarTranslucent
         onBackdropPress={backdropPress}
         backdropColor={theme.color.dark}
         backdropOpacity={0.8}
