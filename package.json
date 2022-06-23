@@ -32,7 +32,7 @@
     "react-native-svg": "^12.3.0",
     "react-native-toast-message": "^2.1.5",
     "react-native-vector-icons": "^9.1.0",
-    "react-native-vision-camera": "2.10.0",
+    "react-native-vision-camera": "^2.13.5",
     "react-redux": "^8.0.2",
     "redux-persist": "^6.0.0",
     "redux-thunk": "^2.4.1"

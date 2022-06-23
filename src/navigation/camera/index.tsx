@@ -13,8 +13,8 @@ import {PlantDetail} from '../../components/camera/PlantDetail';
 
 const CameraStack = createNativeStackNavigator();
 export const CameraStackScreen = ({navigation}) => {
-  const [cameraPermissionStatus, setCameraPermissionStatus] =
-    useState<CameraPermissionStatus>('not-determined');
+  // const [cameraPermissionStatus, setCameraPermissionStatus] =
+  //   useState<CameraPermissionStatus>('not-determined');
   // useEffect(() => {
   //   // navigation.setOptions({tabBarStyle: {display: 'none'}});
   //   const requestCameraPermission = async () => {
@@ -34,6 +34,7 @@ export const CameraStackScreen = ({navigation}) => {
       screenOptions={{
         headerShown: false,
         // statusBarStyle: 'dark',
+        animation: 'simple_push',
         animationTypeForReplace: 'push',
       }}
       // initialRouteName={

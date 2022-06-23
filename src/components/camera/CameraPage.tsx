@@ -313,35 +313,35 @@ export function CameraPage({navigation}): React.ReactElement {
       {device != null && (
         <PinchGestureHandler onGestureEvent={onPinchGesture} enabled={isActive}>
           <Reanimated.View style={StyleSheet.absoluteFill}>
-            <TapGestureHandler onEnded={onDoubleTap} numberOfTaps={2}>
-              <ReanimatedCamera
-                ref={camera}
-                style={StyleSheet.absoluteFill}
-                device={device}
-                format={format}
-                // fps={fps}
-                // hdr={enableHdr}
-                // lowLightBoost={device.supportsLowLightBoost && enableNightMode}
-                isActive={isActive}
-                onInitialized={onInitialized}
-                onError={onError}
-                enableZoomGesture={false}
-                animatedProps={cameraAnimatedProps}
-                photo={true}
-                video={false}
-                audio={false}
-                // frameProcessor={
-                //   device.supportsParallelVideoProcessing
-                //     ? frameProcessor
-                //     : undefined
-                // }
-                orientation="portrait"
-                // frameProcessorFps={1}
-                // onFrameProcessorPerformanceSuggestionAvailable={
-                //   onFrameProcessorSuggestionAvailable
-                // }
-              />
-            </TapGestureHandler>
+            {/* <TapGestureHandler onEnded={onDoubleTap} numberOfTaps={2}> */}
+            <ReanimatedCamera
+              ref={camera}
+              style={StyleSheet.absoluteFill}
+              device={device}
+              format={format}
+              // fps={fps}
+              // hdr={enableHdr}
+              // lowLightBoost={device.supportsLowLightBoost && enableNightMode}
+              isActive={isActive}
+              onInitialized={onInitialized}
+              onError={onError}
+              enableZoomGesture={false}
+              animatedProps={cameraAnimatedProps}
+              photo={true}
+              video={false}
+              audio={false}
+              // frameProcessor={
+              //   device.supportsParallelVideoProcessing
+              //     ? frameProcessor
+              //     : undefined
+              // }
+              orientation="portrait"
+              // frameProcessorFps={1}
+              // onFrameProcessorPerformanceSuggestionAvailable={
+              //   onFrameProcessorSuggestionAvailable
+              // }
+            />
+            {/* </TapGestureHandler> */}
           </Reanimated.View>
         </PinchGestureHandler>
       )}
@@ -380,12 +380,16 @@ export function CameraPage({navigation}): React.ReactElement {
           onPress={async () => {
             const photo = await camera.current?.takePhoto({
               photoCodec: 'jpeg',
-              // qualityPrioritization: 'speed',
+              qualityPrioritization: 'balanced',
               flash: flash,
-              quality: 60,
+              quality: 90,
+              enableAutoDistortionCorrection: true,
+              enableAutoStabilization: true,
               skipMetadata: true,
             });
-            onMediaCaptured(photo, 'capture');
+            if (photo) {
+              onMediaCaptured(photo, 'capture');
+            }
           }}
         />
         {/* <CaptureButton

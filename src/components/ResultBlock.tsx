@@ -70,8 +70,8 @@ const styles = StyleSheet.create({
     //   height: 10,
     // },
     shadowOpacity: 0.1,
-    // shadowRadius: 20,
-    elevation: 5,
+    shadowRadius: 10,
+    elevation: 1,
   },
   imageContainer: {
     marginTop: theme.spacing.triple,
