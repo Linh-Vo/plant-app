@@ -51,13 +51,34 @@ export default function ModalBlock(props: ModalBlockProps) {
               {props.isDeleteModal ? (
                 <>
                   <Text style={styles.deleteText}>
-                    {'Are you sure you want to delete collection?'}
+                    {'Are you sure to delete this collection?'}
                   </Text>
-                  <Button
-                    textStyle={{color: theme.color.white}}
-                    onPress={props.extraAction()}
-                    text="Confirm"
-                  />
+                  <View
+                    // eslint-disable-next-line react-native/no-inline-styles
+                    style={{flexDirection: 'row', marginTop: 16}}>
+                    <Button
+                      // eslint-disable-next-line react-native/no-inline-styles
+                      buttonStyle={{
+                        flex: 1,
+                        marginRight: 8,
+                        borderWidth: 1,
+                        backgroundColor: theme.color.white,
+                      }}
+                      onPress={props.onBackdropPress}
+                      text="No"
+                    />
+                    <Button
+                      // eslint-disable-next-line react-native/no-inline-styles
+                      buttonStyle={{
+                        flex: 1,
+                        marginLeft: 8,
+                        backgroundColor: theme.color.danger,
+                      }}
+                      textStyle={{color: theme.color.white}}
+                      onPress={props.extraAction()}
+                      text="Yes"
+                    />
+                  </View>
                 </>
               ) : (
                 <>
@@ -98,10 +119,8 @@ const styles = StyleSheet.create({
   },
   deleteText: {
     ...TextStyle.bodyText,
-    paddingVertical: theme.spacing.double,
     textAlign: 'center',
-    fontSize: 20,
-    color: theme.color.danger,
+    paddingVertical: 16,
   },
   headerView: {flexDirection: 'row', justifyContent: 'space-between'},
   input: {

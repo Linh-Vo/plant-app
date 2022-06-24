@@ -120,7 +120,7 @@ export const MenuModal = ({isVisible, backDropPress, collection}) => {
           backdropColor={theme.color.dark}
           backdropOpacity={0.8}
           onBackdropPress={() => {}}
-          animationIn={'fadeInLeft'}
+          animationIn={'fadeInUp'}
           animationOut={'fadeOutDown'}>
           <View style={styles.modalBody}>
             <ModalBody collection={collection} backDropPress={backDropPress} />
