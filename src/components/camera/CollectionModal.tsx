@@ -158,6 +158,7 @@ export const CollectionModal = ({isVisible, backDropPress, plant}) => {
           animationIn={'fadeInUp'}
           animationOut={'fadeOutDown'}>
           <ScrollView
+            keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
             style={styles.modalBody}>
             <ModalBody

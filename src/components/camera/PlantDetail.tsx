@@ -43,6 +43,7 @@ export const PlantDetail = ({route, navigation}) => {
   return (
     <View style={{flex: 1, position: 'relative'}}>
       <Animated.ScrollView
+        keyboardShouldPersistTaps="handled"
         // renderToHardwareTextureAndroid
         onScroll={event => {
           const scrolling = event.nativeEvent.contentOffset.y;

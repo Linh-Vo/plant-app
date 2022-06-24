@@ -53,7 +53,10 @@ export const Garden = ({route, navigation}) => {
         </TouchableOpacity> */}
       </View>
       {plants?.length ? (
-        <ScrollView showsVerticalScrollIndicator={false} horizontal={false}>
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+          horizontal={false}>
           {plants?.map((res, idx) => (
             <ResultBlock
               hideCollection={true}

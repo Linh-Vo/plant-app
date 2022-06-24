@@ -73,6 +73,7 @@ export const CollectionScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <ScrollView
+          keyboardShouldPersistTaps={'handled'}
           showsVerticalScrollIndicator={false}
           style={styles.collectionView}>
           {collections.map((collection, idx) => (

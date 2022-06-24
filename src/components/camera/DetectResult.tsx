@@ -34,6 +34,7 @@ export const DetectResult = ({route, navigation}) => {
         </Svg>
       </TouchableOpacity>
       <ScrollView
+        keyboardShouldPersistTaps="handled"
         showsVerticalScrollIndicator={false}
         horizontal={false}
         style={styles.resultContainer}>

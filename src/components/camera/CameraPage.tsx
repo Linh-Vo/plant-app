@@ -383,8 +383,8 @@ export function CameraPage({navigation}): React.ReactElement {
               qualityPrioritization: 'balanced',
               flash: flash,
               quality: 90,
-              enableAutoDistortionCorrection: true,
-              enableAutoStabilization: true,
+              // enableAutoDistortionCorrection: true,
+              // enableAutoStabilization: true,
               skipMetadata: true,
             });
             if (photo) {
