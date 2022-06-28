@@ -33,7 +33,13 @@ export default function ModalBlock(props: ModalBlockProps) {
           {!props.children && (
             <View style={styles.modalBody}>
               <View style={styles.headerView}>
-                <Text style={TextStyle.titleText}>{props.title}</Text>
+                <Text
+                  style={{
+                    ...TextStyle.titleText,
+                    fontFamily: theme.font.familyBold,
+                  }}>
+                  {props.title}
+                </Text>
                 <Pressable onPress={props.onBackdropPress}>
                   <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <Path

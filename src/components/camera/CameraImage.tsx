@@ -63,12 +63,16 @@ export const CameraImage = ({route, navigation}) => {
         const result = res.data?.results as PlantResult[];
         console.log(result);
         const filterResult = result?.filter(re => Number(re.score) * 100 >= 5); // only accept the result score > 30%
-        if (filterResult.length) {
+        if (filterResult?.length) {
           navigation.navigate('Camera-Result', {
             results: filterResult,
           });
         } else {
-          navigation.navigate('Camera-Error', {path: path, type});
+          const params = {path: path, type};
+          if (res.data?.statusCode === 404) {
+            params.errorText = 'No plants found';
+          }
+          navigation.navigate('Camera-Error', params);
         }
         setDeteting(false);
       })

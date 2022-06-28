@@ -15,7 +15,7 @@ import {SAFE_AREA_PADDING} from '../../utils/constants';
 import {TextStyle} from '../../styles/base';
 
 export const DetectError = ({route, navigation}) => {
-  const {path, type} = route?.params;
+  const {path, type, errorText} = route?.params;
   const goBack = () => {
     navigation.reset({
       index: 0,
@@ -68,7 +68,7 @@ export const DetectError = ({route, navigation}) => {
               marginLeft: theme.spacing.base,
               color: theme.color.warning,
             }}>
-            {'Cannot detect!'}
+            {errorText ? errorText : 'Cannot detect!'}
           </Text>
         </View>
 
