@@ -41,3 +41,23 @@ export interface PlantResult {
   images: PlantImage[];
   wikiInfo?: PlantWikiInfo;
 }
+
+export interface EbayItems {
+  itemId: string[];
+  title: string[];
+  galleryURL: string[];
+  viewItemURL: string[];
+  location: string[];
+  country: string[];
+  sellingStatus: [
+    {
+      currentPrice: [
+        {
+          '@currencyId': string;
+          __value__: string;
+        },
+      ];
+      sellingState: string[];
+    },
+  ];
+}

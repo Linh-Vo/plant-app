@@ -10,18 +10,20 @@ import {
   View,
 } from 'react-native';
 import axios from 'axios';
-import {TextStyle} from '../../styles/base';
+import {dimensions, TextStyle} from '../../styles/base';
 import {theme} from '../../theme/theme';
 import {Button} from '../../components/Button';
 import Svg, {Path} from 'react-native-svg';
 import {SAFE_AREA_PADDING} from '../../utils/constants';
 import FastImage from 'react-native-fast-image';
 import {CollectionModal} from './CollectionModal';
-import {PlantImage, PlantWikiInfo} from '../../types';
+import {EbayItems, PlantImage, PlantWikiInfo} from '../../types';
+import Touchable from '../../components/CustomTouchable';
 
 export const PlantDetail = ({route, navigation}) => {
   const {plant, hideCollection} = route?.params;
   const [wikiInfo, setInfo] = useState<PlantWikiInfo | null>(null);
+  const [ebayItems, setItems] = useState<EbayItems[] | []>([]);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     axios
@@ -31,7 +33,23 @@ export const PlantDetail = ({route, navigation}) => {
         },
       })
       .then(res => setInfo(res.data));
-  }, []);
+  }, [plant?.species?.scientificNameWithoutAuthor]);
+  useEffect(() => {
+    axios
+      .get('http://192.168.1.3:8000/ebay-items', {
+        params: {
+          plant_name: plant?.species?.scientificNameWithoutAuthor,
+        },
+      })
+      .then(res => {
+        const data = res.data;
+        const items =
+          (data?.findItemsAdvancedResponse &&
+            data?.findItemsAdvancedResponse[0]?.searchResult[0]?.item) ||
+          [];
+        setItems(items);
+      });
+  }, [plant?.species?.scientificNameWithoutAuthor]);
   console.log('WIKI', wikiInfo, plant?.species?.commonNames);
   const navigateToCollection = () => {
     setVisible(true);
@@ -40,6 +58,7 @@ export const PlantDetail = ({route, navigation}) => {
     navigation.goBack();
   };
   const [showHeaderBar, setShowHeaderBar] = useState(false);
+  console.log({ebayItems});
   return (
     <View style={{flex: 1, position: 'relative'}}>
       <Animated.ScrollView
@@ -165,6 +184,24 @@ export const PlantDetail = ({route, navigation}) => {
               ))}
             </ScrollView>
           </View>
+          {ebayItems?.length > 0 && (
+            <View style={{marginTop: theme.spacing.triple}}>
+              <Text style={{...TextStyle.bodyText, opacity: 0.6}}>
+                {'Where to buy'}
+              </Text>
+              <ScrollView
+                style={{marginTop: theme.spacing.double}}
+                showsVerticalScrollIndicator={false}>
+                {ebayItems.map((it, idx) => (
+                  <Touchable
+                    key={idx}
+                    onPress={() => Linking.openURL(`${it.viewItemURL[0]}`)}
+                    it={it}
+                  />
+                ))}
+              </ScrollView>
+            </View>
+          )}
         </View>
       </Animated.ScrollView>
       {!hideCollection && (
@@ -370,5 +407,26 @@ const styles = StyleSheet.create({
   closeButton: {
     marginTop: SAFE_AREA_PADDING.paddingTop + theme.spacing.double,
     marginLeft: SAFE_AREA_PADDING.paddingLeft,
+  },
+  ebayItem: {
+    position: 'relative',
+    flexDirection: 'row',
+    height: 132,
+    backgroundColor: theme.color.white,
+    padding: theme.spacing.double,
+    marginVertical: theme.spacing.base,
+    borderRadius: theme.radius.medium,
+  },
+  logo: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: theme.color.white,
+    position: 'absolute',
+    bottom: 8,
+    left: dimensions.fullWidth * 0.35 - 20,
+    borderWidth: 1,
+    borderColor: 'rgba(34, 34, 34, 0.1)',
+    zIndex: 9999,
   },
 });
