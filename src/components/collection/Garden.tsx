@@ -16,12 +16,10 @@ import {useAppSelector} from '../../hooks/redux';
 import {selectCollections} from '../../store/slices/collection';
 
 export const Garden = ({route, navigation}) => {
-  console.log(route);
   const {collectionId} = route?.params;
   const collections = useAppSelector(selectCollections);
   const currentCollection = collections.find(e => e.id === collectionId);
   const plants = currentCollection?.plants || [];
-  console.log({plants: plants.length});
   return (
     <View style={styles.container}>
       <View style={styles.textView}>

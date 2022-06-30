@@ -11,7 +11,7 @@ const WikiItem = ({plantName}) => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
-      .get('http://192.168.1.3:8088/wiki-info', {
+      .get(`${API_URL}/wiki-info`, {
         params: {
           plant_name: plantName,
         },
@@ -31,7 +31,6 @@ const WikiItem = ({plantName}) => {
       </View>
     );
   }
-  console.log(API_URL);
   return wikiInfo?.description || wikiInfo?.introduction ? (
     <View style={{marginTop: theme.spacing.triple}}>
       <Text

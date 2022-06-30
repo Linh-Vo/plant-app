@@ -23,7 +23,6 @@ import {CommunityScreen} from '../screens/Community';
 import {TabButton} from '../components/TabButton';
 
 function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
-  console.log(navigation.getState().routeNames, navigation.getId());
   return (
     navigation.getState().index !== 2 && (
       <View style={styles.transparentTab}>
@@ -45,6 +44,12 @@ function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
               // if (label === SCREEN_NAME.Scan) {
               //   return navigation.reset('Scan-Stacl');
               // }
+              if (
+                SCREEN_NAME.Community === label ||
+                SCREEN_NAME.Around === label
+              ) {
+                return;
+              }
               const event = navigation.emit({
                 type: 'tabPress',
                 target: route.key,
@@ -54,15 +59,18 @@ function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
                 // The `merge: true` option makes sure that the params inside the tab screen are preserved
                 navigation.navigate({name: route.name, merge: true} as any);
               }
-              if (label === SCREEN_NAME.Scan) {
-                // setHiden(true);
-              }
             };
 
             const onLongPress = () => {
               // if (label === SCREEN_NAME.Scan) {
               //   return openCamera();
               // }
+              if (
+                SCREEN_NAME.Community === label ||
+                SCREEN_NAME.Around === label
+              ) {
+                return;
+              }
               navigation.emit({
                 type: 'tabLongPress',
                 target: route.key,

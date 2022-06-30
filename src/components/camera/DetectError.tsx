@@ -26,7 +26,6 @@ export const DetectError = ({route, navigation}) => {
       ],
     });
   };
-  console.log(path, type);
   return (
     <View style={styles.container}>
       <View style={styles.imageView}>

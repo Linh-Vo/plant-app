@@ -1,18 +1,32 @@
 import React from 'react';
-import {TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {TouchableOpacity, Text, StyleSheet, View} from 'react-native';
 import {dimensions, TextStyle} from '../styles/base';
 import {TabIcon} from './icons';
 import {SCAN_BUTTON_SIZE, SCREEN_NAME} from '../utils/constants';
 import {theme} from '../theme/theme';
+import Toast from 'react-native-toast-message';
 
 export const TabButton = ({onPress, onLongPress, isFocused, label}) => {
   return (
     <TouchableOpacity
       accessibilityRole="button"
       accessibilityState={isFocused ? {selected: true} : {}}
-      onPress={onPress}
+      onPress={() => {
+        if (label === SCREEN_NAME.Around || label === SCREEN_NAME.Community) {
+          return Toast.show({
+            type: 'info',
+            position: 'bottom',
+            autoHide: true,
+            visibilityTime: 1000,
+            text2: 'This feature will comming soon',
+          });
+        }
+        onPress();
+      }}
       onLongPress={onLongPress}
-      style={
+      style={[
+        // eslint-disable-next-line react-native/no-inline-styles
+        {position: 'relative'},
         label !== SCREEN_NAME.Scan
           ? // eslint-disable-next-line react-native/no-inline-styles
             {
@@ -20,8 +34,8 @@ export const TabButton = ({onPress, onLongPress, isFocused, label}) => {
               marginRight: label === SCREEN_NAME.Collection ? 16 : 0,
               marginLeft: label === SCREEN_NAME.Community ? 16 : 0,
             }
-          : {...styles.scanButtonStyle}
-      }>
+          : {...styles.scanButtonStyle},
+      ]}>
       <TabIcon name={label as string} isFocused={isFocused} />
       {label !== SCREEN_NAME.Scan && (
         <Text

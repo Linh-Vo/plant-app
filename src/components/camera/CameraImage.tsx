@@ -61,7 +61,6 @@ export const CameraImage = ({route, navigation}) => {
       })
       .then(res => {
         const result = res.data?.results as PlantResult[];
-        console.log(result);
         const filterResult = result?.filter(re => Number(re.score) * 100 >= 5); // only accept the result score > 30%
         if (filterResult?.length) {
           navigation.navigate('Camera-Result', {
@@ -88,7 +87,6 @@ export const CameraImage = ({route, navigation}) => {
         setDeteting(false);
       });
   };
-  console.log(path, type);
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={goBack} style={styles.closeButton}>

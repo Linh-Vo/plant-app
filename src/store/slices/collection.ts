@@ -55,7 +55,6 @@ export const collectionSlice = createSlice({
       state: CollectionState[],
       action: PayloadAction<{collectionId: string}>,
     ) => {
-      console.log(action.payload.collectionId);
       state = state.filter(col => col.id !== action.payload.collectionId);
       return state;
     },
