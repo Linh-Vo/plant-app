@@ -1,77 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  StyleProp,
-  ViewStyle,
-  StyleSheet,
-  Animated,
-} from 'react-native';
+import React from 'react';
+import {View, StyleSheet} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import {
   DefaultTheme,
   NavigationContainer,
   Theme,
-  useIsFocused,
 } from '@react-navigation/native';
 import {
   BottomTabBarProps,
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
-import {CollectionScreen, HomeScreen, ScanScreen} from '../screens';
-import {TabIcon} from '../components/icons';
-import {SCREEN_NAME, SCAN_BUTTON_SIZE} from '../utils/constants';
-import {getPath, openCamera} from '../utils/helper';
-import {dimensions, TextStyle} from '../styles/base';
+import {CollectionScreen, HomeScreen} from '../screens';
+import {SCREEN_NAME} from '../utils/constants';
+import {getPath} from '../utils/helper';
+import {dimensions} from '../styles/base';
 import {theme} from '../theme/theme';
-import {CameraPage} from '../components/camera/CameraPage';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {CameraStackScreen} from './camera';
 import {CollectionStackScreen} from './collection';
 import {AroundScreen} from '../screens/Around';
 import {CommunityScreen} from '../screens/Community';
+import {TabButton} from '../components/TabButton';
 
-// const TabButton = props => {
-//   const {item, onPress, accessibilityState} = props;
-//   const focused = accessibilityState.selected;
-//   const viewRef = useRef(null);
-
-//   useEffect(() => {
-//     if (focused) {
-//       viewRef.current.animate({
-//         0: {scale: 0.5, rotate: '0deg'},
-//         1: {scale: 1.5, rotate: '360deg'},
-//       });
-//     } else {
-//       viewRef.current.animate({
-//         0: {scale: 1.5, rotate: '360deg'},
-//         1: {scale: 1, rotate: '0deg'},
-//       });
-//     }
-//   }, [focused]);
-
-//   return (
-//     <TouchableOpacity
-//       onPress={onPress}
-//       activeOpacity={1}
-//       style={Container.base}>
-//       <Animated.View ref={viewRef} />
-//     </TouchableOpacity>
-//   );
-// };
 function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
-  const scanButtonStyle: StyleProp<ViewStyle> = {
-    width: SCAN_BUTTON_SIZE.width,
-    height: SCAN_BUTTON_SIZE.height,
-    position: 'absolute',
-    bottom: 38,
-    left: dimensions.fullWidth / 2 - SCAN_BUTTON_SIZE.width / 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: SCAN_BUTTON_SIZE.height / 2,
-    backgroundColor: theme.color.primary,
-  };
   console.log(navigation.getState().routeNames, navigation.getId());
   return (
     navigation.getState().index !== 2 && (
@@ -117,40 +68,14 @@ function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
                 target: route.key,
               });
             };
-            const routeStyle: StyleProp<ViewStyle> = {
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              // paddingHorizontal: 16,
-              marginRight: label === SCREEN_NAME.Collection ? 16 : 0,
-              marginLeft: label === SCREEN_NAME.Community ? 16 : 0,
-              flex: 1,
-            };
             return (
-              <TouchableOpacity
-                key={route.name}
-                accessibilityRole="button"
-                accessibilityState={isFocused ? {selected: true} : {}}
-                accessibilityLabel={options.tabBarAccessibilityLabel}
-                testID={options.tabBarTestID}
-                onPress={onPress}
+              <TabButton
+                key={label}
+                label={label}
                 onLongPress={onLongPress}
-                style={
-                  label !== SCREEN_NAME.Scan
-                    ? {...routeStyle}
-                    : {...scanButtonStyle}
-                }>
-                <TabIcon name={label as string} isFocused={isFocused} />
-                {label !== SCREEN_NAME.Scan && (
-                  <Text
-                    // eslint-disable-next-line react-native/no-inline-styles
-                    style={{
-                      ...TextStyle.baseText,
-                      color: isFocused ? '#678F58' : '#222',
-                    }}>
-                    {label}
-                  </Text>
-                )}
-              </TouchableOpacity>
+                onPress={onPress}
+                isFocused={isFocused}
+              />
             );
           })}
         </View>
@@ -195,26 +120,6 @@ export const HomeStackScreen = () => (
 const Stack = createNativeStackNavigator();
 export const Navigation = () => (
   <NavigationContainer theme={NavigationTheme}>
-    {/* <Tab.Navigator
-      tabBar={props => <TabBar {...props} />}
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: {
-          backgroundColor: 'transparent',
-          position: 'absolute',
-          borderTopWidth: 0,
-          elevation: 0,
-        },
-      }}
-      backBehavior={'history'}
-      detachInactiveScreens
-      initialRouteName="Home">
-      <Tab.Screen name={SCREEN_NAME.Home} component={HomeScreen} />
-      <Tab.Screen name={SCREEN_NAME.Collection} component={CollectionScreen} />
-      <Tab.Screen name={SCREEN_NAME.Scan} component={CameraStackScreen} />
-      <Tab.Screen name={SCREEN_NAME.Community} component={CollectionScreen} />
-      <Tab.Screen name={SCREEN_NAME.Around} component={CollectionScreen} />
-    </Tab.Navigator> */}
     <Stack.Navigator
       screenOptions={{
         headerShown: false,

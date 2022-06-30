@@ -42,12 +42,19 @@ export const openCamera = () => {
 
 export const imageGalleryLaunch = handleResponse => () => {
   let options = {
-    storageOptions: {
-      skipBackup: true,
-      path: 'images',
-    },
+    // storageOptions: {
+    //   skipBackup: true,
+    //   path: 'images',
+    // },
+    mediaType: 'photo',
+    selectionLimit: 1,
+    presentationStyle: 'overCurrentContext',
   };
   ImagePicker.launchImageLibrary(options, res => {
+    if (res.didCancel || res.errorCode) {
+      console.log('User cancelled image picker');
+      return handleResponse();
+    }
     if (res.assets?.length) {
       const source = {path: res.assets[0]?.uri};
       const image = (res?.assets && res.assets[0]) || undefined;

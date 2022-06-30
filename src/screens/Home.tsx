@@ -13,6 +13,9 @@ import {Block} from '../components/Block';
 import {theme} from '../theme/theme';
 export const HomeScreen = ({navigation}) => {
   const navigate = (screen: string) => () => {
+    if (screen === SCREEN_NAME.Around || screen === SCREEN_NAME.Community) {
+      return;
+    }
     navigation.navigate(screen);
   };
   return (
@@ -36,7 +39,14 @@ export const HomeScreen = ({navigation}) => {
               SCREEN_NAME.Around,
             ]).map(name => (
               <View key={name} style={styles.block}>
-                <Block onPress={navigate(name)} name={name} />
+                <Block
+                  isCommingsoon={
+                    name === SCREEN_NAME.Around ||
+                    name === SCREEN_NAME.Community
+                  }
+                  onPress={navigate(name)}
+                  name={name}
+                />
               </View>
             ))}
           </View>

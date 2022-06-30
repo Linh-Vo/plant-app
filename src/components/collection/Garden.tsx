@@ -10,7 +10,7 @@ import FastImage from 'react-native-fast-image';
 import Svg, {Circle, Path} from 'react-native-svg';
 import {Container, TextStyle} from '../../styles/base';
 import {theme} from '../../theme/theme';
-import {SAFE_AREA_PADDING} from '../../utils/constants';
+import {SAFE_AREA_PADDING, SCREEN_NAME} from '../../utils/constants';
 import {ResultBlock} from '../../components/ResultBlock';
 import {useAppSelector} from '../../hooks/redux';
 import {selectCollections} from '../../store/slices/collection';
@@ -27,7 +27,7 @@ export const Garden = ({route, navigation}) => {
       <View style={styles.textView}>
         <View style={styles.titleView}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('My collection')}>
+            onPress={() => navigation.navigate(SCREEN_NAME.Collection)}>
             <Svg width="32" height="32" viewBox="0 0 32 32" fill="none">
               <Path
                 opacity="0.2"

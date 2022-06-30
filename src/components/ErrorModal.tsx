@@ -1,20 +1,11 @@
 import React from 'react';
-import {
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-  ScrollView,
-} from 'react-native';
+import {StyleSheet, Text, View, Dimensions} from 'react-native';
 import Modal from 'react-native-modal';
 import Svg, {Path} from 'react-native-svg';
 import {TextStyle} from '../styles/base';
 import {theme} from '../theme/theme';
 
 export const ErrorModal = ({isVisible, message, backdropPress}) => {
-  console.log({message, isVisible});
   return (
     <View style={styles.container}>
       <Modal
@@ -22,6 +13,7 @@ export const ErrorModal = ({isVisible, message, backdropPress}) => {
         hasBackdrop={true}
         coverScreen={true}
         statusBarTranslucent
+        deviceHeight={Dimensions.get('screen').height}
         onBackdropPress={backdropPress}
         backdropColor={theme.color.dark}
         backdropOpacity={0.8}

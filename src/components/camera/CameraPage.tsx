@@ -1,8 +1,10 @@
 import * as React from 'react';
 import {useRef, useState, useMemo, useCallback} from 'react';
 import {
+  ActivityIndicator,
   Image,
   Linking,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -67,6 +69,7 @@ export function CameraPage({navigation}): React.ReactElement {
   const camera = useRef<Camera>(null);
   const [cameraPermissionStatus, setCameraPermissionStatus] =
     useState<CameraPermissionStatus>('not-determined');
+  const [galleryLoading, setLoading] = useState(false);
   const isFocused = useIsFocused();
   useEffect(() => {
     // navigation.getParent()?.setOptions({
@@ -85,7 +88,7 @@ export function CameraPage({navigation}): React.ReactElement {
     if (isFocused) {
       requestCameraPermission();
     }
-  }, [isFocused]);
+  }, [isFocused, navigation]);
   const [isCameraInitialized, setIsCameraInitialized] = useState(false);
   const zoom = useSharedValue(0);
   const isPressingButton = useSharedValue(false);
@@ -217,12 +220,14 @@ export function CameraPage({navigation}): React.ReactElement {
     setIsCameraInitialized(true);
   }, []);
   const onMediaCaptured = useCallback(
-    (media: PhotoFile, type: 'capture' | 'gallery') => {
-      console.log(`Media captured! ${JSON.stringify(media)}`);
-      navigation.navigate('Camera-Image', {
-        path: media.path,
-        type: type,
-      });
+    (media?: PhotoFile, type?: 'capture' | 'gallery') => {
+      if (media) {
+        navigation.navigate('Camera-Image', {
+          path: media.path,
+          type: type,
+        });
+      }
+      setLoading(false);
     },
     [navigation],
   );
@@ -308,6 +313,19 @@ export function CameraPage({navigation}): React.ReactElement {
   //   },
   //   [],
   // );
+  if (galleryLoading) {
+    return (
+      <View
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{
+          ...styles.container,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <ActivityIndicator size={'large'} color={theme.color.white} />
+      </View>
+    );
+  }
   return cameraPermissionStatus === 'authorized' ? (
     <View style={styles.container}>
       {device != null && (
@@ -371,7 +389,10 @@ export function CameraPage({navigation}): React.ReactElement {
       </TouchableOpacity>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={imageGalleryLaunch(onMediaCaptured)}
+          onPress={() => {
+            setLoading(true);
+            imageGalleryLaunch(onMediaCaptured)();
+          }}
           style={styles.galleryButton}>
           <Image source={require('../../assets/images/gallery-bg.png')} />
         </TouchableOpacity>

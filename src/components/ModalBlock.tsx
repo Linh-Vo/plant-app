@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Pressable, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Dimensions,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import Svg, {Path} from 'react-native-svg';
 import {TextStyle} from '../styles/base';
@@ -17,13 +24,13 @@ interface ModalBlockProps {
 }
 export default function ModalBlock(props: ModalBlockProps) {
   const [collectionName, setName] = useState(props.defaultColName || '');
-  console.log(props.children);
   return (
     <>
       <View style={styles.container}>
         <Modal
           avoidKeyboard={true}
           statusBarTranslucent
+          deviceHeight={Dimensions.get('screen').height}
           onBackdropPress={props.onBackdropPress}
           isVisible={props.isVisible}
           animationIn={'fadeInUp'}

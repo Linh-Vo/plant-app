@@ -1,19 +1,17 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
-  Pressable,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Svg, {Path} from 'react-native-svg';
 import {TextStyle} from '../../styles/base';
 import {theme} from '../../theme/theme';
-import {Button} from '../Button';
 import ModalBlock from '../ModalBlock';
 import {useAppSelector, useAppDispatch} from '../../hooks/redux';
 import {
@@ -150,7 +148,8 @@ export const CollectionModal = ({isVisible, backDropPress, plant}) => {
         <Modal
           isVisible={isVisible}
           hasBackdrop={true}
-          statusBarTranslucent={true}
+          statusBarTranslucent
+          deviceHeight={Dimensions.get('screen').height}
           style={styles.modal}
           backdropColor={theme.color.dark}
           backdropOpacity={0.8}

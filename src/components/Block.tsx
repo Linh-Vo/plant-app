@@ -12,12 +12,27 @@ import {BlockIcon} from './icons';
 
 interface BlockProps extends ScreenProps {
   onPress: (event: GestureResponderEvent) => void;
+  isCommingsoon?: boolean;
 }
 export const Block = (props: BlockProps) => {
   return (
-    <TouchableOpacity onPress={props.onPress} style={styles.container}>
+    <TouchableOpacity
+      disabled={props.isCommingsoon}
+      onPress={props.onPress}
+      style={styles.container}>
       <BlockIcon name={props.name} />
-      <Text style={TextStyle.h4Text}>{props.name}</Text>
+      <Text
+        numberOfLines={1}
+        allowFontScaling
+        adjustsFontSizeToFit
+        style={TextStyle.h4Text}>
+        {props.name}
+      </Text>
+      {props.isCommingsoon && (
+        <Text style={{...TextStyle.baseText, opacity: 0.6}}>
+          {'(comming soon)'}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 };

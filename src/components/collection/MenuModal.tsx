@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import {
+  Dimensions,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -9,7 +11,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Svg, {Path} from 'react-native-svg';
-import {TextStyle} from '../../styles/base';
+import {dimensions, TextStyle} from '../../styles/base';
 import {theme} from '../../theme/theme';
 import {Button} from '../Button';
 import ModalBlock from '../ModalBlock';
@@ -118,6 +120,7 @@ export const MenuModal = ({isVisible, backDropPress, collection}) => {
           statusBarTranslucent
           style={styles.modal}
           backdropColor={theme.color.dark}
+          deviceHeight={Dimensions.get('screen').height}
           backdropOpacity={0.8}
           onBackdropPress={() => {}}
           animationIn={'fadeInUp'}

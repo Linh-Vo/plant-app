@@ -47,7 +47,7 @@ export const CollectionScreen = ({navigation}) => {
     <>
       <View style={styles.container}>
         <View style={styles.textView}>
-          <Text style={styles.text}>{'My Collections'}</Text>
+          <Text style={styles.text}>{'Collections'}</Text>
           <TouchableOpacity
             onPress={() => setVisible(true)}
             style={styles.buttonContainer}>

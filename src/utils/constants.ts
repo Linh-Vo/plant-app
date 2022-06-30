@@ -1,6 +1,6 @@
 export const SCREEN_NAME = {
   Home: 'Home',
-  Collection: 'My collection',
+  Collection: 'Collections',
   Scan: 'Scan',
   Community: 'Community',
   Around: 'Around',

@@ -2,14 +2,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {
   Animated,
-  Linking,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import axios from 'axios';
 import {dimensions, TextStyle} from '../../styles/base';
 import {theme} from '../../theme/theme';
 import {Button} from '../../components/Button';
@@ -17,40 +15,14 @@ import Svg, {Path} from 'react-native-svg';
 import {SAFE_AREA_PADDING} from '../../utils/constants';
 import FastImage from 'react-native-fast-image';
 import {CollectionModal} from './CollectionModal';
-import {EbayItems, PlantImage, PlantWikiInfo} from '../../types';
-import Touchable from '../../components/CustomTouchable';
+import {PlantImage} from '../../types';
+import EbayItem from './EbayItems';
+import WikiItem from './WikiContent';
 
 export const PlantDetail = ({route, navigation}) => {
   const {plant, hideCollection} = route?.params;
-  const [wikiInfo, setInfo] = useState<PlantWikiInfo | null>(null);
-  const [ebayItems, setItems] = useState<EbayItems[] | []>([]);
   const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    axios
-      .get('http://192.168.1.3:8000/wiki-info', {
-        params: {
-          plant_name: plant?.species?.scientificNameWithoutAuthor,
-        },
-      })
-      .then(res => setInfo(res.data));
-  }, [plant?.species?.scientificNameWithoutAuthor]);
-  useEffect(() => {
-    axios
-      .get('http://192.168.1.3:8000/ebay-items', {
-        params: {
-          plant_name: plant?.species?.scientificNameWithoutAuthor,
-        },
-      })
-      .then(res => {
-        const data = res.data;
-        const items =
-          (data?.findItemsAdvancedResponse &&
-            data?.findItemsAdvancedResponse[0]?.searchResult[0]?.item) ||
-          [];
-        setItems(items);
-      });
-  }, [plant?.species?.scientificNameWithoutAuthor]);
-  console.log('WIKI', wikiInfo, plant?.species?.commonNames);
+
   const navigateToCollection = () => {
     setVisible(true);
   };
@@ -58,7 +30,6 @@ export const PlantDetail = ({route, navigation}) => {
     navigation.goBack();
   };
   const [showHeaderBar, setShowHeaderBar] = useState(false);
-  console.log({ebayItems});
   return (
     <View style={{flex: 1, position: 'relative'}}>
       <Animated.ScrollView
@@ -138,35 +109,7 @@ export const PlantDetail = ({route, navigation}) => {
             </View>
           ) : null}
 
-          {wikiInfo?.description || wikiInfo?.introduction ? (
-            <View style={{marginTop: theme.spacing.triple}}>
-              <Text style={{...TextStyle.bodyText, opacity: 0.6}}>
-                {'Description'}
-              </Text>
-              <Text
-                style={{
-                  ...TextStyle.titleText,
-                  marginTop: theme.spacing.base,
-                }}>
-                {(wikiInfo?.description?.length &&
-                  wikiInfo?.description?.join()) ||
-                  wikiInfo?.introduction}
-              </Text>
-              <Text
-                style={{
-                  ...TextStyle.titleText,
-                  color: theme.color.primary,
-                  marginTop: theme.spacing.base,
-                }}
-                onPress={() =>
-                  Linking.openURL(
-                    `https://en.wikipedia.org/wiki/${plant?.species?.scientificNameWithoutAuthor}`,
-                  )
-                }>
-                {'Read more on Wikipedia'}
-              </Text>
-            </View>
-          ) : null}
+          <WikiItem plantName={plant?.species?.scientificNameWithoutAuthor} />
           <View style={{marginTop: theme.spacing.triple}}>
             <Text style={{...TextStyle.bodyText, opacity: 0.6}}>
               {'Photos'}
@@ -184,24 +127,7 @@ export const PlantDetail = ({route, navigation}) => {
               ))}
             </ScrollView>
           </View>
-          {ebayItems?.length > 0 && (
-            <View style={{marginTop: theme.spacing.triple}}>
-              <Text style={{...TextStyle.bodyText, opacity: 0.6}}>
-                {'Where to buy'}
-              </Text>
-              <ScrollView
-                style={{marginTop: theme.spacing.double}}
-                showsVerticalScrollIndicator={false}>
-                {ebayItems.map((it, idx) => (
-                  <Touchable
-                    key={idx}
-                    onPress={() => Linking.openURL(`${it.viewItemURL[0]}`)}
-                    it={it}
-                  />
-                ))}
-              </ScrollView>
-            </View>
-          )}
+          <EbayItem plantName={plant?.species?.scientificNameWithoutAuthor} />
         </View>
       </Animated.ScrollView>
       {!hideCollection && (

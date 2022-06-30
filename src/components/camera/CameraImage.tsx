@@ -49,7 +49,7 @@ export const CameraImage = ({route, navigation}) => {
     //   setDeteting(false);
     // }, 5000);
     axios
-      .post('http://192.168.1.3:8000/identify', data, {
+      .post('http://192.168.1.3:8088/identify', data, {
         headers: {
           // Accept: 'application/json',
           'Content-Type': 'multipart/form-data',
@@ -71,6 +71,8 @@ export const CameraImage = ({route, navigation}) => {
           const params = {path: path, type};
           if (res.data?.statusCode === 404) {
             params.errorText = 'No plants found';
+          } else if (res.data?.statusCode === 429) {
+            params.errorText = 'Server error, please try again!';
           }
           navigation.navigate('Camera-Error', params);
         }
@@ -78,7 +80,11 @@ export const CameraImage = ({route, navigation}) => {
       })
       .catch(error => {
         console.log('error', error);
-        navigation.navigate('Camera-Error', {path: path, type});
+        navigation.navigate('Camera-Error', {
+          path: path,
+          type,
+          errorText: 'Server error, please try again!',
+        });
         setDeteting(false);
       });
   };
