@@ -25,6 +25,7 @@ export const Garden = ({route, navigation}) => {
       <View style={styles.textView}>
         <View style={styles.titleView}>
           <TouchableOpacity
+            style={{padding: theme.spacing.base}}
             onPress={() => navigation.navigate(SCREEN_NAME.Collection)}>
             <Svg width="32" height="32" viewBox="0 0 32 32" fill="none">
               <Path

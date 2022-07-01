@@ -69,7 +69,8 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   buttonView: {
-    width: theme.spacing.triple,
     alignItems: 'flex-end',
+    paddingLeft: 16,
+    paddingVertical: 16,
   },
 });

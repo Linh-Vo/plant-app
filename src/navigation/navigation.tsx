@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import {
@@ -21,6 +21,9 @@ import {CollectionStackScreen} from './collection';
 import {AroundScreen} from '../screens/Around';
 import {CommunityScreen} from '../screens/Community';
 import {TabButton} from '../components/TabButton';
+import {OnboardingScreen} from '../screens/Onboarding';
+import {useAppSelector} from '../hooks/redux';
+import {selectAppState} from '../store/slices/app';
 
 function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
   return (
@@ -126,17 +129,25 @@ export const HomeStackScreen = () => (
   </Tab.Navigator>
 );
 const Stack = createNativeStackNavigator();
-export const Navigation = () => (
-  <NavigationContainer theme={NavigationTheme}>
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Stack.Screen name="Home-Stack" component={HomeStackScreen} />
-      <Stack.Screen name="Collection-Stack" component={CollectionStackScreen} />
-    </Stack.Navigator>
-  </NavigationContainer>
-);
+export const Navigation = () => {
+  const {isAppFristLoad} = useAppSelector(selectAppState);
+  return (
+    <NavigationContainer theme={NavigationTheme}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+        initialRouteName={isAppFristLoad ? 'Onboarding' : 'Home-Stack'}>
+        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+        <Stack.Screen name="Home-Stack" component={HomeStackScreen} />
+        <Stack.Screen
+          name="Collection-Stack"
+          component={CollectionStackScreen}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 const styles = StyleSheet.create({
   transparentTab: {

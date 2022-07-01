@@ -83,7 +83,7 @@ export const Splash = ({isAppReady}: {isAppReady: boolean}) => {
         barStyle={'light-content'}
       />
       <Animated.Image
-        source={require('../assets/images/splash.png')}
+        source={require('../assets/images/logo.png')}
         fadeDuration={0}
         onLoad={() => {
           setState(FADE_IN_IMAGE);
