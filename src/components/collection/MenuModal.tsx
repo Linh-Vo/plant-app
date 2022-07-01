@@ -115,6 +115,7 @@ export const MenuModal = ({isVisible, backDropPress, collection}) => {
     <>
       <View style={styles.container}>
         <Modal
+          useNativeDriver={true}
           isVisible={isVisible}
           hasBackdrop={true}
           statusBarTranslucent

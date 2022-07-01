@@ -28,6 +28,7 @@ export default function ModalBlock(props: ModalBlockProps) {
     <>
       <View style={styles.container}>
         <Modal
+          useNativeDriver={true}
           avoidKeyboard={true}
           statusBarTranslucent
           deviceHeight={Dimensions.get('screen').height}

@@ -30,7 +30,7 @@ export const Block = (props: BlockProps) => {
       </Text>
       {props.isCommingsoon && (
         <Text style={{...TextStyle.baseText, opacity: 0.6}}>
-          {'(comming soon)'}
+          {'(Coming Soon)'}
         </Text>
       )}
     </TouchableOpacity>

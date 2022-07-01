@@ -19,11 +19,11 @@ export const HomeScreen = ({navigation}) => {
     navigation.navigate(screen);
   };
   return (
-    <ScrollView contentContainerStyle={[Container.center]}>
-      <ImageBackground
-        source={require('../assets/images/BG.png')}
-        resizeMode="cover"
-        style={Container.fullScreen}>
+    <ImageBackground
+      source={require('../assets/images/BG.png')}
+      resizeMode="cover"
+      style={Container.fullScreen}>
+      <ScrollView contentContainerStyle={[Container.center]}>
         <View style={styles.container}>
           <Text style={[TextStyle.headerText, styles.text]}>
             {Translations.homeTitle}
@@ -51,8 +51,8 @@ export const HomeScreen = ({navigation}) => {
             ))}
           </View>
         </View>
-      </ImageBackground>
-    </ScrollView>
+      </ScrollView>
+    </ImageBackground>
   );
 };
 

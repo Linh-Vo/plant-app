@@ -151,11 +151,11 @@ export const PlantDetail = ({route, navigation}) => {
             backgroundColor: theme.color.white,
           }}>
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Home-Stack', {
-                screen: 'Around',
-              })
-            }
+            // onPress={() =>
+            //   navigation.navigate('Home-Stack', {
+            //     screen: 'Around',
+            //   })
+            // }
             style={{
               paddingRight: theme.spacing.double,
               alignItems: 'center',
@@ -185,11 +185,11 @@ export const PlantDetail = ({route, navigation}) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Home-Stack', {
-                screen: 'Community',
-              })
-            }
+            // onPress={() =>
+            //   navigation.navigate('Home-Stack', {
+            //     screen: 'Community',
+            //   })
+            // }
             style={{
               paddingRight: theme.spacing.double,
               alignItems: 'center',

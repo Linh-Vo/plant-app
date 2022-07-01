@@ -17,8 +17,8 @@ export const TabButton = ({onPress, onLongPress, isFocused, label}) => {
             type: 'info',
             position: 'bottom',
             autoHide: true,
-            visibilityTime: 1000,
-            text2: 'This feature will comming soon',
+            visibilityTime: 2000,
+            text2: 'Coming Soon!',
           });
         }
         onPress();

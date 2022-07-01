@@ -13,6 +13,7 @@ import {Button} from '../../components/Button';
 import Svg, {Path} from 'react-native-svg';
 import {SAFE_AREA_PADDING} from '../../utils/constants';
 import {TextStyle} from '../../styles/base';
+import {ScanTipModal} from './ScantipModal';
 
 export const DetectError = ({route, navigation}) => {
   const {path, type, errorText} = route?.params;
@@ -26,6 +27,8 @@ export const DetectError = ({route, navigation}) => {
       ],
     });
   };
+  const [isVisibleScanTip, setScanTipVisible] = useState(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.imageView}>
@@ -81,7 +84,9 @@ export const DetectError = ({route, navigation}) => {
           text={'Retake'}
         />
       </View>
-      <TouchableOpacity style={styles.snapButton}>
+      <TouchableOpacity
+        onPress={() => setScanTipVisible(true)}
+        style={styles.snapButton}>
         <Text style={{...TextStyle.baseText, color: theme.color.primary}}>
           {'Snap tips'}
         </Text>
@@ -101,6 +106,10 @@ export const DetectError = ({route, navigation}) => {
           />
         </Svg>
       </TouchableOpacity>
+      <ScanTipModal
+        backdropPress={() => setScanTipVisible(false)}
+        isVisible={isVisibleScanTip}
+      />
     </View>
   );
 };
@@ -125,7 +134,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     paddingHorizontal: '15%',
     width: '100%',
-    flex: 1,
+    height: '30%',
+    // flex: 1,
   },
   retakeButton: {
     marginTop: theme.spacing.double,

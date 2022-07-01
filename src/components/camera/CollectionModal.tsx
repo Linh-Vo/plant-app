@@ -146,6 +146,7 @@ export const CollectionModal = ({isVisible, backDropPress, plant}) => {
     <>
       <View style={styles.container}>
         <Modal
+          useNativeDriver={true}
           isVisible={isVisible}
           hasBackdrop={true}
           statusBarTranslucent
