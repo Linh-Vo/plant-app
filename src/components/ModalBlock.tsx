@@ -104,6 +104,9 @@ export default function ModalBlock(props: ModalBlockProps) {
                     placeholder="Name your collection"
                   />
                   <Button
+                    isDisable={
+                      collectionName === props.defaultColName || !collectionName
+                    }
                     textStyle={{color: theme.color.white}}
                     onPress={props.extraAction(collectionName)}
                     text="Save"
