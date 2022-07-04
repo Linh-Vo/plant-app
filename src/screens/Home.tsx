@@ -65,6 +65,6 @@ const styles = StyleSheet.create({
   text: {
     paddingLeft: theme.spacing.base,
   },
-  blockContainer: {flexDirection: 'row', flexWrap: 'wrap', marginTop: 80},
+  blockContainer: {flexDirection: 'row', flexWrap: 'wrap', marginTop: 56},
   block: {width: '50%', padding: theme.spacing.base, height: 164},
 });

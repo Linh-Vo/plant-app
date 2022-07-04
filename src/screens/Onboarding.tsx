@@ -24,17 +24,20 @@ const slides = [
   {
     image: require('../assets/images/slide-1.png'),
     title: 'Identify Plants',
-    body: 'Identify plants from everywhere through your camera.',
+    body: 'Identify plants anywhere',
+    subBody: 'through your phone.',
   },
   {
     image: require('../assets/images/slide-2.png'),
     title: 'Create Collections',
-    body: 'Create your own collections to save the detected plants.',
+    body: 'Create your own collections to save',
+    subBody: 'the detected plants.',
   },
   {
     image: require('../assets/images/slide-3.png'),
     title: 'Recommend Products',
-    body: 'Recommend the related products on online marketplaces.',
+    body: 'Recommend the related products',
+    subBody: 'on online marketplaces.',
   },
 ];
 const Slide = ({item, currentIndex}) => {
@@ -53,10 +56,16 @@ const Slide = ({item, currentIndex}) => {
           {item.title}
         </Text>
         <Text
-          numberOfLines={2}
+          numberOfLines={1}
           adjustsFontSizeToFit
           style={{...TextStyle.bodyText, opacity: 0.6, textAlign: 'center'}}>
           {item.body}
+        </Text>
+        <Text
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          style={{...TextStyle.bodyText, opacity: 0.6, textAlign: 'center'}}>
+          {item.subBody}
         </Text>
       </View>
       <View
@@ -89,6 +98,7 @@ const Slide = ({item, currentIndex}) => {
             flex: 1,
             width: undefined,
             height: undefined,
+            paddingHorizontal: 16,
             // height: '100%',
           }}
           resizeMode={'contain'}
@@ -110,6 +120,7 @@ export const OnboardingScreen = ({navigation}) => {
           // paddingTop: 32,
           // flex: 1,
           height: 80,
+          marginTop: 16,
           justifyContent: 'center',
           paddingHorizontal: theme.spacing.triple,
         }}>
@@ -119,7 +130,7 @@ export const OnboardingScreen = ({navigation}) => {
           }}>
           {currentIndex === slides.length - 1 ? (
             <Button
-              buttonStyle={{...styles.button}}
+              buttonStyle={{...styles.button, backgroundColor: 'green'}}
               textStyle={{color: theme.color.primary}}
               onPress={navigateToHome}
               text={'Getting started'}
@@ -147,10 +158,8 @@ export const OnboardingScreen = ({navigation}) => {
     setCurrentIndex(currentIdex);
   };
   const skipSlide = () => {
-    const lastIndex = slides.length - 1;
-    const offset = lastIndex * dimensions.fullWidth;
-    ref?.current?.scrollToOffset({offset});
-    setCurrentIndex(lastIndex);
+    navigation.replace('Home-Stack');
+    dispatch(setAppState({isAppFristLoad: false}));
   };
   const navigateToHome = () => {
     navigation.replace('Home-Stack');
