@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Ref, useRef, useState} from 'react';
 import {
   FlatList,
@@ -21,17 +22,17 @@ const slides = [
   {
     image: require('../assets/images/slide-1.png'),
     title: 'Identify Plants',
-    body: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque',
+    body: 'Identify plants from everywhere through your camera.',
   },
   {
     image: require('../assets/images/slide-2.png'),
-    title: 'Create Your Own Collection',
-    body: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque',
+    title: 'Create Collections',
+    body: 'Create your own collections to save the detected plants.',
   },
   {
     image: require('../assets/images/slide-3.png'),
-    title: 'Recommend Where To Buy Detected Plants',
-    body: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque',
+    title: 'Recommend Products',
+    body: 'Recommend the related products on online marketplaces.',
   },
 ];
 const Slide = ({item, currentIndex}) => {
@@ -78,7 +79,8 @@ const Slide = ({item, currentIndex}) => {
       <View style={{height: '75%'}}>
         <FastImage
           style={{
-            width: dimensions.fullWidth,
+            width: '100%',
+            // aspectRatio: 3 / 2,
             height: '100%',
           }}
           resizeMode={'contain'}
@@ -97,9 +99,8 @@ export const OnboardingScreen = ({navigation}) => {
       <View
         style={{
           // height: dimensions.fullHeight * 0.25,
-          marginTop: 32,
-          flex: 1,
-
+          paddingTop: 32,
+          // flex: 1,
           paddingHorizontal: theme.spacing.triple,
         }}>
         <View
@@ -122,8 +123,6 @@ export const OnboardingScreen = ({navigation}) => {
                 buttonStyle={{
                   ...styles.button,
                   backgroundColor: 'transparent',
-                  // borderWidth: 1,
-                  // borderColor: theme.color.white,
                 }}
                 textStyle={{color: theme.color.dark}}
                 text={'Skip'}
@@ -138,14 +137,6 @@ export const OnboardingScreen = ({navigation}) => {
     const contentOffsetX = e.nativeEvent.contentOffset.x;
     const currentIdex = Math.round(contentOffsetX / dimensions.fullWidth);
     setCurrentIndex(currentIdex);
-  };
-  const goNextSlide = () => {
-    const nextIndex = currentIndex + 1;
-    if (nextIndex !== slides.length) {
-      const offset = nextIndex * dimensions.fullWidth;
-      ref?.current?.scrollToOffset({offset});
-      setCurrentIndex(nextIndex);
-    }
   };
   const skipSlide = () => {
     const lastIndex = slides.length - 1;
@@ -166,12 +157,10 @@ export const OnboardingScreen = ({navigation}) => {
         pagingEnabled
         data={slides}
         horizontal
-        contentContainerStyle={
-          {
-            // height: dimensions.fullHeight * 0.7,
-          }
-        }
-        style={{height: dimensions.fullHeight * 0.9}}
+        style={{
+          height: dimensions.fullHeight * 0.8,
+          backgroundColor: 'transparent',
+        }}
         showsHorizontalScrollIndicator={false}
         keyExtractor={item => item.title}
         renderItem={({item}) => (
