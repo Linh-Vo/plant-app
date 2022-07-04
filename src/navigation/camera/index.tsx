@@ -10,25 +10,26 @@ import {CameraImage} from '../../components/camera/CameraImage';
 import {DetectResult} from '../../components/camera/DetectResult';
 import {DetectError} from '../../components/camera/DetectError';
 import {PlantDetail} from '../../components/camera/PlantDetail';
+import {useAppDispatch, useAppSelector} from '../../hooks/redux';
+import {selectAppState, setCameraStatus} from '../../store/slices/app';
 
 const CameraStack = createNativeStackNavigator();
 export const CameraStackScreen = ({navigation}) => {
-  // const [cameraPermissionStatus, setCameraPermissionStatus] =
-  //   useState<CameraPermissionStatus>('not-determined');
-  // useEffect(() => {
-  //   // navigation.setOptions({tabBarStyle: {display: 'none'}});
-  //   const requestCameraPermission = async () => {
-  //     console.log('Requesting camera permission...');
-  //     const permission = await Camera.requestCameraPermission();
-  //     console.log(`Camera permission status: ${permission}`);
-  //     if (permission === 'denied') {
-  //       await Linking.openSettings();
-  //       // navigation.reset('Home-Stack');
-  //     }
-  //     setCameraPermissionStatus(permission);
-  //   };
-  //   requestCameraPermission();
-  // }, [navigation]);
+  const dispatch = useAppDispatch();
+  const {cameraPermissionStatus} = useAppSelector(selectAppState);
+  useEffect(() => {
+    // navigation.setOptions({tabBarStyle: {display: 'none'}});
+    const requestCameraPermission = async () => {
+      console.log('Requesting camera permission...');
+      const permission = await Camera.requestCameraPermission();
+      console.log(`Camera permission status: ${permission}`);
+      dispatch(setCameraStatus({cameraPermissionStatus: permission}));
+      // if (permission === 'denied') {
+      //   navigation.push('Permisson');
+      // }
+    };
+    requestCameraPermission();
+  }, [navigation, dispatch]);
   return (
     <CameraStack.Navigator
       screenOptions={{
@@ -37,11 +38,11 @@ export const CameraStackScreen = ({navigation}) => {
         animation: 'simple_push',
         animationTypeForReplace: 'push',
       }}
-      // initialRouteName={
-      //   cameraPermission !== 'authorized' ? 'Permisson' : 'Camera'
-      // }
-      initialRouteName={'Camera'}>
+      initialRouteName={
+        cameraPermissionStatus !== 'authorized' ? 'Permisson' : 'Camera'
+      }>
       <CameraStack.Screen name="Camera" component={CameraPage} />
+      <CameraStack.Screen name="Permisson" component={PermissionsPage} />
       <CameraStack.Screen name="Camera-Image" component={CameraImage} />
       <CameraStack.Screen name="Camera-Error" component={DetectError} />
       <CameraStack.Screen name="Camera-Result" component={DetectResult} />

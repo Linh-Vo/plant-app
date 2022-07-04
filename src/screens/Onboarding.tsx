@@ -1,12 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Ref, useRef, useState} from 'react';
 import {
+  Dimensions,
   FlatList,
   NativeScrollEvent,
   NativeSyntheticEvent,
   SafeAreaView,
   StatusBar,
   StyleSheet,
+  Image,
   Text,
   TouchableOpacity,
   View,
@@ -15,7 +17,7 @@ import FastImage from 'react-native-fast-image';
 import {theme} from '../theme/theme';
 import {dimensions, TextStyle} from '../styles/base';
 import {Button} from '../components/Button';
-import {setUtilsSate} from '../store/slices/app';
+import {setAppState} from '../store/slices/app';
 import {useAppDispatch} from '../hooks/redux';
 
 const slides = [
@@ -76,12 +78,18 @@ const Slide = ({item, currentIndex}) => {
           />
         ))}
       </View>
-      <View style={{height: '75%'}}>
-        <FastImage
+      <View
+        style={{
+          height: '80%',
+          marginTop: theme.spacing.double,
+        }}>
+        <Image
           style={{
-            width: '100%',
-            // aspectRatio: 3 / 2,
-            height: '100%',
+            // width: '100%',
+            flex: 1,
+            width: undefined,
+            height: undefined,
+            // height: '100%',
           }}
           resizeMode={'contain'}
           source={item.image}
@@ -99,15 +107,15 @@ export const OnboardingScreen = ({navigation}) => {
       <View
         style={{
           // height: dimensions.fullHeight * 0.25,
-          paddingTop: 32,
+          // paddingTop: 32,
           // flex: 1,
+          height: 80,
+          justifyContent: 'center',
           paddingHorizontal: theme.spacing.triple,
         }}>
         <View
           style={{
-            marginTop: 16,
             alignItems: 'flex-end',
-            justifyContent: 'center',
           }}>
           {currentIndex === slides.length - 1 ? (
             <Button
@@ -146,28 +154,31 @@ export const OnboardingScreen = ({navigation}) => {
   };
   const navigateToHome = () => {
     navigation.replace('Home-Stack');
-    dispatch(setUtilsSate({isAppFristLoad: false}));
+    dispatch(setAppState({isAppFristLoad: false}));
   };
   return (
-    <View style={{flex: 1, backgroundColor: theme.color.background}}>
-      <Footer />
-      <FlatList
-        ref={ref}
-        onMomentumScrollEnd={updateCurrentIndex}
-        pagingEnabled
-        data={slides}
-        horizontal
-        style={{
-          height: dimensions.fullHeight * 0.8,
-          backgroundColor: 'transparent',
-        }}
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={item => item.title}
-        renderItem={({item}) => (
-          <Slide currentIndex={currentIndex} item={item} />
-        )}
-      />
-    </View>
+    <>
+      <StatusBar backgroundColor={theme.color.background} translucent />
+      <View style={{flex: 1, backgroundColor: theme.color.background}}>
+        <Footer />
+        <FlatList
+          ref={ref}
+          onMomentumScrollEnd={updateCurrentIndex}
+          pagingEnabled
+          data={slides}
+          horizontal
+          style={{
+            // height: dimensions.fullHeight * 0.8,
+            backgroundColor: 'transparent',
+          }}
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={item => item.title}
+          renderItem={({item}) => (
+            <Slide currentIndex={currentIndex} item={item} />
+          )}
+        />
+      </View>
+    </>
   );
 };
 

@@ -56,6 +56,8 @@ import {imageGalleryLaunch} from '../../utils/helper';
 import {Path, Svg} from 'react-native-svg';
 import {TextStyle} from '../../styles/base';
 import {ScanTipModal} from './ScantipModal';
+import {useAppDispatch, useAppSelector} from '../../hooks/redux';
+import {selectAppState, setCameraStatus} from '../../store/slices/app';
 
 const ReanimatedCamera = Reanimated.createAnimatedComponent(Camera);
 Reanimated.addWhitelistedNativeProps({
@@ -67,31 +69,11 @@ const BUTTON_SIZE = 40;
 
 // type Props = NativeStackScreenProps<Routes, 'Scan'>;
 export function CameraPage({navigation}): React.ReactElement {
-  const camera = useRef<Camera>(null);
-  const [cameraPermissionStatus, setCameraPermissionStatus] =
-    useState<CameraPermissionStatus>('not-determined');
   const [galleryLoading, setLoading] = useState(false);
   const [isVisibleScanTip, setScanTipVisible] = useState(false);
-  const isFocused = useIsFocused();
-  useEffect(() => {
-    // navigation.getParent()?.setOptions({
-    //   tabBarStyle: {display: 'none'},
-    // });
-    const requestCameraPermission = async () => {
-      console.log('Requesting camera permission...');
-      const permission = await Camera.requestCameraPermission();
-      console.log(`Camera permission status: ${permission}`);
-
-      if (permission === 'denied') {
-        return navigation.push('Home-Stack');
-      }
-      setCameraPermissionStatus(permission);
-    };
-    if (isFocused) {
-      requestCameraPermission();
-    }
-  }, [isFocused, navigation]);
   const [isCameraInitialized, setIsCameraInitialized] = useState(false);
+  const {cameraPermissionStatus} = useAppSelector(selectAppState);
+  const camera = useRef<Camera>(null);
   const zoom = useSharedValue(0);
   const isPressingButton = useSharedValue(false);
 
