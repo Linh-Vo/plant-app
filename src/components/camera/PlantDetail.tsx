@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import {dimensions, TextStyle} from '../../styles/base';
 import {theme} from '../../theme/theme';
 import {Button} from '../../components/Button';
@@ -28,6 +29,15 @@ export const PlantDetail = ({route, navigation}) => {
   };
   const goBack = () => {
     navigation.goBack();
+  };
+  const showComingSoon = () => {
+    return Toast.show({
+      type: 'info',
+      position: 'bottom',
+      autoHide: true,
+      visibilityTime: 2000,
+      text2: 'Coming Soon!',
+    });
   };
   const [showHeaderBar, setShowHeaderBar] = useState(false);
   return (
@@ -151,11 +161,7 @@ export const PlantDetail = ({route, navigation}) => {
             backgroundColor: theme.color.white,
           }}>
           <TouchableOpacity
-            // onPress={() =>
-            //   navigation.navigate('Home-Stack', {
-            //     screen: 'Around',
-            //   })
-            // }
+            onPress={showComingSoon}
             style={{
               paddingRight: theme.spacing.double,
               alignItems: 'center',
@@ -185,11 +191,7 @@ export const PlantDetail = ({route, navigation}) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            // onPress={() =>
-            //   navigation.navigate('Home-Stack', {
-            //     screen: 'Community',
-            //   })
-            // }
+            onPress={showComingSoon}
             style={{
               paddingRight: theme.spacing.double,
               alignItems: 'center',

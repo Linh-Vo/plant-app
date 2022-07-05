@@ -12,7 +12,7 @@ const EbayItem = ({plantName}) => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     axios
-      .get('http://192.168.1.3:8088/ebay-items', {
+      .get(`${API_URL}/ebay-items`, {
         params: {
           plant_name: plantName,
         },

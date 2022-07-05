@@ -130,7 +130,7 @@ export const OnboardingScreen = ({navigation}) => {
           }}>
           {currentIndex === slides.length - 1 ? (
             <Button
-              buttonStyle={{...styles.button, backgroundColor: 'green'}}
+              buttonStyle={{...styles.button}}
               textStyle={{color: theme.color.primary}}
               onPress={navigateToHome}
               text={'Getting started'}

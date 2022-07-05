@@ -1,5 +1,5 @@
-import axios from 'axios';
-import React, {useState} from 'react';
+import axios, {AxiosError, CancelTokenSource} from 'axios';
+import React, {useRef, useState} from 'react';
 import {
   Image,
   Platform,
@@ -12,6 +12,7 @@ import LottieView from 'lottie-react-native';
 import {theme} from '../../theme/theme';
 import {Button} from '../../components/Button';
 import Svg, {Path} from 'react-native-svg';
+import {API_URL} from 'react-native-dotenv';
 import {SAFE_AREA_PADDING} from '../../utils/constants';
 import {TextStyle} from '../../styles/base';
 import {PlantResult} from '../../types';
@@ -19,7 +20,11 @@ import {PlantResult} from '../../types';
 export const CameraImage = ({route, navigation}) => {
   const {path, type} = route?.params;
   const [detecting, setDeteting] = useState(false);
+  const cancelTokenSource = useRef<CancelTokenSource>();
   const goBack = () => {
+    if (cancelTokenSource?.current) {
+      return cancelTokenSource.current.cancel();
+    }
     navigation.goBack();
   };
   const detectPhoto = () => {
@@ -36,20 +41,9 @@ export const CameraImage = ({route, navigation}) => {
           : path,
     });
     console.log(JSON.stringify(data));
-    // setTimeout(() => {
-    //   const result = res?.results as PlantResult[];
-    //   const filterResult = result?.filter(re => Number(re.score) * 100 >= 20); // only accept the result score > 30%
-    //   if (filterResult.length) {
-    //     navigation.navigate('Camera-Result', {
-    //       results: filterResult,
-    //     });
-    //   } else {
-    //     navigation.navigate('Camera-Error', {path: path, type});
-    //   }
-    //   setDeteting(false);
-    // }, 5000);
+    cancelTokenSource.current = axios.CancelToken.source();
     axios
-      .post('http://192.168.1.3:8088/identify', data, {
+      .post(`${API_URL}/identify`, data, {
         headers: {
           // Accept: 'application/json',
           'Content-Type': 'multipart/form-data',
@@ -58,6 +52,7 @@ export const CameraImage = ({route, navigation}) => {
           project: 'all',
           include_related_images: true,
         },
+        cancelToken: cancelTokenSource?.current?.token,
       })
       .then(res => {
         const result = res.data?.results as PlantResult[];
@@ -77,16 +72,21 @@ export const CameraImage = ({route, navigation}) => {
         }
         setDeteting(false);
       })
-      .catch(error => {
-        console.log('error', error);
+      .catch((error: Error | AxiosError) => {
+        console.log(error);
+        // user cancel request
+        setDeteting(false);
+        if (error.message === 'canceled') {
+          return navigation.goBack();
+        }
         navigation.navigate('Camera-Error', {
           path: path,
           type,
           errorText: 'Server error, please try again!',
         });
-        setDeteting(false);
       });
   };
+  console.log(API_URL, cancelTokenSource.current?.token);
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={goBack} style={styles.closeButton}>

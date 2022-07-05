@@ -24,7 +24,7 @@ export const Button = (props: ButtonProps) => {
       style={[
         styles.container,
         // eslint-disable-next-line react-native/no-inline-styles
-        props.isDisable && {opacity: 0.2},
+        props.isDisable && {opacity: 0.4},
         props.buttonStyle,
       ]}>
       <Text style={[styles.text, props.textStyle]}>{props.text}</Text>

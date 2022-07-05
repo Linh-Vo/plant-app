@@ -26,6 +26,7 @@ import {ErrorModal} from '../../components/ErrorModal';
 const ModalBody = ({backDropPress, collection}) => {
   const [isVisible, setVisible] = useState({visible: false, title: ''});
   const [errorVisible, setErrorVisible] = useState(false);
+  const [collectionDefaultName, setName] = useState(collection?.name || '');
   const collections = useAppSelector(selectCollections);
   const dispatch = useAppDispatch();
   const removeCollection = () => () => {
@@ -47,6 +48,7 @@ const ModalBody = ({backDropPress, collection}) => {
       );
       backDropPress();
     } else {
+      setName(newName);
       setErrorVisible(true);
     }
   };
@@ -60,9 +62,9 @@ const ModalBody = ({backDropPress, collection}) => {
             marginBottom: theme.spacing.double,
           }}>
           <TouchableOpacity
-            onPress={() =>
-              setVisible({visible: true, title: 'Rename Collection'})
-            }
+            onPress={() => {
+              setVisible({visible: true, title: 'Rename Collection'});
+            }}
             style={styles.button}>
             <Text style={TextStyle.bodyText}>{'Rename Collection'}</Text>
           </TouchableOpacity>
@@ -97,7 +99,7 @@ const ModalBody = ({backDropPress, collection}) => {
             ? removeCollection
             : reNameCollection
         }
-        defaultColName={collection.name}
+        defaultColName={collectionDefaultName}
         isVisible={isVisible.visible}>
         {errorVisible && (
           <ErrorModal
@@ -113,13 +115,13 @@ const ModalBody = ({backDropPress, collection}) => {
 export const MenuModal = ({isVisible, backDropPress, collection}) => {
   return (
     <>
-      <View style={styles.container}>
+      <View style={{...styles.container}}>
         <Modal
           useNativeDriver={true}
           isVisible={isVisible}
           hasBackdrop={true}
           statusBarTranslucent
-          style={styles.modal}
+          style={{...styles.modal}}
           backdropColor={theme.color.dark}
           deviceHeight={Dimensions.get('screen').height}
           backdropOpacity={0.8}
