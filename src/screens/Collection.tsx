@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -26,21 +26,24 @@ export const CollectionScreen = ({navigation}) => {
     });
   };
   const dispatch = useAppDispatch();
-  const createCollection = (collectionName: string) => () => {
-    const existedCollection = collections.find(e => e.name === collectionName);
+  const createCollection = (name: string) => () => {
+    const existedCollection = collections.find(e => e.name === name);
     if (!existedCollection) {
       dispatch(
         addCollection({
           id: generateUniqSerial(),
-          name: collectionName,
+          name: name,
           plants: [],
         }),
       );
       setVisible(false);
+      return true;
     } else {
       setErrorVisible(true);
+      return false;
     }
   };
+  console.log('collection');
   const [addModalVisible, setVisible] = useState(false);
   const [errorVisible, setErrorVisible] = useState(false);
   return (

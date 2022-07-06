@@ -56,7 +56,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     height: 92,
     alignItems: 'center',
-    padding: theme.spacing.triple,
+    paddingVertical: theme.spacing.triple,
+    paddingLeft: theme.spacing.triple,
     flexDirection: 'row',
   },
   textView: {
@@ -70,7 +71,6 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     alignItems: 'flex-end',
-    paddingLeft: 16,
-    paddingVertical: 16,
+    padding: 16,
   },
 });

@@ -156,11 +156,12 @@ export const PlantDetail = ({route, navigation}) => {
               height: -4,
             },
             alignItems: 'center',
+            justifyContent: 'center',
             shadowOpacity: 0.05,
-            elevation: 1,
+            elevation: 5,
             backgroundColor: theme.color.white,
           }}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={showComingSoon}
             style={{
               paddingRight: theme.spacing.double,
@@ -232,7 +233,7 @@ export const PlantDetail = ({route, navigation}) => {
               }}>
               {'Share'}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <Button
             onPress={navigateToCollection}
             buttonStyle={{flex: 1}}
@@ -261,7 +262,7 @@ const AnimatedHeader = ({goBack, plantName}) => {
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
-      duration: 500,
+      duration: 1000,
       useNativeDriver: false,
     }).start();
   }, [fadeAnim]);

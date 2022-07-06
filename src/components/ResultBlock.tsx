@@ -30,7 +30,9 @@ export const ResultBlock = (props: DetectResultProps) => {
   };
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={gotoPlantDetail}>
+      <TouchableOpacity
+        style={{paddingBottom: theme.spacing.triple}}
+        onPress={gotoPlantDetail}>
         {!props.isHideMatch && props.plant.score && (
           <Text style={[TextStyle.bodyText, props.textStyle]}>
             {`${(Number(props.plant.score) * 100).toFixed(2)}% matched`}
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   imageContainer: {
-    marginTop: theme.spacing.triple,
+    // marginTop: theme.spacing.triple,
   },
   image: {
     width: 72,

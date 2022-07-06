@@ -1,17 +1,13 @@
 import React, {useState} from 'react';
 import {
   Dimensions,
-  Platform,
-  Pressable,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import Svg, {Path} from 'react-native-svg';
-import {dimensions, TextStyle} from '../../styles/base';
+import {TextStyle} from '../../styles/base';
 import {theme} from '../../theme/theme';
 import {Button} from '../Button';
 import ModalBlock from '../ModalBlock';
@@ -23,35 +19,7 @@ import {
 } from '../../store/slices/collection';
 import {ErrorModal} from '../../components/ErrorModal';
 
-const ModalBody = ({backDropPress, collection}) => {
-  const [isVisible, setVisible] = useState({visible: false, title: ''});
-  const [errorVisible, setErrorVisible] = useState(false);
-  const [collectionDefaultName, setName] = useState(collection?.name || '');
-  const collections = useAppSelector(selectCollections);
-  const dispatch = useAppDispatch();
-  const removeCollection = () => () => {
-    dispatch(
-      deleteCollection({
-        collectionId: collection?.id,
-      }),
-    );
-    backDropPress();
-  };
-  const reNameCollection = (newName: string) => () => {
-    const existedCollection = collections.find(e => e.name === newName);
-    if (!existedCollection) {
-      dispatch(
-        renameCollection({
-          collectionId: collection?.id,
-          name: newName,
-        }),
-      );
-      backDropPress();
-    } else {
-      setName(newName);
-      setErrorVisible(true);
-    }
-  };
+const ModalBody = ({backDropPress, setVisible}) => {
   return (
     <>
       <View style={styles.modalBody}>
@@ -64,15 +32,17 @@ const ModalBody = ({backDropPress, collection}) => {
           <TouchableOpacity
             onPress={() => {
               setVisible({visible: true, title: 'Rename Collection'});
+              backDropPress();
             }}
             style={styles.button}>
             <Text style={TextStyle.bodyText}>{'Rename Collection'}</Text>
           </TouchableOpacity>
           <View style={styles.horizontalLine} />
           <TouchableOpacity
-            onPress={() =>
-              setVisible({visible: true, title: 'Delete Collection'})
-            }
+            onPress={() => {
+              setVisible({visible: true, title: 'Delete Collection'});
+              backDropPress();
+            }}
             style={styles.button}>
             <Text style={{...TextStyle.bodyText, color: theme.color.danger}}>
               {'Delete Collection'}
@@ -88,31 +58,50 @@ const ModalBody = ({backDropPress, collection}) => {
           text="Cancel"
         />
       </View>
-      <ModalBlock
-        title={isVisible.title}
-        isDeleteModal={isVisible.title === 'Delete Collection'}
-        onBackdropPress={() => {
-          backDropPress();
-        }}
-        extraAction={
-          isVisible.title === 'Delete Collection'
-            ? removeCollection
-            : reNameCollection
-        }
-        defaultColName={collectionDefaultName}
-        isVisible={isVisible.visible}>
-        {errorVisible && (
-          <ErrorModal
-            isVisible={errorVisible}
-            backdropPress={() => setErrorVisible(false)}
-            message={'Collection name already existed!'}
-          />
-        )}
-      </ModalBlock>
     </>
   );
 };
 export const MenuModal = ({isVisible, backDropPress, collection}) => {
+  const [isSubMenuVisible, setSubmenuVisible] = useState({
+    visible: false,
+    title: '',
+  });
+  const [errorVisible, setErrorVisible] = useState(false);
+  const collections = useAppSelector(selectCollections);
+  const dispatch = useAppDispatch();
+  const removeCollection = () => () => {
+    dispatch(
+      deleteCollection({
+        collectionId: collection?.id,
+      }),
+    );
+    setSubmenuVisible({
+      visible: false,
+      title: '',
+    });
+    backDropPress();
+  };
+  const reNameCollection = (newName: string) => () => {
+    const existedCollection = collections.find(e => e.name === newName);
+    if (!existedCollection) {
+      dispatch(
+        renameCollection({
+          collectionId: collection?.id,
+          name: newName,
+        }),
+      );
+      setSubmenuVisible({
+        visible: false,
+        title: '',
+      });
+      backDropPress();
+      return true;
+    } else {
+      setErrorVisible(true);
+      return false;
+    }
+  };
+  console.log({isSubMenuVisible});
   return (
     <>
       <View style={{...styles.container}}>
@@ -129,9 +118,39 @@ export const MenuModal = ({isVisible, backDropPress, collection}) => {
           animationIn={'fadeInUp'}
           animationOut={'fadeOutDown'}>
           <View style={styles.modalBody}>
-            <ModalBody collection={collection} backDropPress={backDropPress} />
+            <ModalBody
+              setVisible={setSubmenuVisible}
+              backDropPress={backDropPress}
+            />
           </View>
         </Modal>
+        {isSubMenuVisible.visible && (
+          <ModalBlock
+            title={isSubMenuVisible.title}
+            isDeleteModal={isSubMenuVisible.title === 'Delete Collection'}
+            onBackdropPress={() => {
+              setSubmenuVisible({
+                visible: false,
+                title: '',
+              });
+              backDropPress();
+            }}
+            extraAction={
+              isSubMenuVisible.title === 'Delete Collection'
+                ? removeCollection
+                : reNameCollection
+            }
+            defaultColName={collection?.name || ''}
+            isVisible={isSubMenuVisible.visible}>
+            {errorVisible && (
+              <ErrorModal
+                isVisible={errorVisible}
+                backdropPress={() => setErrorVisible(false)}
+                message={'Collection name already existed!'}
+              />
+            )}
+          </ModalBlock>
+        )}
       </View>
     </>
   );

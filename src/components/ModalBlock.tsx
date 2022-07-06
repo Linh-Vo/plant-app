@@ -100,7 +100,7 @@ export default function ModalBlock(props: ModalBlockProps) {
                     onChangeText={text => setName(text)}
                     placeholderTextColor={'#22222299'}
                     style={styles.input}
-                    defaultValue={props.defaultColName}
+                    defaultValue={collectionName}
                     placeholder="Name your collection"
                   />
                   <Button
@@ -108,7 +108,13 @@ export default function ModalBlock(props: ModalBlockProps) {
                       collectionName === props.defaultColName || !collectionName
                     }
                     textStyle={{color: theme.color.white}}
-                    onPress={props.extraAction(collectionName)}
+                    onPress={() => {
+                      if (props.extraAction(collectionName)()) {
+                        setName('');
+                      } else {
+                        setName(collectionName);
+                      }
+                    }}
                     text="Save"
                   />
                 </>
