@@ -1,7 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
-import {PlantResult} from '../../types';
 import {SAFE_AREA_PADDING} from '../../utils/constants';
 import {theme} from '../../theme/theme';
 import {ResultBlock} from '../ResultBlock';

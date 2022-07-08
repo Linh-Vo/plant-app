@@ -52,24 +52,26 @@ export const ResultBlock = (props: DetectResultProps) => {
               {props.plant.species.scientificName}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={{paddingLeft: theme.spacing.double}}
-            onPress={() => setMenuVisible(true)}>
-            <Svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-              <Path
-                d="M6 13C7.65685 13 9 14.3431 9 16C9 17.6569 7.65685 19 6 19C4.34315 19 3 17.6569 3 16C3 14.3431 4.34315 13 6 13Z"
-                fill="#D9D9D9"
-              />
-              <Path
-                d="M16 13C17.6569 13 19 14.3431 19 16C19 17.6569 17.6569 19 16 19C14.3431 19 13 17.6569 13 16C13 14.3431 14.3431 13 16 13Z"
-                fill="#D9D9D9"
-              />
-              <Path
-                d="M26 13C27.6569 13 29 14.3431 29 16C29 17.6569 27.6569 19 26 19C24.3431 19 23 17.6569 23 16C23 14.3431 24.3431 13 26 13Z"
-                fill="#D9D9D9"
-              />
-            </Svg>
-          </TouchableOpacity>
+          {props.isGarden && (
+            <TouchableOpacity
+              style={{paddingLeft: theme.spacing.double}}
+              onPress={() => setMenuVisible(true)}>
+              <Svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <Path
+                  d="M6 13C7.65685 13 9 14.3431 9 16C9 17.6569 7.65685 19 6 19C4.34315 19 3 17.6569 3 16C3 14.3431 4.34315 13 6 13Z"
+                  fill="#D9D9D9"
+                />
+                <Path
+                  d="M16 13C17.6569 13 19 14.3431 19 16C19 17.6569 17.6569 19 16 19C14.3431 19 13 17.6569 13 16C13 14.3431 14.3431 13 16 13Z"
+                  fill="#D9D9D9"
+                />
+                <Path
+                  d="M26 13C27.6569 13 29 14.3431 29 16C29 17.6569 27.6569 19 26 19C24.3431 19 23 17.6569 23 16C23 14.3431 24.3431 13 26 13Z"
+                  fill="#D9D9D9"
+                />
+              </Svg>
+            </TouchableOpacity>
+          )}
         </View>
         <ScrollView
           style={styles.imageContainer}
