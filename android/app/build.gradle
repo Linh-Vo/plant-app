@@ -265,7 +265,7 @@ android {
             }
             def formattedDate = new Date().format('MMddyyyy')
 
-            def newName = "Plantylife" + "-release-${formattedDate}"
+            def newName = "Plantylife" + "-release-${formattedDate}.apk"
             output.outputFileName = newName
 
         }
