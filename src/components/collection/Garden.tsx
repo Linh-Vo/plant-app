@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  FlatList,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,6 +15,7 @@ import {SAFE_AREA_PADDING, SCREEN_NAME} from '../../utils/constants';
 import {ResultBlock} from '../../components/ResultBlock';
 import {useAppSelector} from '../../hooks/redux';
 import {selectCollections} from '../../store/slices/collection';
+import {PlantResult} from '../../types';
 
 export const Garden = ({route, navigation}) => {
   const {collectionId} = route?.params;
@@ -52,22 +54,39 @@ export const Garden = ({route, navigation}) => {
         </TouchableOpacity> */}
       </View>
       {plants?.length ? (
-        <ScrollView
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-          horizontal={false}>
-          {plants?.map((res, idx) => (
+        // <ScrollView
+        //   keyboardShouldPersistTaps="handled"
+        //   showsVerticalScrollIndicator={false}
+        //   horizontal={false}>
+        //   {plants?.map((res, idx) => (
+        //     <ResultBlock
+        //       hideCollection={true}
+        //       isHideMatch={true}
+        //       key={idx}
+        //       plant={res}
+        //       textStyle={{
+        //         color: idx === 0 ? theme.color.primary : theme.color.danger,
+        //       }}
+        //     />
+        //   ))}
+        // </ScrollView>
+        <FlatList
+          keyboardShouldPersistTaps={'handled'}
+          data={plants}
+          keyExtractor={(item: PlantResult) => item.species.scientificName}
+          renderItem={({item, index}) => (
             <ResultBlock
+              collection={currentCollection}
               hideCollection={true}
-              isHideMatch={true}
-              key={idx}
-              plant={res}
+              isGarden={true}
+              key={index}
+              plant={item}
               textStyle={{
-                color: idx === 0 ? theme.color.primary : theme.color.danger,
+                color: index === 0 ? theme.color.primary : theme.color.danger,
               }}
             />
-          ))}
-        </ScrollView>
+          )}
+        />
       ) : (
         <View style={{...Container.center}}>
           <Text style={TextStyle.h4Text}>{'You have no plant'}</Text>

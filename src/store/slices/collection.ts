@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from 'store/store';
 import {PlantResult} from '../../types';
-
+import Toast from 'react-native-toast-message';
 export interface CollectionState {
   id: string;
   name: string;
@@ -33,9 +33,85 @@ export const collectionSlice = createSlice({
       state: CollectionState[],
       action: PayloadAction<{collectionId: string; plant: PlantResult}>,
     ) => {
+      const updatePlant = (col: CollectionState, plant: PlantResult) => {
+        const existedPlant = col.plants.find(
+          item => item.species?.scientificName === plant.species.scientificName,
+        );
+        if (existedPlant) {
+          Toast.show({
+            type: 'info',
+            position: 'top',
+            autoHide: true,
+            visibilityTime: 2000,
+            text2: 'The plant already exsits!',
+          });
+          return col.plants;
+        }
+        return [plant, ...(col.plants || [])];
+      };
       state = state.map(col =>
         col.id === action.payload.collectionId
-          ? {...col, plants: [action.payload.plant, ...(col.plants || [])]}
+          ? {...col, plants: updatePlant(col, action.payload.plant)}
+          : col,
+      );
+      return state;
+    },
+    renamePlant: (
+      state: CollectionState[],
+      action: PayloadAction<{
+        collectionId: string;
+        plant: PlantResult;
+        newName: string;
+      }>,
+    ) => {
+      const updatePlant = (col: CollectionState) => {
+        const plantIndex = col.plants.findIndex(
+          item =>
+            item.species?.scientificName ===
+            action.payload.plant.species.scientificName,
+        );
+        if (plantIndex !== -1) {
+          const updatedPlants = col.plants.map((plant, idx) =>
+            idx === plantIndex
+              ? {
+                  ...plant,
+                  species: {
+                    ...plant.species,
+                    scientificName: action.payload.newName,
+                  },
+                }
+              : plant,
+          );
+          return updatedPlants;
+        }
+        return [action.payload.plant, ...(col.plants || [])];
+      };
+      state = state.map(col =>
+        col.id === action.payload.collectionId
+          ? {...col, plants: updatePlant(col)}
+          : col,
+      );
+      return state;
+    },
+    deletePlant: (
+      state: CollectionState[],
+      action: PayloadAction<{collectionId: string; plant: PlantResult}>,
+    ) => {
+      const deletePlant = (col: CollectionState, plant: PlantResult) => {
+        const plantIndex = col.plants.findIndex(
+          item => item.species?.scientificName === plant.species.scientificName,
+        );
+        if (plantIndex !== -1) {
+          const updatedPlants = col.plants.filter(
+            (_, idx) => idx !== plantIndex,
+          );
+          return updatedPlants || [];
+        }
+        return [plant, ...(col.plants || [])];
+      };
+      state = state.map(col =>
+        col.id === action.payload.collectionId
+          ? {...col, plants: deletePlant(col, action.payload.plant)}
           : col,
       );
       return state;
@@ -67,6 +143,8 @@ export const {
   addCollection,
   renameCollection,
   addPlantToCollection,
+  deletePlant,
+  renamePlant,
 } = collectionSlice.actions;
 export const selectCollections = (state: RootState) => state.collections;
 export default collectionSlice.reducer;

@@ -44,9 +44,16 @@ function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
             const isFocused = state.index === index;
 
             const onPress = () => {
-              // if (label === SCREEN_NAME.Scan) {
-              //   return navigation.reset('Scan-Stacl');
-              // }
+              if (label === SCREEN_NAME.Scan) {
+                return navigation.reset({
+                  index: 0,
+                  routes: [
+                    {
+                      name: SCREEN_NAME.Scan,
+                    },
+                  ],
+                });
+              }
               if (
                 SCREEN_NAME.Community === label ||
                 SCREEN_NAME.Around === label
@@ -65,9 +72,16 @@ function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
             };
 
             const onLongPress = () => {
-              // if (label === SCREEN_NAME.Scan) {
-              //   return openCamera();
-              // }
+              if (label === SCREEN_NAME.Scan) {
+                return navigation.reset({
+                  index: 0,
+                  routes: [
+                    {
+                      name: SCREEN_NAME.Scan,
+                    },
+                  ],
+                });
+              }
               if (
                 SCREEN_NAME.Community === label ||
                 SCREEN_NAME.Around === label

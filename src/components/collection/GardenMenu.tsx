@@ -13,12 +13,20 @@ import {Button} from '../Button';
 import ModalBlock from '../ModalBlock';
 import {useAppDispatch, useAppSelector} from '../../hooks/redux';
 import {
-  deleteCollection,
-  renameCollection,
+  CollectionState,
+  deletePlant,
+  renamePlant,
   selectCollections,
 } from '../../store/slices/collection';
 import {ErrorModal} from '../../components/ErrorModal';
+import {PlantResult} from '../../types';
 
+interface GardenMenuProps {
+  isVisible: boolean;
+  backDropPress: () => void;
+  plant: PlantResult;
+  collection: CollectionState;
+}
 const ModalBody = ({backDropPress, setVisible}) => {
   return (
     <>
@@ -31,21 +39,21 @@ const ModalBody = ({backDropPress, setVisible}) => {
           }}>
           <TouchableOpacity
             onPress={() => {
-              setVisible({visible: true, title: 'Rename Collection'});
+              setVisible({visible: true, title: 'Rename Plant'});
               backDropPress();
             }}
             style={styles.button}>
-            <Text style={TextStyle.bodyText}>{'Rename Collection'}</Text>
+            <Text style={TextStyle.bodyText}>{'Rename Plant'}</Text>
           </TouchableOpacity>
           <View style={styles.horizontalLine} />
           <TouchableOpacity
             onPress={() => {
-              setVisible({visible: true, title: 'Delete Collection'});
+              setVisible({visible: true, title: 'Delete Plant'});
               backDropPress();
             }}
             style={styles.button}>
             <Text style={{...TextStyle.bodyText, color: theme.color.danger}}>
-              {'Delete Collection'}
+              {'Delete Plant'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -61,7 +69,12 @@ const ModalBody = ({backDropPress, setVisible}) => {
     </>
   );
 };
-export const MenuModal = ({isVisible, backDropPress, collection}) => {
+export const GardenMenu = ({
+  isVisible,
+  backDropPress,
+  plant,
+  collection,
+}: GardenMenuProps) => {
   const [isSubMenuVisible, setSubmenuVisible] = useState({
     visible: false,
     title: '',
@@ -69,10 +82,11 @@ export const MenuModal = ({isVisible, backDropPress, collection}) => {
   const [errorVisible, setErrorVisible] = useState(false);
   const collections = useAppSelector(selectCollections);
   const dispatch = useAppDispatch();
-  const removeCollection = () => () => {
+  const removePlant = () => () => {
     dispatch(
-      deleteCollection({
+      deletePlant({
         collectionId: collection?.id,
+        plant: plant,
       }),
     );
     setSubmenuVisible({
@@ -81,13 +95,14 @@ export const MenuModal = ({isVisible, backDropPress, collection}) => {
     });
     backDropPress();
   };
-  const reNameCollection = (newName: string) => () => {
+  const changePlantName = (newName: string) => () => {
     const existedCollection = collections.find(e => e.name === newName);
     if (!existedCollection) {
       dispatch(
-        renameCollection({
+        renamePlant({
           collectionId: collection?.id,
-          name: newName,
+          plant,
+          newName,
         }),
       );
       setSubmenuVisible({
@@ -128,8 +143,10 @@ export const MenuModal = ({isVisible, backDropPress, collection}) => {
         )}
         {isSubMenuVisible.visible && (
           <ModalBlock
+            inputPlaceHolder="Name your plant"
+            deleteTile="Are you sure to delete this plant?"
             title={isSubMenuVisible.title}
-            isDeleteModal={isSubMenuVisible.title === 'Delete Collection'}
+            isDeleteModal={isSubMenuVisible.title === 'Delete Plant'}
             onBackdropPress={() => {
               setSubmenuVisible({
                 visible: false,
@@ -138,17 +155,17 @@ export const MenuModal = ({isVisible, backDropPress, collection}) => {
               backDropPress();
             }}
             extraAction={
-              isSubMenuVisible.title === 'Delete Collection'
-                ? removeCollection
-                : reNameCollection
+              isSubMenuVisible.title === 'Delete Plant'
+                ? removePlant
+                : changePlantName
             }
-            defaultColName={collection?.name || ''}
+            defaultColName={plant?.species?.scientificNameWithoutAuthor || ''}
             isVisible={isSubMenuVisible.visible}>
             {errorVisible && (
               <ErrorModal
                 isVisible={errorVisible}
                 backdropPress={() => setErrorVisible(false)}
-                message={'Collection name already existed!'}
+                message={'Plant name already existed!'}
               />
             )}
           </ModalBlock>
