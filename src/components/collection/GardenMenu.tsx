@@ -130,7 +130,7 @@ export const GardenMenu = ({
             backdropColor={theme.color.dark}
             deviceHeight={Dimensions.get('screen').height}
             backdropOpacity={0.8}
-            onBackdropPress={() => {}}
+            onBackdropPress={backDropPress}
             animationIn={'fadeInUp'}
             animationOut={'fadeOutDown'}>
             <View style={styles.modalBody}>
