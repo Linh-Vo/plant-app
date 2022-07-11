@@ -105,6 +105,8 @@ export const CameraImage = ({route, navigation}) => {
       <View style={styles.imageView}>
         {path && (
           <Image
+            resizeMethod="scale"
+            resizeMode="cover"
             style={styles.image}
             source={{
               uri:
@@ -157,7 +159,8 @@ const styles = StyleSheet.create({
   },
   imageView: {
     // flex: 1,
-    padding: '10%',
+    // backgroundColor: 'red',
+    paddingHorizontal: '10%',
     height: '60%',
     marginTop: theme.spacing.double,
   },
