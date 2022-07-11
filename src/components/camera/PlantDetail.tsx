@@ -19,26 +19,30 @@ import {CollectionModal} from './CollectionModal';
 import {PlantImage} from '../../types';
 import EbayItem from './EbayItems';
 import WikiItem from './WikiContent';
+import {ImageViewModal} from '../../components/ImageViewModal';
 
 export const PlantDetail = ({route, navigation}) => {
   const {plant, hideCollection} = route?.params;
   const [visible, setVisible] = useState(false);
-
+  const [imageViewVisible, setImageViewVisible] = useState({
+    isVisible: false,
+    index: 0,
+  });
   const navigateToCollection = () => {
     setVisible(true);
   };
   const goBack = () => {
     navigation.goBack();
   };
-  const showComingSoon = () => {
-    return Toast.show({
-      type: 'info',
-      position: 'bottom',
-      autoHide: true,
-      visibilityTime: 2000,
-      text2: 'Coming Soon!',
-    });
-  };
+  // const showComingSoon = () => {
+  //   return Toast.show({
+  //     type: 'info',
+  //     position: 'bottom',
+  //     autoHide: true,
+  //     visibilityTime: 2000,
+  //     text2: 'Coming Soon!',
+  //   });
+  // };
   const [showHeaderBar, setShowHeaderBar] = useState(false);
   return (
     <View style={{flex: 1, position: 'relative'}}>
@@ -129,11 +133,13 @@ export const PlantDetail = ({route, navigation}) => {
               horizontal
               showsHorizontalScrollIndicator={false}>
               {plant.images.map((image: PlantImage, idx: number) => (
-                <FastImage
-                  style={styles.image}
-                  key={idx}
-                  source={{uri: image.url.m}}
-                />
+                <TouchableOpacity
+                  onPress={() =>
+                    setImageViewVisible({isVisible: true, index: idx})
+                  }
+                  key={idx}>
+                  <FastImage style={styles.image} source={{uri: image.url.m}} />
+                </TouchableOpacity>
               ))}
             </ScrollView>
           </View>
@@ -253,6 +259,16 @@ export const PlantDetail = ({route, navigation}) => {
         backDropPress={() => setVisible(false)}
         plant={plant}
       />
+      {plant.images.length && (
+        <ImageViewModal
+          isVisible={imageViewVisible.isVisible}
+          backdropPress={() =>
+            setImageViewVisible({isVisible: false, index: 0})
+          }
+          images={plant?.images}
+          index={imageViewVisible.index}
+        />
+      )}
     </View>
   );
 };

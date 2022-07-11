@@ -317,7 +317,7 @@ export function CameraPage({navigation}): React.ReactElement {
           <PinchGestureHandler
             onGestureEvent={onPinchGesture}
             enabled={isActive}>
-            <Reanimated.View style={{flex: 1}}>
+            <Reanimated.View style={StyleSheet.absoluteFill}>
               {/* <TapGestureHandler onEnded={onDoubleTap} numberOfTaps={2}> */}
               <ReanimatedCamera
                 ref={camera}
@@ -351,38 +351,32 @@ export function CameraPage({navigation}): React.ReactElement {
           </PinchGestureHandler>
         )}
 
-        <View
-          style={{
-            height: 108,
-            justifyContent: 'flex-end',
-            backgroundColor: 'black',
-          }}>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                setLoading(true);
-                imageGalleryLaunch(onMediaCaptured)();
-              }}
-              style={styles.galleryButton}>
-              <Image source={require('../../assets/images/gallery-bg.png')} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.captureButton}
-              onPress={async () => {
-                const photo = await camera.current?.takePhoto({
-                  photoCodec: 'jpeg',
-                  flash: flash,
-                  quality: 90,
-                  // enableAutoDistortionCorrection: true,
-                  // enableAutoStabilization: true,
-                  skipMetadata: true,
-                });
-                if (photo) {
-                  onMediaCaptured(photo, 'capture');
-                }
-              }}
-            />
-            {/* <CaptureButton
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={() => {
+              setLoading(true);
+              imageGalleryLaunch(onMediaCaptured)();
+            }}
+            style={styles.galleryButton}>
+            <Image source={require('../../assets/images/gallery-bg.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.captureButton}
+            onPress={async () => {
+              const photo = await camera.current?.takePhoto({
+                photoCodec: 'jpeg',
+                flash: flash,
+                quality: 90,
+                // enableAutoDistortionCorrection: true,
+                // enableAutoStabilization: true,
+                skipMetadata: true,
+              });
+              if (photo) {
+                onMediaCaptured(photo, 'capture');
+              }
+            }}
+          />
+          {/* <CaptureButton
           style={styles.captureButton}
           camera={camera}
           onMediaCaptured={onMediaCaptured}
@@ -393,30 +387,29 @@ export function CameraPage({navigation}): React.ReactElement {
           enabled={isCameraInitialized && isActive}
           setIsPressingButton={setIsPressingButton}
         /> */}
-            <TouchableOpacity
-              onPress={() => setScanTipVisible(true)}
-              style={styles.snapButton}>
-              <Svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <Path
-                  opacity="0.4"
-                  d="M10 18.3333C14.6024 18.3333 18.3334 14.6024 18.3334 9.99999C18.3334 5.39762 14.6024 1.66666 10 1.66666C5.39765 1.66666 1.66669 5.39762 1.66669 9.99999C1.66669 14.6024 5.39765 18.3333 10 18.3333Z"
-                  fill="white"
-                />
-                <Path
-                  d="M10 11.4583C10.3417 11.4583 10.625 11.175 10.625 10.8333V6.66666C10.625 6.32499 10.3417 6.04166 10 6.04166C9.65833 6.04166 9.375 6.32499 9.375 6.66666V10.8333C9.375 11.175 9.65833 11.4583 10 11.4583Z"
-                  fill="white"
-                />
-                <Path
-                  d="M10.7667 13.0167C10.725 12.9167 10.6667 12.825 10.5917 12.7417C10.5084 12.6667 10.4167 12.6083 10.3167 12.5667C10.1167 12.4833 9.88335 12.4833 9.68335 12.5667C9.58335 12.6083 9.49169 12.6667 9.40835 12.7417C9.33335 12.825 9.27502 12.9167 9.23335 13.0167C9.19169 13.1167 9.16669 13.225 9.16669 13.3333C9.16669 13.4417 9.19169 13.55 9.23335 13.65C9.27502 13.7583 9.33335 13.8417 9.40835 13.925C9.49169 14 9.58335 14.0583 9.68335 14.1C9.78335 14.1417 9.89169 14.1667 10 14.1667C10.1084 14.1667 10.2167 14.1417 10.3167 14.1C10.4167 14.0583 10.5084 14 10.5917 13.925C10.6667 13.8417 10.725 13.7583 10.7667 13.65C10.8084 13.55 10.8334 13.4417 10.8334 13.3333C10.8334 13.225 10.8084 13.1167 10.7667 13.0167Z"
-                  fill="white"
-                />
-              </Svg>
+          <TouchableOpacity
+            onPress={() => setScanTipVisible(true)}
+            style={styles.snapButton}>
+            <Svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <Path
+                opacity="0.4"
+                d="M10 18.3333C14.6024 18.3333 18.3334 14.6024 18.3334 9.99999C18.3334 5.39762 14.6024 1.66666 10 1.66666C5.39765 1.66666 1.66669 5.39762 1.66669 9.99999C1.66669 14.6024 5.39765 18.3333 10 18.3333Z"
+                fill="white"
+              />
+              <Path
+                d="M10 11.4583C10.3417 11.4583 10.625 11.175 10.625 10.8333V6.66666C10.625 6.32499 10.3417 6.04166 10 6.04166C9.65833 6.04166 9.375 6.32499 9.375 6.66666V10.8333C9.375 11.175 9.65833 11.4583 10 11.4583Z"
+                fill="white"
+              />
+              <Path
+                d="M10.7667 13.0167C10.725 12.9167 10.6667 12.825 10.5917 12.7417C10.5084 12.6667 10.4167 12.6083 10.3167 12.5667C10.1167 12.4833 9.88335 12.4833 9.68335 12.5667C9.58335 12.6083 9.49169 12.6667 9.40835 12.7417C9.33335 12.825 9.27502 12.9167 9.23335 13.0167C9.19169 13.1167 9.16669 13.225 9.16669 13.3333C9.16669 13.4417 9.19169 13.55 9.23335 13.65C9.27502 13.7583 9.33335 13.8417 9.40835 13.925C9.49169 14 9.58335 14.0583 9.68335 14.1C9.78335 14.1417 9.89169 14.1667 10 14.1667C10.1084 14.1667 10.2167 14.1417 10.3167 14.1C10.4167 14.0583 10.5084 14 10.5917 13.925C10.6667 13.8417 10.725 13.7583 10.7667 13.65C10.8084 13.55 10.8334 13.4417 10.8334 13.3333C10.8334 13.225 10.8084 13.1167 10.7667 13.0167Z"
+                fill="white"
+              />
+            </Svg>
 
-              <Text style={{...TextStyle.baseText, color: theme.color.white}}>
-                Snap tips
-              </Text>
-            </TouchableOpacity>
-          </View>
+            <Text style={{...TextStyle.baseText, color: theme.color.white}}>
+              Snap tips
+            </Text>
+          </TouchableOpacity>
         </View>
         <TouchableOpacity
           onPress={() =>
@@ -519,15 +512,15 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     padding: 16,
-    // position: 'absolute',
-    // height: 108,
-    // backgroundColor: theme.color.dark,
+    position: 'absolute',
+    height: 108,
+    backgroundColor: theme.color.dark,
     // opacity: 0.8,
     width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // bottom: 0,
+    bottom: 0,
   },
   captureButton: {
     // position: 'absolute',
