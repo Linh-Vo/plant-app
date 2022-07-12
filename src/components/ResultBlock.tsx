@@ -81,7 +81,7 @@ export const ResultBlock = (props: DetectResultProps) => {
             <FastImage
               style={styles.image}
               key={idx}
-              source={{uri: image.url.m}}
+              source={{uri: image.url.m, priority: 'high'}}
             />
           ))}
         </ScrollView>

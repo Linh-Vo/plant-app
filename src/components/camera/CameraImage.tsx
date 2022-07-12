@@ -1,6 +1,7 @@
 import axios, {AxiosError, CancelTokenSource} from 'axios';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
+  BackHandler,
   Image,
   Platform,
   StyleSheet,
@@ -86,7 +87,18 @@ export const CameraImage = ({route, navigation}) => {
         });
       });
   };
-  console.log(API_URL, cancelTokenSource.current?.token);
+  useEffect(() => {
+    const backAction = () => {
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={goBack} style={styles.closeButton}>
@@ -124,6 +136,7 @@ export const CameraImage = ({route, navigation}) => {
         <View style={{...styles.buttonContainer, alignItems: 'center'}}>
           <View style={{width: 80, height: 80}}>
             <LottieView
+              hardwareAccelerationAndroid
               source={require('../../assets/images/scanning.json')}
               autoPlay
               loop
