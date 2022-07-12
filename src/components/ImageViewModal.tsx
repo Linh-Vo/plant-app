@@ -18,18 +18,19 @@ export const ImageViewModal = ({isVisible, backdropPress, images, index}) => {
   const ref: Ref<FlatList> = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(index);
   useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollToOffset({
+        animated: true,
+        offset: index * (dimensions.fullWidth - 80),
+      });
+    }
     setCurrentIndex(index);
   }, [index]);
   console.log({index, currentIndex});
   const updateCurrentIndex = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const contentOffsetX = e.nativeEvent.contentOffset.x;
-    console.log(currentIndex * (dimensions.fullWidth - 64));
-    console.log(contentOffsetX);
-    // ref?.current?.scrollToOffset({
-    //   offset: currentIndex * (dimensions.fullWidth - 64),
-    // });
     const currentIdex = Math.round(
-      contentOffsetX / (dimensions.fullWidth - 64),
+      contentOffsetX / (dimensions.fullWidth - 80),
     );
     setCurrentIndex(currentIdex);
   };
@@ -92,7 +93,6 @@ export const ImageViewModal = ({isVisible, backdropPress, images, index}) => {
               x: currentIndex * (dimensions.fullWidth - 80),
               y: 0,
             }}
-            contentInsetAdjustmentBehavior="scrollableAxes"
             horizontal
             // eslint-disable-next-line react-native/no-inline-styles
             style={{
