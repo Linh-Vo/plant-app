@@ -159,7 +159,11 @@ export const GardenMenu = ({
                 ? removePlant
                 : changePlantName
             }
-            defaultColName={plant?.species?.scientificNameWithoutAuthor || ''}
+            defaultColName={
+              plant?.species.customName ||
+              plant?.species?.scientificNameWithoutAuthor ||
+              ''
+            }
             isVisible={isSubMenuVisible.visible}>
             {errorVisible && (
               <ErrorModal

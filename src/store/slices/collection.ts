@@ -77,7 +77,7 @@ export const collectionSlice = createSlice({
                   ...plant,
                   species: {
                     ...plant.species,
-                    scientificName: action.payload.newName,
+                    customName: action.payload.newName,
                   },
                 }
               : plant,

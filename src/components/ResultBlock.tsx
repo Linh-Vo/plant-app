@@ -35,44 +35,44 @@ export const ResultBlock = (props: DetectResultProps) => {
   const [menuVisible, setMenuVisible] = useState(false);
   return (
     <>
-      <View style={styles.container}>
+      <TouchableOpacity style={styles.container} onPress={gotoPlantDetail}>
         <View
           // eslint-disable-next-line react-native/no-inline-styles
           style={{flexDirection: 'row'}}>
-          <TouchableOpacity
+          <View
             // eslint-disable-next-line react-native/no-inline-styles
-            style={{paddingBottom: theme.spacing.triple, flex: 1}}
-            onPress={gotoPlantDetail}>
+            style={{paddingBottom: theme.spacing.triple, flex: 1}}>
             {!props.isGarden && props.plant.score && (
               <Text style={[TextStyle.bodyText, props.textStyle]}>
                 {`${(Number(props.plant.score) * 100).toFixed(2)}% matched`}
               </Text>
             )}
             <Text numberOfLines={1} style={TextStyle.titleText}>
-              {props.plant.species.scientificName}
+              {props.plant.species.customName ||
+                props.plant.species.scientificNameWithoutAuthor}
             </Text>
-          </TouchableOpacity>
-          {props.isGarden && (
-            <TouchableOpacity
-              style={{paddingLeft: theme.spacing.double}}
-              onPress={() => setMenuVisible(true)}>
-              <Svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <Path
-                  d="M6 13C7.65685 13 9 14.3431 9 16C9 17.6569 7.65685 19 6 19C4.34315 19 3 17.6569 3 16C3 14.3431 4.34315 13 6 13Z"
-                  fill="#D9D9D9"
-                />
-                <Path
-                  d="M16 13C17.6569 13 19 14.3431 19 16C19 17.6569 17.6569 19 16 19C14.3431 19 13 17.6569 13 16C13 14.3431 14.3431 13 16 13Z"
-                  fill="#D9D9D9"
-                />
-                <Path
-                  d="M26 13C27.6569 13 29 14.3431 29 16C29 17.6569 27.6569 19 26 19C24.3431 19 23 17.6569 23 16C23 14.3431 24.3431 13 26 13Z"
-                  fill="#D9D9D9"
-                />
-              </Svg>
-            </TouchableOpacity>
-          )}
+          </View>
         </View>
+        {props.isGarden && (
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={() => setMenuVisible(true)}>
+            <Svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <Path
+                d="M6 13C7.65685 13 9 14.3431 9 16C9 17.6569 7.65685 19 6 19C4.34315 19 3 17.6569 3 16C3 14.3431 4.34315 13 6 13Z"
+                fill="#D9D9D9"
+              />
+              <Path
+                d="M16 13C17.6569 13 19 14.3431 19 16C19 17.6569 17.6569 19 16 19C14.3431 19 13 17.6569 13 16C13 14.3431 14.3431 13 16 13Z"
+                fill="#D9D9D9"
+              />
+              <Path
+                d="M26 13C27.6569 13 29 14.3431 29 16C29 17.6569 27.6569 19 26 19C24.3431 19 23 17.6569 23 16C23 14.3431 24.3431 13 26 13Z"
+                fill="#D9D9D9"
+              />
+            </Svg>
+          </TouchableOpacity>
+        )}
         <ScrollView
           style={styles.imageContainer}
           horizontal
@@ -85,7 +85,7 @@ export const ResultBlock = (props: DetectResultProps) => {
             />
           ))}
         </ScrollView>
-      </View>
+      </TouchableOpacity>
       <GardenMenu
         collection={props.collection}
         plant={props.plant}
@@ -99,6 +99,7 @@ export const ResultBlock = (props: DetectResultProps) => {
 const styles = StyleSheet.create({
   container: {
     height: 168,
+    position: 'relative',
     // width: '100%',
     marginTop: theme.spacing.double,
     padding: theme.spacing.double,
@@ -121,5 +122,14 @@ const styles = StyleSheet.create({
     height: 72,
     borderRadius: 36,
     marginRight: theme.spacing.half,
+  },
+  editButton: {
+    top: 0,
+    height: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 64,
+    right: 0,
+    position: 'absolute',
   },
 });

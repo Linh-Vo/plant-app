@@ -89,7 +89,7 @@ export const PlantDetail = ({route, navigation}) => {
             borderTopLeftRadius: theme.spacing.quadruple,
             borderTopRightRadius: theme.spacing.quadruple,
             padding: theme.spacing.double,
-            marginBottom: !hideCollection ? 40 : 0,
+            marginBottom: !hideCollection ? 64 : 0,
           }}>
           <View>
             <Text style={{...TextStyle.bodyText, color: theme.color.primary}}>

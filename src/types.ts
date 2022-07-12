@@ -21,6 +21,7 @@ export interface Species {
   family: Scientific;
   commonNames: string[];
   scientificName: string;
+  customName?: string;
 }
 
 export interface PlantImage {
