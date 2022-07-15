@@ -146,6 +146,7 @@ export const CollectionModal = ({isVisible, backDropPress, plant}) => {
     <>
       <View style={styles.container}>
         <Modal
+          backdropTransitionOutTiming={0}
           useNativeDriver={true}
           isVisible={isVisible}
           hasBackdrop={true}

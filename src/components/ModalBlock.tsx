@@ -29,6 +29,7 @@ export default function ModalBlock(props: ModalBlockProps) {
   return (
     <View style={styles.container}>
       <Modal
+        backdropTransitionOutTiming={0}
         useNativeDriver={true}
         avoidKeyboard={true}
         statusBarTranslucent

@@ -18,6 +18,7 @@ export const ScanTipModal = ({isVisible, backdropPress}) => {
   return (
     <View style={styles.container}>
       <Modal
+        backdropTransitionOutTiming={0}
         useNativeDriver={true}
         isVisible={isVisible}
         statusBarTranslucent

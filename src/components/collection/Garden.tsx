@@ -16,6 +16,7 @@ import {ResultBlock} from '../../components/ResultBlock';
 import {useAppSelector} from '../../hooks/redux';
 import {selectCollections} from '../../store/slices/collection';
 import {PlantResult} from '../../types';
+import {Button} from '../../components/Button';
 
 export const Garden = ({route, navigation}) => {
   const {collectionId} = route?.params;
@@ -89,7 +90,36 @@ export const Garden = ({route, navigation}) => {
         />
       ) : (
         <View style={{...Container.center}}>
-          <Text style={TextStyle.h4Text}>{'You have no plant'}</Text>
+          <View style={{width: '70%', height: '25%'}}>
+            <FastImage
+              resizeMode="contain"
+              style={Container.fullScreen}
+              source={require('../../assets/images/empty-plant.png')}
+            />
+          </View>
+          <Text style={styles.emptyText}>{'No plant in here'}</Text>
+          <Button
+            textStyle={{color: theme.color.white}}
+            buttonStyle={{width: '70%'}}
+            text="Scan now"
+            onPress={() =>
+              navigation.reset({
+                index: 0,
+                routes: [
+                  {
+                    name: 'Home-Stack',
+                    state: {
+                      routes: [
+                        {
+                          name: 'Scan',
+                        },
+                      ],
+                    },
+                  },
+                ],
+              })
+            }
+          />
         </View>
       )}
     </View>
@@ -125,5 +155,10 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     marginTop: theme.spacing.triple,
+  },
+  emptyText: {
+    ...TextStyle.titleText,
+    opacity: 0.6,
+    marginVertical: theme.spacing.double,
   },
 });

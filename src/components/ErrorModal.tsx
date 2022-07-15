@@ -9,6 +9,7 @@ export const ErrorModal = ({isVisible, message, backdropPress}) => {
   return (
     <View style={styles.container}>
       <Modal
+        backdropTransitionOutTiming={0}
         useNativeDriver={true}
         isVisible={isVisible}
         hasBackdrop={true}

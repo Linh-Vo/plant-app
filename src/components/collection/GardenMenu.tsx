@@ -122,6 +122,7 @@ export const GardenMenu = ({
       <View style={{...styles.container}}>
         {isVisible && (
           <Modal
+            backdropTransitionOutTiming={0}
             useNativeDriver={true}
             isVisible={isVisible}
             hasBackdrop={true}

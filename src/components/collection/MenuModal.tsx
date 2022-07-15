@@ -107,6 +107,7 @@ export const MenuModal = ({isVisible, backDropPress, collection}) => {
       <View style={{...styles.container}}>
         {isVisible && (
           <Modal
+            backdropTransitionOutTiming={0}
             useNativeDriver={true}
             isVisible={isVisible}
             hasBackdrop={true}

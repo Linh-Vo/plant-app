@@ -17,20 +17,26 @@ import Svg, {Path} from 'react-native-svg';
 export const ImageViewModal = ({isVisible, backdropPress, images, index}) => {
   const ref: Ref<FlatList> = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(index);
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.scrollToOffset({
-        animated: true,
-        offset: index * (dimensions.fullWidth - 80),
-      });
-    }
-    setCurrentIndex(index);
-  }, [index]);
+  useEffect(
+    () => {
+      if (ref.current) {
+        ref.current.scrollToOffset({
+          animated: true,
+          offset: index * (dimensions.fullWidth - 32),
+        });
+      }
+      if (index !== currentIndex) {
+        setCurrentIndex(index);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [index],
+  );
   console.log({index, currentIndex});
   const updateCurrentIndex = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const contentOffsetX = e.nativeEvent.contentOffset.x;
     const currentIdex = Math.round(
-      contentOffsetX / (dimensions.fullWidth - 80),
+      contentOffsetX / (dimensions.fullWidth - 32),
     );
     setCurrentIndex(currentIdex);
   };
@@ -43,7 +49,7 @@ export const ImageViewModal = ({isVisible, backdropPress, images, index}) => {
             styles.indicator,
             // eslint-disable-next-line react-native/no-inline-styles
             index === currentIndex && {
-              backgroundColor: theme.color.primary,
+              backgroundColor: theme.color.white,
               opacity: 1,
               width: 8,
               borderRadius: 4,
@@ -57,6 +63,7 @@ export const ImageViewModal = ({isVisible, backdropPress, images, index}) => {
   return (
     <View style={styles.container}>
       <Modal
+        backdropTransitionOutTiming={0}
         useNativeDriver={true}
         isVisible={isVisible}
         statusBarTranslucent
@@ -75,11 +82,11 @@ export const ImageViewModal = ({isVisible, backdropPress, images, index}) => {
                 <Path
                   opacity="0.4"
                   d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                  fill="#222222"
+                  fill="#FFFFFF"
                 />
                 <Path
                   d="M13.06 11.9999L15.36 9.69986C15.65 9.40986 15.65 8.92986 15.36 8.63986C15.07 8.34986 14.59 8.34986 14.3 8.63986L12 10.9399L9.7 8.63986C9.41 8.34986 8.93 8.34986 8.64 8.63986C8.35 8.92986 8.35 9.40986 8.64 9.69986L10.94 11.9999L8.64 14.2999C8.35 14.5899 8.35 15.0699 8.64 15.3599C8.79 15.5099 8.98 15.5799 9.17 15.5799C9.36 15.5799 9.55 15.5099 9.7 15.3599L12 13.0599L14.3 15.3599C14.45 15.5099 14.64 15.5799 14.83 15.5799C15.02 15.5799 15.21 15.5099 15.36 15.3599C15.65 15.0699 15.65 14.5899 15.36 14.2999L13.06 11.9999Z"
-                  fill="#222222"
+                  fill="#FFFFFF"
                 />
               </Svg>
             </Pressable>
@@ -90,7 +97,7 @@ export const ImageViewModal = ({isVisible, backdropPress, images, index}) => {
             pagingEnabled
             data={images}
             contentOffset={{
-              x: currentIndex * (dimensions.fullWidth - 80),
+              x: currentIndex * (dimensions.fullWidth - 32),
               y: 0,
             }}
             horizontal
@@ -105,7 +112,7 @@ export const ImageViewModal = ({isVisible, backdropPress, images, index}) => {
               return (
                 <View
                   style={{
-                    width: dimensions.fullWidth - 80,
+                    width: dimensions.fullWidth - 32,
                     // marginRight: 16,
                   }}>
                   <FastImage
@@ -133,8 +140,8 @@ const styles = StyleSheet.create({
     width: 4,
     marginHorizontal: 4,
     borderRadius: 2,
-    backgroundColor: theme.color.dark,
-    opacity: 0.2,
+    backgroundColor: theme.color.white,
+    opacity: 0.6,
   },
   errorView: {
     flexDirection: 'row',
@@ -142,10 +149,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalBody: {
-    backgroundColor: theme.color.white,
+    // backgroundColor: theme.color.white,
+    backgroundColor: 'transparent',
     borderRadius: theme.spacing.double,
     height: dimensions.fullHeight * 0.8,
-    padding: theme.spacing.triple,
+    position: 'relative',
+    // padding: theme.spacing.triple,
     // marginHorizontal: 16,
   },
   footerView: {
@@ -161,7 +170,9 @@ const styles = StyleSheet.create({
     borderRadius: theme.spacing.double,
   },
   headerView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    opacity: 1,
+    position: 'absolute',
+    right: 0,
+    top: -28,
   },
 });
