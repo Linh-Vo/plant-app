@@ -175,6 +175,6 @@ const styles = StyleSheet.create({
     opacity: 1,
     position: 'absolute',
     right: 0,
-    top: -28,
+    top: -20,
   },
 });
