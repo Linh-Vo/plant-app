@@ -14,6 +14,7 @@ import {dimensions} from '../styles/base';
 import {theme} from '../theme/theme';
 import Svg, {Path} from 'react-native-svg';
 
+const OFFSET_X = 16;
 export const ImageViewModal = ({isVisible, backdropPress, images, index}) => {
   const ref: Ref<FlatList> = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(index);
@@ -22,7 +23,7 @@ export const ImageViewModal = ({isVisible, backdropPress, images, index}) => {
       if (ref.current) {
         ref.current.scrollToOffset({
           animated: true,
-          offset: index * (dimensions.fullWidth - 32),
+          offset: index * (dimensions.fullWidth - OFFSET_X),
         });
       }
       if (index !== currentIndex) {
@@ -36,7 +37,7 @@ export const ImageViewModal = ({isVisible, backdropPress, images, index}) => {
   const updateCurrentIndex = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const contentOffsetX = e.nativeEvent.contentOffset.x;
     const currentIdex = Math.round(
-      contentOffsetX / (dimensions.fullWidth - 32),
+      contentOffsetX / (dimensions.fullWidth - OFFSET_X),
     );
     setCurrentIndex(currentIdex);
   };
@@ -70,9 +71,9 @@ export const ImageViewModal = ({isVisible, backdropPress, images, index}) => {
         onBackdropPress={backdropPress}
         deviceHeight={Dimensions.get('screen').height}
         // style={StyleSheet.absoluteFill}
-        style={{margin: 16}}
+        style={{marginHorizontal: 8}}
         backdropColor={theme.color.dark}
-        backdropOpacity={0.8}
+        backdropOpacity={0.9}
         animationIn={'fadeInUpBig'}
         animationOut={'fadeOutDown'}>
         <View style={styles.modalBody}>
@@ -97,7 +98,7 @@ export const ImageViewModal = ({isVisible, backdropPress, images, index}) => {
             pagingEnabled
             data={images}
             contentOffset={{
-              x: currentIndex * (dimensions.fullWidth - 32),
+              x: currentIndex * (dimensions.fullWidth - OFFSET_X),
               y: 0,
             }}
             horizontal
@@ -112,7 +113,8 @@ export const ImageViewModal = ({isVisible, backdropPress, images, index}) => {
               return (
                 <View
                   style={{
-                    width: dimensions.fullWidth - 32,
+                    width: dimensions.fullWidth - OFFSET_X,
+                    paddingHorizontal: theme.spacing.base,
                     // marginRight: 16,
                   }}>
                   <FastImage
