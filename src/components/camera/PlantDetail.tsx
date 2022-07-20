@@ -20,6 +20,8 @@ import {PlantImage} from '../../types';
 import EbayItem from './EbayItems';
 import WikiItem from './WikiContent';
 import {ImageViewModal} from '../../components/ImageViewModal';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import FocusAwareStatusBar from '../../components/FocusStatusBar';
 
 export const PlantDetail = ({route, navigation}) => {
   const {plant, hideCollection} = route?.params;
@@ -44,8 +46,15 @@ export const PlantDetail = ({route, navigation}) => {
   //   });
   // };
   const [showHeaderBar, setShowHeaderBar] = useState(false);
+  const insets = useSafeAreaInsets();
   return (
     <View style={{flex: 1, position: 'relative'}}>
+      <FocusAwareStatusBar
+        backgroundColor={'transparent'}
+        translucent
+        // hidden={Platform.OS === 'ios'}
+        barStyle={'light-content'}
+      />
       <Animated.ScrollView
         keyboardShouldPersistTaps="handled"
         // renderToHardwareTextureAndroid
@@ -68,7 +77,9 @@ export const PlantDetail = ({route, navigation}) => {
           resizeMode={'cover'}
           style={{height: 250, position: 'relative'}}
           source={{uri: plant?.images[0]?.url?.m}}>
-          <TouchableOpacity onPress={goBack} style={styles.closeButton}>
+          <TouchableOpacity
+            onPress={goBack}
+            style={{...styles.closeButton, marginTop: insets.top}}>
             <Svg width="44" height="44" viewBox="0 0 44 44" fill="none">
               <Path
                 opacity="0.2"
@@ -298,7 +309,13 @@ const AnimatedHeader = ({goBack, plantName}) => {
         opacity: fadeAnim,
         backgroundColor: backgroundColor,
       }}>
-      <TouchableOpacity onPress={goBack} style={styles.closeButton}>
+      <FocusAwareStatusBar
+        backgroundColor={'transparent'}
+        translucent
+        // hidden={Platform.OS === 'ios'}
+        barStyle={'dark-content'}
+      />
+      <TouchableOpacity onPress={goBack} style={{...styles.closeButton}}>
         <Svg width="32" height="32" viewBox="0 0 32 32" fill="none">
           <Path
             opacity="0.2"

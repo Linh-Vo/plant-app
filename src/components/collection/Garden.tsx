@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import Svg, {Circle, Path} from 'react-native-svg';
+import Svg, {Path} from 'react-native-svg';
 import {Container, TextStyle} from '../../styles/base';
 import {theme} from '../../theme/theme';
 import {SAFE_AREA_PADDING, SCREEN_NAME} from '../../utils/constants';
@@ -17,14 +17,16 @@ import {useAppSelector} from '../../hooks/redux';
 import {selectCollections} from '../../store/slices/collection';
 import {PlantResult} from '../../types';
 import {Button} from '../../components/Button';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export const Garden = ({route, navigation}) => {
+  const insets = useSafeAreaInsets();
   const {collectionId} = route?.params;
   const collections = useAppSelector(selectCollections);
   const currentCollection = collections.find(e => e.id === collectionId);
   const plants = currentCollection?.plants || [];
   return (
-    <View style={styles.container}>
+    <View style={{...styles.container, paddingTop: insets.top}}>
       <View style={styles.textView}>
         <View style={styles.titleView}>
           <TouchableOpacity
@@ -129,7 +131,6 @@ export const Garden = ({route, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: SAFE_AREA_PADDING.paddingTop,
     backgroundColor: theme.color.background,
     padding: theme.spacing.double,
   },

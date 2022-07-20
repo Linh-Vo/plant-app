@@ -1,11 +1,19 @@
 import React from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import {SAFE_AREA_PADDING} from '../../utils/constants';
 import {theme} from '../../theme/theme';
 import {ResultBlock} from '../ResultBlock';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export const DetectResult = ({route, navigation}) => {
+  const insets = useSafeAreaInsets();
   const {results} = route?.params;
   const goBack = () => {
     navigation.reset({
@@ -18,7 +26,13 @@ export const DetectResult = ({route, navigation}) => {
     });
   };
   return (
-    <View style={styles.container}>
+    <View style={{...styles.container, paddingTop: insets.top}}>
+      <StatusBar
+        backgroundColor={'transparent'}
+        translucent
+        // hidden={Platform.OS === 'ios'}
+        barStyle={'dark-content'}
+      />
       <TouchableOpacity onPress={goBack} style={styles.closeButton}>
         <Svg width="44" height="44" viewBox="0 0 44 44" fill="none">
           <Path
@@ -61,6 +75,6 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.triple,
   },
   closeButton: {
-    marginTop: SAFE_AREA_PADDING.paddingTop,
+    // marginTop: SAFE_AREA_PADDING.paddingTop,
   },
 });

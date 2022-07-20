@@ -11,7 +11,7 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import {CollectionScreen, HomeScreen} from '../screens';
-import {SCREEN_NAME} from '../utils/constants';
+import {SAFE_AREA_PADDING, SCREEN_NAME} from '../utils/constants';
 import {getPath} from '../utils/helper';
 import {dimensions} from '../styles/base';
 import {theme} from '../theme/theme';

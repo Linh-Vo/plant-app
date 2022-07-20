@@ -21,7 +21,7 @@ interface DetectResultProps {
   plant: PlantResult;
   isGarden?: boolean;
   hideCollection?: boolean;
-  collection: CollectionState;
+  collection?: CollectionState;
   textStyle?: StyleProp<any>;
 }
 export const ResultBlock = (props: DetectResultProps) => {

@@ -4,6 +4,7 @@ import {
   BackHandler,
   Image,
   Platform,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -17,8 +18,10 @@ import {API_URL} from 'react-native-dotenv';
 import {SAFE_AREA_PADDING} from '../../utils/constants';
 import {TextStyle} from '../../styles/base';
 import {PlantResult} from '../../types';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export const CameraImage = ({route, navigation}) => {
+  const insets = useSafeAreaInsets();
   const {path, type} = route?.params;
   const [detecting, setDeteting] = useState(false);
   const cancelTokenSource = useRef<CancelTokenSource>();
@@ -100,7 +103,13 @@ export const CameraImage = ({route, navigation}) => {
     return () => backHandler.remove();
   }, []);
   return (
-    <View style={styles.container}>
+    <View style={{...styles.container, paddingTop: insets.top}}>
+      <StatusBar
+        backgroundColor={'transparent'}
+        translucent
+        // hidden={Platform.OS === 'ios'}
+        barStyle={'dark-content'}
+      />
       <TouchableOpacity onPress={goBack} style={styles.closeButton}>
         <Svg width="44" height="44" viewBox="0 0 44 44" fill="none">
           <Path
@@ -196,6 +205,6 @@ const styles = StyleSheet.create({
   closeButton: {
     // position: 'absolute',
     // left: SAFE_AREA_PADDING.paddingLeft,
-    marginTop: SAFE_AREA_PADDING.paddingTop,
+    // marginTop: SAFE_AREA_PADDING.paddingTop,
   },
 });

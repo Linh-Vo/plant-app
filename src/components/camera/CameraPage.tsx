@@ -3,8 +3,6 @@ import {useRef, useState, useMemo, useCallback} from 'react';
 import {
   ActivityIndicator,
   Image,
-  Linking,
-  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,18 +11,13 @@ import {
 import {
   PinchGestureHandler,
   PinchGestureHandlerGestureEvent,
-  TapGestureHandler,
 } from 'react-native-gesture-handler';
 import {
   CameraDeviceFormat,
-  CameraPermissionStatus,
   CameraRuntimeError,
-  FrameProcessorPerformanceSuggestion,
   PhotoFile,
   sortFormats,
   useCameraDevices,
-  useFrameProcessor,
-  VideoFile,
 } from 'react-native-vision-camera';
 import {Camera, frameRateIncluded} from 'react-native-vision-camera';
 import {
@@ -32,7 +25,6 @@ import {
   CONTENT_SPACING,
   MAX_ZOOM_FACTOR,
   SAFE_AREA_PADDING,
-  SCREEN_NAME,
 } from '../../utils/constants';
 import Reanimated, {
   Extrapolate,
@@ -43,8 +35,6 @@ import Reanimated, {
 } from 'react-native-reanimated';
 import {useEffect} from 'react';
 import {useIsForeground} from '../../hooks/useIsForeground';
-import {StatusBarBlurBackground} from './StatusBarBlurBackground';
-import {CaptureButton} from './CaptureButton';
 import {PressableOpacity} from 'react-native-pressable-opacity';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 // import {examplePlugin} from './frame-processors/ExamplePlugin';
@@ -56,8 +46,10 @@ import {imageGalleryLaunch} from '../../utils/helper';
 import {Path, Svg} from 'react-native-svg';
 import {TextStyle} from '../../styles/base';
 import {ScanTipModal} from './ScantipModal';
-import {useAppDispatch, useAppSelector} from '../../hooks/redux';
-import {selectAppState, setCameraStatus} from '../../store/slices/app';
+import {useAppSelector} from '../../hooks/redux';
+import {selectAppState} from '../../store/slices/app';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import FocusAwareStatusBar from '../../components/FocusStatusBar';
 
 const ReanimatedCamera = Reanimated.createAnimatedComponent(Camera);
 Reanimated.addWhitelistedNativeProps({
@@ -69,6 +61,7 @@ const BUTTON_SIZE = 40;
 
 // type Props = NativeStackScreenProps<Routes, 'Scan'>;
 export function CameraPage({navigation}): React.ReactElement {
+  const insets = useSafeAreaInsets();
   const [galleryLoading, setLoading] = useState(false);
   const [isVisibleScanTip, setScanTipVisible] = useState(false);
   const [isCameraInitialized, setIsCameraInitialized] = useState(false);
@@ -312,7 +305,13 @@ export function CameraPage({navigation}): React.ReactElement {
   }
   return cameraPermissionStatus === 'authorized' ? (
     <>
-      <View style={styles.container}>
+      <FocusAwareStatusBar
+        backgroundColor={'transparent'}
+        translucent
+        // hidden={Platform.OS === 'ios'}
+        barStyle={'light-content'}
+      />
+      <View style={{...styles.container, paddingTop: insets.top}}>
         {device != null && (
           <PinchGestureHandler
             onGestureEvent={onPinchGesture}
@@ -369,9 +368,10 @@ export function CameraPage({navigation}): React.ReactElement {
                 quality: 90,
                 // enableAutoDistortionCorrection: true,
                 // enableAutoStabilization: true,
-                skipMetadata: true,
+                // skipMetadata: true,
               });
               if (photo) {
+                console.log(photo.metadata);
                 onMediaCaptured(photo, 'capture');
               }
             }}
@@ -422,7 +422,7 @@ export function CameraPage({navigation}): React.ReactElement {
               ],
             })
           }
-          style={styles.closeButton}>
+          style={{...styles.closeButton, top: insets.top}}>
           <Svg width="44" height="44" viewBox="0 0 44 44" fill="none">
             <Path
               opacity="0.4"
@@ -437,7 +437,7 @@ export function CameraPage({navigation}): React.ReactElement {
         </TouchableOpacity>
         {/* <StatusBarBlurBackground /> */}
 
-        <View style={styles.rightButtonRow}>
+        <View style={{...styles.rightButtonRow, top: insets.top}}>
           {/* {supportsCameraFlipping && (
           <PressableOpacity
             style={styles.button}

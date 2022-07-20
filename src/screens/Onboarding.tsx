@@ -19,6 +19,7 @@ import {dimensions, TextStyle} from '../styles/base';
 import {Button} from '../components/Button';
 import {setAppState} from '../store/slices/app';
 import {useAppDispatch} from '../hooks/redux';
+import FocusAwareStatusBar from '../components/FocusStatusBar';
 
 const slides = [
   {
@@ -167,7 +168,12 @@ export const OnboardingScreen = ({navigation}) => {
   };
   return (
     <>
-      <StatusBar backgroundColor={theme.color.background} translucent />
+      <FocusAwareStatusBar
+        backgroundColor={'transparent'}
+        translucent
+        // hidden={Platform.OS === 'ios'}
+        barStyle={'dark-content'}
+      />
       <View style={{flex: 1, backgroundColor: theme.color.background}}>
         <Footer />
         <FlatList

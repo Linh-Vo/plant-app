@@ -11,6 +11,7 @@ import {Translations} from '../i18n';
 import {SCREEN_NAME} from '../utils/constants';
 import {Block} from '../components/Block';
 import {theme} from '../theme/theme';
+import FocusAwareStatusBar from '../components/FocusStatusBar';
 export const HomeScreen = ({navigation}) => {
   const navigate = (screen: string) => () => {
     if (screen === SCREEN_NAME.Around || screen === SCREEN_NAME.Community) {
@@ -23,6 +24,12 @@ export const HomeScreen = ({navigation}) => {
       source={require('../assets/images/BG.png')}
       resizeMode="cover"
       style={Container.fullScreen}>
+      <FocusAwareStatusBar
+        backgroundColor={'transparent'}
+        translucent
+        // hidden={Platform.OS === 'ios'}
+        barStyle={'light-content'}
+      />
       <ScrollView contentContainerStyle={[Container.center]}>
         <View style={styles.container}>
           <Text style={[TextStyle.headerText, styles.text]}>

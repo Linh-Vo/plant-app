@@ -1,12 +1,14 @@
 import React, {useRef, useState} from 'react';
 import {
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import Svg, {Path} from 'react-native-svg';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Container, TextStyle} from '../styles/base';
 import {theme} from '../theme/theme';
 import {CollectionBlock} from '../components/collection/CollectionBlock';
@@ -17,8 +19,10 @@ import {addCollection, selectCollections} from '../store/slices/collection';
 import {generateUniqSerial} from '../utils/helper';
 import {ErrorModal} from '../components/ErrorModal';
 import FastImage from 'react-native-fast-image';
+import FocusAwareStatusBar from '../components/FocusStatusBar';
 
 export const CollectionScreen = ({navigation}) => {
+  const insets = useSafeAreaInsets();
   const collections = useAppSelector(selectCollections);
   const navigateToGarden = collection => () => {
     navigation.navigate('Collection-Stack', {
@@ -49,7 +53,13 @@ export const CollectionScreen = ({navigation}) => {
   const [errorVisible, setErrorVisible] = useState(false);
   return (
     <>
-      <View style={styles.container}>
+      <View style={{...styles.container, paddingTop: insets.top}}>
+        <FocusAwareStatusBar
+          backgroundColor={'transparent'}
+          translucent
+          // hidden={Platform.OS === 'ios'}
+          barStyle={'dark-content'}
+        />
         <View style={styles.textView}>
           <Text style={styles.text}>{'Collections'}</Text>
           <TouchableOpacity
@@ -163,7 +173,6 @@ export const CollectionScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: SAFE_AREA_PADDING.paddingTop,
     backgroundColor: theme.color.background,
     padding: theme.spacing.double,
   },

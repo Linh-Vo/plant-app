@@ -25,7 +25,7 @@ interface GardenMenuProps {
   isVisible: boolean;
   backDropPress: () => void;
   plant: PlantResult;
-  collection: CollectionState;
+  collection?: CollectionState;
 }
 const ModalBody = ({backDropPress, setVisible}) => {
   return (

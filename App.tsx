@@ -12,6 +12,7 @@ import React, {useEffect, useState} from 'react';
 import {StatusBar} from 'react-native';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Navigation} from './src/navigation/navigation';
 import persistor, {store} from './src/store/store';
 import Toast, {InfoToast} from 'react-native-toast-message';
@@ -45,13 +46,16 @@ const App = () => {
     <WithSplashScreen isAppReady={isAppReady}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <StatusBar
+          {/* <StatusBar
             backgroundColor={'transparent'}
             translucent
             // hidden={Platform.OS === 'ios'}
             barStyle={'light-content'}
-          />
-          <Navigation />
+          /> */}
+          <SafeAreaProvider>
+            <Navigation />
+          </SafeAreaProvider>
+
           <Toast
             config={{
               info: props => (
