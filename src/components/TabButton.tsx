@@ -5,8 +5,10 @@ import {TabIcon} from './icons';
 import {SCAN_BUTTON_SIZE, SCREEN_NAME} from '../utils/constants';
 import {theme} from '../theme/theme';
 import Toast from 'react-native-toast-message';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export const TabButton = ({onPress, onLongPress, isFocused, label}) => {
+  const insets = useSafeAreaInsets();
   return (
     <TouchableOpacity
       accessibilityRole="button"
@@ -34,7 +36,7 @@ export const TabButton = ({onPress, onLongPress, isFocused, label}) => {
               marginRight: label === SCREEN_NAME.Collection ? 16 : 0,
               marginLeft: label === SCREEN_NAME.Community ? 16 : 0,
             }
-          : {...styles.scanButtonStyle},
+          : {...styles.scanButtonStyle, bottom: insets.bottom / 2 + 38},
       ]}>
       <TabIcon name={label as string} isFocused={isFocused} />
       {label !== SCREEN_NAME.Scan && (
@@ -54,7 +56,7 @@ export const TabButton = ({onPress, onLongPress, isFocused, label}) => {
 const styles = StyleSheet.create({
   routeStyle: {
     alignItems: 'center',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     // paddingHorizontal: 16,
     flex: 1,
   },

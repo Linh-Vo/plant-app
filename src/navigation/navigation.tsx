@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Platform} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import {
   DefaultTheme,
@@ -24,15 +24,31 @@ import {TabButton} from '../components/TabButton';
 import {OnboardingScreen} from '../screens/Onboarding';
 import {useAppSelector} from '../hooks/redux';
 import {selectAppState} from '../store/slices/app';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
+  const insets = useSafeAreaInsets();
   return (
     navigation.getState().index !== 2 && (
-      <View style={styles.transparentTab}>
-        <Svg width={dimensions.fullWidth} height="66" fill="none">
-          <Path d={getPath(dimensions.fullWidth, 66)} fill="white" />
+      <View style={{...styles.transparentTab}}>
+        <Svg
+          width={dimensions.fullWidth}
+          height={`${Platform.OS === 'ios' ? insets.bottom / 2 + 66 : 66}`}
+          fill="none">
+          <Path
+            d={getPath(
+              dimensions.fullWidth,
+              Platform.OS === 'ios' ? insets.bottom / 2 + 66 : 66,
+            )}
+            fill="white"
+          />
         </Svg>
-        <View style={styles.containerRoute}>
+        <View
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{
+            ...styles.containerRoute,
+            height: Platform.OS === 'ios' ? insets.bottom / 2 + 66 : 66,
+          }}>
           {state.routes.map((route, index) => {
             const {options} = descriptors[route.key];
             const label =
@@ -122,12 +138,12 @@ export const HomeStackScreen = () => (
     tabBar={props => <TabBar {...props} />}
     screenOptions={{
       headerShown: false,
-      tabBarStyle: {
-        backgroundColor: 'transparent',
-        position: 'absolute',
-        borderTopWidth: 0,
-        elevation: 0,
-      },
+      // tabBarStyle: {
+      //   backgroundColor: 'transparent',
+      //   position: 'absolute',
+      //   borderTopWidth: 0,
+      //   elevation: 0,
+      // },
     }}>
     <Tab.Screen name={SCREEN_NAME.Home} component={HomeScreen} />
     <Tab.Screen

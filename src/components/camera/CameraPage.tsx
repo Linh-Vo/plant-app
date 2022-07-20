@@ -350,7 +350,8 @@ export function CameraPage({navigation}): React.ReactElement {
           </PinchGestureHandler>
         )}
 
-        <View style={styles.buttonContainer}>
+        <View
+          style={{...styles.buttonContainer, height: 108 + insets.bottom / 2}}>
           <TouchableOpacity
             onPress={() => {
               setLoading(true);
