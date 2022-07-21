@@ -41,6 +41,7 @@ export interface PlantResult {
   species: Species;
   images: PlantImage[];
   wikiInfo?: PlantWikiInfo;
+  inCollection?: string;
 }
 
 export type SnapInfo = PlantResult & {

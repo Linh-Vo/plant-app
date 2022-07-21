@@ -20,7 +20,11 @@ import {
 } from '../../store/slices/collection';
 import {ErrorModal} from '../ErrorModal';
 import {PlantResult} from '../../types';
-import {deleteScan, renameScan} from '../../store/slices/scan';
+import {
+  deleteScan,
+  renameScan,
+  updateScanCollection,
+} from '../../store/slices/scan';
 
 interface GardenMenuProps {
   isVisible: boolean;
@@ -88,14 +92,17 @@ export const EditMenu = ({
   const collections = useAppSelector(selectCollections);
   const dispatch = useAppDispatch();
   const removePlant = () => () => {
-    dispatch(
-      isScanHistory
-        ? deleteScan({scanId: scanId || ''})
-        : deletePlant({
-            collectionId: collection?.id || '',
-            plant: plant,
-          }),
-    );
+    if (isScanHistory) {
+      dispatch(deleteScan({scanId: scanId || ''}));
+    } else {
+      dispatch(
+        deletePlant({
+          collectionId: collection?.id || '',
+          plant: plant,
+        }),
+      );
+      // dispatch(updateScanCollection({scanId: scanId, collectionId: undefined}));
+    }
     setSubmenuVisible({
       visible: false,
       title: '',

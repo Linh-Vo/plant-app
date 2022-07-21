@@ -36,6 +36,23 @@ const scanHistorySlice = createSlice({
     ) => {
       state.unshift(action.payload.scanHistory);
     },
+    updateScanCollection: (
+      state: SnapInfo[],
+      action: PayloadAction<{
+        scanId: string;
+        collectionId: string | undefined;
+      }>,
+    ) => {
+      const scanObj = state.find(e => e.id === action.payload.scanId);
+      if (scanObj) {
+        state = state.map(e =>
+          e.id === action.payload.scanId
+            ? {...e, inCollection: action.payload.collectionId}
+            : e,
+        );
+      }
+      return state;
+    },
     deleteScan: (
       state: SnapInfo[],
       action: PayloadAction<{scanId: string}>,
@@ -47,7 +64,7 @@ const scanHistorySlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const {renameScan, deleteScan, addScanToHistory} =
+export const {renameScan, deleteScan, addScanToHistory, updateScanCollection} =
   scanHistorySlice.actions;
 export const selectScanHistoryState = (state: RootState) =>
   state.scanHistoryState;

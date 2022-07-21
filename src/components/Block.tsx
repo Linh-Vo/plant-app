@@ -25,12 +25,12 @@ export const Block = (props: BlockProps) => {
         numberOfLines={1}
         allowFontScaling
         adjustsFontSizeToFit
-        style={TextStyle.h4Text}>
+        style={{...TextStyle.h4Text, marginTop: theme.spacing.double}}>
         {props.name}
       </Text>
       {props.isCommingsoon && (
         <Text style={{...TextStyle.baseText, opacity: 0.6}}>
-          {'(Coming Soon)'}
+          {'Coming Soon'}
         </Text>
       )}
     </TouchableOpacity>
@@ -43,6 +43,5 @@ const styles = StyleSheet.create({
     padding: theme.spacing.triple,
     backgroundColor: theme.color.white,
     borderRadius: theme.spacing.double,
-    justifyContent: 'space-between',
   },
 });

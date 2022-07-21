@@ -32,6 +32,15 @@ export const ResultBlock = (props: DetectResultProps) => {
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
   const gotoPlantDetail = () => {
+    if (props.isScanBlock) {
+      return navigation.navigate('ScanHistory-Stack', {
+        screen: 'Plant-Detail',
+        params: {
+          plant: props.plant,
+          hideCollection: props.hideCollection,
+        },
+      });
+    }
     navigation.navigate('Plant-Detail', {
       plant: props.plant,
       hideCollection: props.hideCollection,
@@ -96,10 +105,12 @@ export const ResultBlock = (props: DetectResultProps) => {
               {props.scanHistory?.date}
             </Text>
             <TouchableOpacity
+              disabled={props.plant?.inCollection ? true : false}
               onPress={() => setVisible(true)}
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
+                opacity: props.plant?.inCollection ? 0.2 : 1,
               }}>
               <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <Path
@@ -125,6 +136,7 @@ export const ResultBlock = (props: DetectResultProps) => {
         )}
       </TouchableOpacity>
       <CollectionModal
+        isScanBlock={props.isScanBlock}
         isVisible={visible}
         backDropPress={() => setVisible(false)}
         plant={props.plant}

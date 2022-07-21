@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Linking, ActivityIndicator} from 'react-native';
+import {
+  View,
+  Text,
+  Linking,
+  ActivityIndicator,
+  Platform,
+  TextInput,
+} from 'react-native';
 import {TextStyle} from '../../styles/base';
 import {PlantWikiInfo} from '../../types';
 import axios from 'axios';
@@ -38,14 +45,33 @@ const WikiItem = ({plantName}) => {
         style={{...TextStyle.bodyText, opacity: 0.6}}>
         {'Description'}
       </Text>
-      <Text
-        style={{
-          ...TextStyle.titleText,
-          marginTop: theme.spacing.base,
-        }}>
-        {(wikiInfo?.description?.length && wikiInfo?.description?.join()) ||
-          wikiInfo?.introduction}
-      </Text>
+      {Platform.OS === 'ios' ? (
+        // iOS requires a textinput for word selections
+        <TextInput
+          style={{
+            ...TextStyle.titleText,
+            marginTop: theme.spacing.base,
+          }}
+          value={
+            (wikiInfo?.description?.length && wikiInfo?.description?.join()) ||
+            wikiInfo?.introduction
+          }
+          editable={false}
+          multiline
+        />
+      ) : (
+        // Android can do word selections just with <Text>
+        <Text
+          selectable
+          style={{
+            ...TextStyle.titleText,
+            marginTop: theme.spacing.base,
+          }}>
+          {(wikiInfo?.description?.length && wikiInfo?.description?.join()) ||
+            wikiInfo?.introduction}
+        </Text>
+      )}
+
       <Text
         style={{
           ...TextStyle.titleText,

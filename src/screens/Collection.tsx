@@ -53,13 +53,13 @@ export const CollectionScreen = ({navigation}) => {
   const [errorVisible, setErrorVisible] = useState(false);
   return (
     <>
+      <FocusAwareStatusBar
+        backgroundColor={'transparent'}
+        translucent
+        // hidden={Platform.OS === 'ios'}
+        barStyle={'dark-content'}
+      />
       <View style={{...styles.container, paddingTop: insets.top}}>
-        <FocusAwareStatusBar
-          backgroundColor={'transparent'}
-          translucent
-          // hidden={Platform.OS === 'ios'}
-          barStyle={'dark-content'}
-        />
         <View style={styles.textView}>
           <Text style={styles.text}>{'Collections'}</Text>
           <TouchableOpacity

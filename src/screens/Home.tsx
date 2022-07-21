@@ -42,8 +42,8 @@ export const HomeScreen = ({navigation}) => {
             {Array.from([
               SCREEN_NAME.Collection,
               SCREEN_NAME.Scan,
-              SCREEN_NAME.Around,
               SCREEN_NAME.Community,
+              SCREEN_NAME.Around,
             ]).map(name => (
               <View key={name} style={styles.block}>
                 <Block

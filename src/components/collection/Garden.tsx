@@ -18,6 +18,7 @@ import {selectCollections} from '../../store/slices/collection';
 import {PlantResult} from '../../types';
 import {Button} from '../../components/Button';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import FocusAwareStatusBar from '../../components/FocusStatusBar';
 
 export const Garden = ({route, navigation}) => {
   const insets = useSafeAreaInsets();
@@ -27,6 +28,12 @@ export const Garden = ({route, navigation}) => {
   const plants = currentCollection?.plants || [];
   return (
     <View style={{...styles.container, paddingTop: insets.top}}>
+      <FocusAwareStatusBar
+        backgroundColor={'transparent'}
+        translucent
+        // hidden={Platform.OS === 'ios'}
+        barStyle={'dark-content'}
+      />
       <View style={styles.textView}>
         <View style={styles.titleView}>
           <TouchableOpacity

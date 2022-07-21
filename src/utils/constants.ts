@@ -2,7 +2,7 @@ export const SCREEN_NAME = {
   Home: 'Home',
   Collection: 'Collections',
   Scan: 'Scan',
-  Community: 'Scan history',
+  Community: 'History',
   Around: 'Around',
 };
 

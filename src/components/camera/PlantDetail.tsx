@@ -24,6 +24,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import FocusAwareStatusBar from '../../components/FocusStatusBar';
 
 export const PlantDetail = ({route, navigation}) => {
+  console.log(route, navigation);
   const {plant, hideCollection} = route?.params;
   const [visible, setVisible] = useState(false);
   const [imageViewVisible, setImageViewVisible] = useState({
@@ -53,7 +54,7 @@ export const PlantDetail = ({route, navigation}) => {
         backgroundColor={'transparent'}
         translucent
         // hidden={Platform.OS === 'ios'}
-        barStyle={'light-content'}
+        barStyle={'dark-content'}
       />
       <Animated.ScrollView
         keyboardShouldPersistTaps="handled"
@@ -76,19 +77,19 @@ export const PlantDetail = ({route, navigation}) => {
         <FastImage
           resizeMode={'cover'}
           style={{height: 250, position: 'relative'}}
-          source={{uri: plant?.images[0]?.url?.m}}>
+          source={{uri: plant?.image || plant?.images[0]?.url?.m}}>
           <TouchableOpacity
             onPress={goBack}
             style={{...styles.closeButton, marginTop: insets.top}}>
             <Svg width="44" height="44" viewBox="0 0 44 44" fill="none">
               <Path
-                opacity="0.2"
+                opacity="0.6"
                 d="M22 40.3333C32.1252 40.3333 40.3333 32.1252 40.3333 22C40.3333 11.8748 32.1252 3.66667 22 3.66667C11.8747 3.66667 3.66663 11.8748 3.66663 22C3.66663 32.1252 11.8747 40.3333 22 40.3333Z"
                 fill="white"
               />
               <Path
                 d="M24.31 29.8467C23.9616 29.8467 23.6133 29.7183 23.3383 29.4433L16.8666 22.9717C16.335 22.44 16.335 21.56 16.8666 21.0283L23.3383 14.5567C23.87 14.025 24.75 14.025 25.2816 14.5567C25.8133 15.0883 25.8133 15.9683 25.2816 16.5L19.7816 22L25.2816 27.5C25.8133 28.0317 25.8133 28.9117 25.2816 29.4433C25.025 29.7183 24.6766 29.8467 24.31 29.8467Z"
-                fill="white"
+                fill="#222222"
               />
             </Svg>
           </TouchableOpacity>

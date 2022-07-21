@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {FlatList, Platform, StyleSheet, Text, View} from 'react-native';
 import {SnapInfo} from '../types';
 import {ScanBlock} from '../components/snap-history/ScanBlock';
 import {generateUniqSerial} from '../utils/helper';
@@ -28,11 +28,20 @@ export const SnapHistoryScreen = ({navigation}) => {
       </Text>
       {scanHistory.length ? (
         <FlatList
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
           style={{marginTop: theme.spacing.triple}}
           data={scanHistory}
           keyExtractor={item => item.id}
-          renderItem={({item}) => (
-            <ResultBlock plant={item} isScanBlock={true} scanHistory={item} />
+          renderItem={({item, index}) => (
+            <View
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={{
+                marginBottom:
+                  index === scanHistory.length - 1 ? 40 + insets.bottom / 2 : 0,
+              }}>
+              <ResultBlock plant={item} isScanBlock={true} scanHistory={item} />
+            </View>
           )}
         />
       ) : (
@@ -78,6 +87,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.color.background,
     padding: theme.spacing.double,
+    marginBottom: 14,
   },
   emptyText: {
     ...TextStyle.titleText,

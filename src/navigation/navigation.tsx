@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {View, StyleSheet, Platform} from 'react-native';
 import Svg, {Path} from 'react-native-svg';
 import {
@@ -11,7 +11,7 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import {CollectionScreen, HomeScreen} from '../screens';
-import {SAFE_AREA_PADDING, SCREEN_NAME} from '../utils/constants';
+import {SCREEN_NAME} from '../utils/constants';
 import {getPath} from '../utils/helper';
 import {dimensions} from '../styles/base';
 import {theme} from '../theme/theme';
@@ -19,13 +19,13 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {CameraStackScreen} from './camera';
 import {CollectionStackScreen} from './collection';
 import {AroundScreen} from '../screens/Around';
-import {CommunityScreen} from '../screens/Community';
 import {TabButton} from '../components/TabButton';
 import {OnboardingScreen} from '../screens/Onboarding';
 import {useAppSelector} from '../hooks/redux';
 import {selectAppState} from '../store/slices/app';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SnapHistoryScreen} from '../screens/SnapHistory';
+import {ScanHistoryStackScreen} from './scan-history';
 
 function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
@@ -33,6 +33,19 @@ function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
     navigation.getState().index !== 2 && (
       <View style={{...styles.transparentTab}}>
         <Svg
+          // eslint-disable-next-line react-native/no-inline-styles
+          style={{
+            // for ios
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            // for android
+            elevation: 16,
+          }}
           width={dimensions.fullWidth}
           height={`${Platform.OS === 'ios' ? insets.bottom / 2 + 66 : 66}`}
           fill="none">
@@ -168,6 +181,10 @@ export const Navigation = () => {
         <Stack.Screen
           name="Collection-Stack"
           component={CollectionStackScreen}
+        />
+        <Stack.Screen
+          name="ScanHistory-Stack"
+          component={ScanHistoryStackScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

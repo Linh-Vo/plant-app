@@ -35,7 +35,7 @@ export const ScanTipModal = ({isVisible, backdropPress}) => {
                 ...TextStyle.titleText,
                 fontFamily: theme.font.familyBold,
               }}>
-              {'Scan tips'}
+              {'Snap tips'}
             </Text>
             <Pressable onPress={backdropPress}>
               <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">

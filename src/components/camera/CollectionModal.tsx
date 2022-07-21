@@ -21,8 +21,10 @@ import {
 } from '../../store/slices/collection';
 import {generateUniqSerial} from '../../utils/helper';
 import {ErrorModal} from '../../components/ErrorModal';
+import {PlantResult} from '../../types';
+import {updateScanCollection} from '../../store/slices/scan';
 
-const ModalBody = ({backDropPress, collections, plant}) => {
+const ModalBody = ({backDropPress, collections, plant, isScanBlock}) => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const [isVisible, setVisible] = useState(false);
@@ -70,9 +72,11 @@ const ModalBody = ({backDropPress, collections, plant}) => {
                   dispatch(
                     addPlantToCollection({
                       collectionId: col?.id,
+                      fromScanHistory: isScanBlock,
                       plant,
                     }),
                   );
+
                   navigation.navigate('Collection-Stack', {
                     screen: 'Garden',
                     params: {collectionId: col?.id},
@@ -140,7 +144,17 @@ const ModalBody = ({backDropPress, collections, plant}) => {
   );
 };
 
-export const CollectionModal = ({isVisible, backDropPress, plant}) => {
+export const CollectionModal = ({
+  isVisible,
+  backDropPress,
+  plant,
+  isScanBlock,
+}: {
+  isVisible: boolean;
+  backDropPress: any;
+  plant: PlantResult;
+  isScanBlock?: boolean;
+}) => {
   const collections = useAppSelector(selectCollections);
   return (
     <>
@@ -163,6 +177,7 @@ export const CollectionModal = ({isVisible, backDropPress, plant}) => {
             showsVerticalScrollIndicator={false}
             style={styles.modalBody}>
             <ModalBody
+              isScanBlock={isScanBlock}
               plant={plant}
               collections={collections}
               backDropPress={backDropPress}

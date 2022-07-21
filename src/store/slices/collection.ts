@@ -31,7 +31,11 @@ export const collectionSlice = createSlice({
     },
     addPlantToCollection: (
       state: CollectionState[],
-      action: PayloadAction<{collectionId: string; plant: PlantResult}>,
+      action: PayloadAction<{
+        collectionId: string;
+        plant: PlantResult;
+        fromScanHistory?: boolean;
+      }>,
     ) => {
       const updatePlant = (col: CollectionState, plant: PlantResult) => {
         const existedPlant = col.plants.find(
@@ -47,7 +51,10 @@ export const collectionSlice = createSlice({
           });
           return col.plants;
         }
-        return [plant, ...(col.plants || [])];
+        const plantObj = action.payload.fromScanHistory
+          ? {...plant, inCollection: action.payload.collectionId}
+          : plant;
+        return [plantObj, ...(col.plants || [])];
       };
       state = state.map(col =>
         col.id === action.payload.collectionId
