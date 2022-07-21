@@ -14,7 +14,7 @@ export const TabButton = ({onPress, onLongPress, isFocused, label}) => {
       accessibilityRole="button"
       accessibilityState={isFocused ? {selected: true} : {}}
       onPress={() => {
-        if (label === SCREEN_NAME.Around || label === SCREEN_NAME.Community) {
+        if (label === SCREEN_NAME.Around) {
           return Toast.show({
             type: 'info',
             position: 'bottom',

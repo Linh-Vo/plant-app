@@ -25,6 +25,7 @@ import {OnboardingScreen} from '../screens/Onboarding';
 import {useAppSelector} from '../hooks/redux';
 import {selectAppState} from '../store/slices/app';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SnapHistoryScreen} from '../screens/SnapHistory';
 
 function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
@@ -70,10 +71,7 @@ function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
                   ],
                 });
               }
-              if (
-                SCREEN_NAME.Community === label ||
-                SCREEN_NAME.Around === label
-              ) {
+              if (SCREEN_NAME.Around === label) {
                 return;
               }
               const event = navigation.emit({
@@ -98,10 +96,7 @@ function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
                   ],
                 });
               }
-              if (
-                SCREEN_NAME.Community === label ||
-                SCREEN_NAME.Around === label
-              ) {
+              if (SCREEN_NAME.Around === label) {
                 return;
               }
               navigation.emit({
@@ -154,7 +149,7 @@ export const HomeStackScreen = () => (
       component={CollectionScreen}
     />
     <Tab.Screen name={SCREEN_NAME.Scan} component={CameraStackScreen} />
-    <Tab.Screen name={SCREEN_NAME.Community} component={CommunityScreen} />
+    <Tab.Screen name={SCREEN_NAME.Community} component={SnapHistoryScreen} />
     <Tab.Screen name={SCREEN_NAME.Around} component={AroundScreen} />
   </Tab.Navigator>
 );

@@ -14,7 +14,7 @@ import {theme} from '../theme/theme';
 import FocusAwareStatusBar from '../components/FocusStatusBar';
 export const HomeScreen = ({navigation}) => {
   const navigate = (screen: string) => () => {
-    if (screen === SCREEN_NAME.Around || screen === SCREEN_NAME.Community) {
+    if (screen === SCREEN_NAME.Around) {
       return;
     }
     navigation.navigate(screen);
@@ -42,15 +42,12 @@ export const HomeScreen = ({navigation}) => {
             {Array.from([
               SCREEN_NAME.Collection,
               SCREEN_NAME.Scan,
-              SCREEN_NAME.Community,
               SCREEN_NAME.Around,
+              SCREEN_NAME.Community,
             ]).map(name => (
               <View key={name} style={styles.block}>
                 <Block
-                  isCommingsoon={
-                    name === SCREEN_NAME.Around ||
-                    name === SCREEN_NAME.Community
-                  }
+                  isCommingsoon={name === SCREEN_NAME.Around}
                   onPress={navigate(name)}
                   name={name}
                 />

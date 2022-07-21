@@ -20,6 +20,7 @@ import {
 import {dimensions, TextStyle} from '../styles/base';
 import {TabIcon} from '../components/icons';
 import {Path, Svg} from 'react-native-svg';
+import {SnapHistoryScreen} from '../screens/SnapHistory';
 
 function TabBar({state, descriptors, navigation}: BottomTabBarProps) {
   const scanButtonStyle: StyleProp<ViewStyle> = {
@@ -131,7 +132,7 @@ export const HomeStack = () => (
     <Tab.Screen name={SCREEN_NAME.Home} component={HomeScreen} />
     <Tab.Screen name={SCREEN_NAME.Collection} component={CollectionScreen} />
     <Tab.Screen name={SCREEN_NAME.Scan} component={CameraPage} />
-    <Tab.Screen name={SCREEN_NAME.Community} component={CollectionScreen} />
+    <Tab.Screen name={SCREEN_NAME.Community} component={SnapHistoryScreen} />
     <Tab.Screen name={SCREEN_NAME.Around} component={CollectionScreen} />
   </Tab.Navigator>
 );

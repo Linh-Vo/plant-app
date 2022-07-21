@@ -19,9 +19,14 @@ import {SAFE_AREA_PADDING} from '../../utils/constants';
 import {TextStyle} from '../../styles/base';
 import {PlantResult} from '../../types';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useAppDispatch} from '../../hooks/redux';
+import {addScanToHistory} from '../../store/slices/scan';
+import {SnapInfo} from '../../types';
+import {generateUniqSerial} from '../../utils/helper';
 
 export const CameraImage = ({route, navigation}) => {
   const insets = useSafeAreaInsets();
+  const dispatch = useAppDispatch();
   const {path, type} = route?.params;
   const [detecting, setDeteting] = useState(false);
   const cancelTokenSource = useRef<CancelTokenSource>();
@@ -62,6 +67,18 @@ export const CameraImage = ({route, navigation}) => {
         const result = res.data?.results as PlantResult[];
         const filterResult = result?.filter(re => Number(re.score) * 100 >= 5); // only accept the result score > 30%
         if (filterResult?.length) {
+          const scanHistory: SnapInfo = {
+            ...filterResult[0],
+            id: generateUniqSerial(),
+            image:
+              type === 'capture'
+                ? Platform.OS === 'android'
+                  ? `file://${path}`
+                  : path
+                : path,
+            date: new Date().toDateString().slice(4),
+          };
+          dispatch(addScanToHistory({scanHistory}));
           navigation.navigate('Camera-Result', {
             results: filterResult,
           });

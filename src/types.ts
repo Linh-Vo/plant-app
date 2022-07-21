@@ -43,6 +43,12 @@ export interface PlantResult {
   wikiInfo?: PlantWikiInfo;
 }
 
+export type SnapInfo = PlantResult & {
+  date: string;
+  id: string;
+  image?: string;
+};
+
 export interface EbayItems {
   itemId: string[];
   title: string[];

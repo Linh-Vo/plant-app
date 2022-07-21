@@ -18,14 +18,17 @@ import {
   renamePlant,
   selectCollections,
 } from '../../store/slices/collection';
-import {ErrorModal} from '../../components/ErrorModal';
+import {ErrorModal} from '../ErrorModal';
 import {PlantResult} from '../../types';
+import {deleteScan, renameScan} from '../../store/slices/scan';
 
 interface GardenMenuProps {
   isVisible: boolean;
   backDropPress: () => void;
   plant: PlantResult;
   collection?: CollectionState;
+  isScanHistory?: boolean;
+  scanId?: string;
 }
 const ModalBody = ({backDropPress, setVisible}) => {
   return (
@@ -69,11 +72,13 @@ const ModalBody = ({backDropPress, setVisible}) => {
     </>
   );
 };
-export const GardenMenu = ({
+export const EditMenu = ({
   isVisible,
   backDropPress,
   plant,
   collection,
+  scanId,
+  isScanHistory,
 }: GardenMenuProps) => {
   const [isSubMenuVisible, setSubmenuVisible] = useState({
     visible: false,
@@ -84,10 +89,12 @@ export const GardenMenu = ({
   const dispatch = useAppDispatch();
   const removePlant = () => () => {
     dispatch(
-      deletePlant({
-        collectionId: collection?.id,
-        plant: plant,
-      }),
+      isScanHistory
+        ? deleteScan({scanId: scanId || ''})
+        : deletePlant({
+            collectionId: collection?.id || '',
+            plant: plant,
+          }),
     );
     setSubmenuVisible({
       visible: false,
@@ -99,11 +106,13 @@ export const GardenMenu = ({
     const existedCollection = collections.find(e => e.name === newName);
     if (!existedCollection) {
       dispatch(
-        renamePlant({
-          collectionId: collection?.id,
-          plant,
-          newName,
-        }),
+        isScanHistory
+          ? renameScan({scanId: scanId || '', newName})
+          : renamePlant({
+              collectionId: collection?.id || '',
+              plant,
+              newName,
+            }),
       );
       setSubmenuVisible({
         visible: false,

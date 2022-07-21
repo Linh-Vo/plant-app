@@ -1,6 +1,7 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import utilsSlice from './slices/app';
 import collectionSlice from './slices/collection';
+import scanHistorySlice from './slices/scan';
 import collectionMiddleware from './middlewares/collection';
 import thunkMiddleware from 'redux-thunk';
 import {
@@ -26,6 +27,7 @@ const middlewares = [collectionMiddleware, thunkMiddleware];
 const rootReducer = combineReducers({
   collections: collectionSlice,
   appState: utilsSlice,
+  scanHistoryState: scanHistorySlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
