@@ -53,7 +53,7 @@ export const SnapHistoryScreen = ({navigation}) => {
               source={require('../assets/images/empty-plant.png')}
             />
           </View>
-          <Text style={styles.emptyText}>{'No scan in here'}</Text>
+          <Text style={styles.emptyText}>{'No scans in here'}</Text>
           <Button
             textStyle={{color: theme.color.white}}
             buttonStyle={{width: '70%'}}

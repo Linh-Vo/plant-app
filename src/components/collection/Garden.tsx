@@ -106,7 +106,7 @@ export const Garden = ({route, navigation}) => {
               source={require('../../assets/images/empty-plant.png')}
             />
           </View>
-          <Text style={styles.emptyText}>{'No plant in here'}</Text>
+          <Text style={styles.emptyText}>{'No plants in here'}</Text>
           <Button
             textStyle={{color: theme.color.white}}
             buttonStyle={{width: '70%'}}

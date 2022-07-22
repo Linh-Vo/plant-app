@@ -126,7 +126,7 @@ export const CollectionScreen = ({navigation}) => {
             </View>
 
             <Text style={styles.emptyText}>
-              {'You have not created any collection'}
+              {'You have not created any collections'}
             </Text>
             <TouchableOpacity
               onPress={() => setVisible(true)}
