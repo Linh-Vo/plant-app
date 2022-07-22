@@ -61,6 +61,7 @@ export const ResultBlock = (props: DetectResultProps) => {
             )}
             <Text numberOfLines={1} style={TextStyle.titleText}>
               {props.plant.species.customName ||
+                props.plant.species?.commonNames?.at(0) ||
                 props.plant.species.scientificNameWithoutAuthor}
             </Text>
           </View>
@@ -89,7 +90,7 @@ export const ResultBlock = (props: DetectResultProps) => {
           style={styles.imageContainer}
           horizontal
           showsHorizontalScrollIndicator={false}>
-          {props.plant.images.map((image, idx) => (
+          {props.plant?.images?.slice(0, 4)?.map((image, idx) => (
             <FastImage
               style={styles.image}
               key={idx}

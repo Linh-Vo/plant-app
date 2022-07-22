@@ -1,8 +1,5 @@
 import React from 'react';
-import {FlatList, Platform, StyleSheet, Text, View} from 'react-native';
-import {SnapInfo} from '../types';
-import {ScanBlock} from '../components/snap-history/ScanBlock';
-import {generateUniqSerial} from '../utils/helper';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import FocusAwareStatusBar from '../components/FocusStatusBar';
 import {theme} from '../theme/theme';

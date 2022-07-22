@@ -178,6 +178,7 @@ export const EditMenu = ({
             }
             defaultColName={
               plant?.species.customName ||
+              plant?.species.commonNames?.at(0) ||
               plant?.species?.scientificNameWithoutAuthor ||
               ''
             }
