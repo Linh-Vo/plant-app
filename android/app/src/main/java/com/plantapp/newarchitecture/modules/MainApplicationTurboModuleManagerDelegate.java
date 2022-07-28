@@ -1,4 +1,4 @@
-package com.plantapp.newarchitecture.modules;
+package com.plantylifeapp.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

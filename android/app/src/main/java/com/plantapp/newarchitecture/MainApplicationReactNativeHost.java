@@ -1,4 +1,4 @@
-package com.plantapp.newarchitecture;
+package com.plantylifeapp.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.plantapp.BuildConfig;
-import com.plantapp.newarchitecture.components.MainComponentsRegistry;
-import com.plantapp.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.plantylifeapp.BuildConfig;
+import com.plantylifeapp.newarchitecture.components.MainComponentsRegistry;
+import com.plantylifeapp.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
